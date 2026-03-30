@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Commons Greenhouse Calculator</title>
+  <style>
+    :root {
+      --bg: #f5f3ec;
+      --card: #fffdf8;
+      --ink: #1f2937;
+      --muted: #6b7280;
+      --line: #d1d5db;
+      --accent: #215732;
+      --soil: #8a6f2d;
+      --sky: #2563eb;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: Arial, Helvetica, sans-serif; background: var(--bg); color: var(--ink); }
+    .wrap { display: grid; grid-template-columns: 340px 1fr; gap: 16px; min-height: 100vh; padding: 16px; }
+    .panel, .main { background: var(--card); border: 1px solid var(--line); border-radius: 18px; box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+    .panel { padding: 18px; overflow: auto; }
+    .main { padding: 18px; display: flex; flex-direction: column; gap: 16px; }
+    h1 { margin: 0 0 6px; font-size: 1.25rem; }
+    h2 { margin: 18px 0 8px; font-size: .92rem; text-transform: uppercase; letter-spacing: .05em; color: var(--accent); }
+    .sub { color: var(--muted); font-size: .92rem; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    label { display: block; margin: 10px 0 6px; font-size: .86rem; font-weight: 700; }
+    input, select { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; font: inherit; background: #fff; }
+    .checks { display: grid; gap: 8px; }
+    .checks label { display: flex; gap: 8px; align-items: center; margin: 0; font-weight: 500; }
+    .checks input { width: auto; }
+    .meta { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .stat, .box { border: 1px solid var(--line); border-radius: 14px; padding: 12px; background: #fff; }
+    .k { font-size: .75rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+    .v { margin-top: 4px; font-weight: 700; font-size: 1rem; }
+    .svg-wrap { border: 1px solid var(--line); border-radius: 18px; overflow: hidden; background: #fff; }
+    .grid2 { display: grid; grid-template-columns: 1.2fr .8fr; gap: 16px; }
+    table { width: 100%; border-collapse: collapse; font-size: .92rem; }
+    th, td { text-align: left; padding: 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    .muted { color: var(--muted); }
+    .btns { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    button { cursor: pointer; border: 0; border-radius: 12px; padding: 10px 14px; font-weight: 700; background: var(--accent); color: #fff; }
+    button.alt { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+    @media (max-width: 980px) {
+      .wrap { grid-template-columns: 1fr; }
+      .meta, .grid2 { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 700px) {
+      .row, .meta, .grid2 { grid-template-columns: 1fr; }
+    }
+    @media print {
+      .panel { display: none; }
+      .wrap { grid-template-columns: 1fr; padding: 0; }
+      .main { border: 0; box-shadow: none; }
+      body { background: #fff; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <aside class="panel">
+      <h1>Commons Greenhouse Calculator</h1>
+      <div class="sub">CGS-C1 / SIC-C1 · bilingual, low-tech, salvage-aware.</div>
+
+      <h2>Geometry</h2>
+      <div class="row">
+        <div><label>Length (ft)</label><input id="lengthFt" type="number" min="12" max="120" value="32" step="1"></div>
+        <div><label>Width (ft)</label><input id="widthFt" type="number" min="10" max="40" value="16" step="1"></div>
+      </div>
+      <div class="row">
+        <div><label>Hoop spacing (ft)</label><input id="spacingFt" type="number" min="2" max="8" value="4" step="0.5"></div>
+        <div><label>Aisle width (ft)</label><input id="aisleFt" type="number" min="1.5" max="4" value="2.5" step="0.5"></div>
+      </div>
+      <div class="row">
+        <div><label>Berm height (ft)</label><input id="bermFt" type="number" min="0" max="6" value="2.5" step="0.5"></div>
+        <div><label>Trench depth (ft)</label><input id="trenchFt" type="number" min="0" max="4" value="1.5" step="0.5"></div>
+      </div>
+
+      <h2>Options</h2>
+      <div class="checks">
+        <label><input id="showBarrels" type="checkbox" checked> Thermal barrels / barriles</label>
+        <label><input id="showAirTube" type="checkbox" checked> Buried air tube / tubo enterrado</label>
+        <label><input id="showNursery" type="checkbox" checked> Nursery zone / semilleros</label>
+        <label><input id="showRollSides" type="checkbox" checked> Roll-up sides / laterales enrollables</label>
+      </div>
+
+      <h2>Build mode</h2>
+      <label>Profile</label>
+      <select id="mode">
+        <option value="scrappy">Scrappy salvage / rescate</option>
+        <option value="balanced">Balanced low-cost / balanceado</option>
+        <option value="clean">Cleaner build / más limpio</option>
+      </select>
+
+      <div class="btns">
+        <button id="svgBtn">Download SVG</button>
+        <button id="printBtn" class="alt">Print / Save PDF</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="meta">
+        <div class="stat"><div class="k">Footprint</div><div id="footprint" class="v"></div></div>
+        <div class="stat"><div class="k">Hoops</div><div id="hoops" class="v"></div></div>
+        <div class="stat"><div class="k">Bed width</div><div id="beds" class="v"></div></div>
+        <div class="stat"><div class="k">Build bias</div><div id="bias" class="v"></div></div>
+      </div>
+
+      <div class="svg-wrap">
+        <svg id="svg" viewBox="0 0 1400 980" width="100%" height="auto" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M20 0L0 0 0 20" fill="none" stroke="#ece7da" stroke-width="1"></path>
+            </pattern>
+            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0L10 5L0 10z" fill="#6b7280"></path>
+            </marker>
+          </defs>
+          <rect width="1400" height="980" fill="#faf8f2"></rect>
+          <rect width="1400" height="980" fill="url(#grid)"></rect>
+          <text x="700" y="52" text-anchor="middle" font-size="32" font-weight="700" fill="#173523">Commons Greenhouse System — CGS-C1</text>
+          <text x="700" y="84" text-anchor="middle" font-size="18" fill="#6b7280">Calculator + blueprint • Calculadora + plano</text>
+          <text x="80" y="132" font-size="22" font-weight="700" fill="#215732">PLAN / PLANTA</text>
+          <g id="plan"></g>
+          <text x="80" y="620" font-size="22" font-weight="700" fill="#215732">SECTION / SECCIÓN</text>
+          <g id="section"></g>
+          <g id="notes"></g>
+        </svg>
+      </div>
+
+      <div class="grid2">
+        <div class="box">
+          <b>BOM / Lista de materiales</b>
+          <div id="bomWrap"></div>
+        </div>
+        <div class="box">
+          <b>Cost snapshot / Resumen de costos</b>
+          <div id="costWrap"></div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+<script>
+const ids = ['lengthFt','widthFt','spacingFt','aisleFt','bermFt','trenchFt','showBarrels','showAirTube','showNursery','showRollSides','mode'];
+const el = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
+const svg = document.getElementById('svg');
+const plan = document.getElementById('plan');
+const section = document.getElementById('section');
+const notes = document.getElementById('notes');
+const bomWrap = document.getElementById('bomWrap');
+const costWrap = document.getElementById('costWrap');
+const stat = {
+  footprint: document.getElementById('footprint'),
+  hoops: document.getElementById('hoops'),
+  beds: document.getElementById('beds'),
+  bias: document.getElementById('bias')
+};
+function n(v){ return Number(v); }
+function fmt(v){ return (Math.round(v*10)/10).toFixed(1).replace('.0',''); }
+function clear(node){ while(node.firstChild) node.removeChild(node.firstChild); }
+function add(parent, tag, attrs={}, text){ const node=document.createElementNS('http://www.w3.org/2000/svg', tag); Object.entries(attrs).forEach(([k,v])=>node.setAttribute(k,v)); if(text!=null) node.textContent=text; parent.appendChild(node); return node; }
+function line(parent,x1,y1,x2,y2,extra={}){ return add(parent,'line',{x1,y1,x2,y2,...extra}); }
+function rect(parent,x,y,width,height,extra={}){ return add(parent,'rect',{x,y,width,height,...extra}); }
+function text(parent,x,y,value,extra={}){ return add(parent,'text',{x,y,...extra},value); }
+function path(parent,d,extra={}){ return add(parent,'path',{d,...extra}); }
+function dim(parent,x1,y1,x2,y2,label,offset=0){ const dx=x2-x1, dy=y2-y1; const len=Math.hypot(dx,dy)||1; const nx=-dy/len, ny=dx/len; const ax1=x1+nx*offset, ay1=y1+ny*offset, ax2=x2+nx*offset, ay2=y2+ny*offset; line(parent,ax1,ay1,ax2,ay2,{stroke:'#6b7280','stroke-width':1.5,'marker-start':'url(#arrow)','marker-end':'url(#arrow)'}); line(parent,x1,y1,ax1,ay1,{stroke:'#6b7280','stroke-width':1}); line(parent,x2,y2,ax2,ay2,{stroke:'#6b7280','stroke-width':1}); text(parent,(ax1+ax2)/2,(ay1+ay2)/2-6,label,{'text-anchor':'middle','font-size':16,fill:'#6b7280','font-weight':600}); }
+function profile(mode){
+  if(mode==='scrappy') return {frame:'Salvaged rails / EMT / trampoline steel',skin:'Billboard vinyl or salvage poly',anchors:'Rebar + tamped fill + baseboards',costs:{frame:[0,250],skin:[0,200],anchors:[0,150],lumber:[0,120],barrels:[0,80],air:[0,120],beds:[0,150],vent:[0,80],misc:[50,180]}};
+  if(mode==='balanced') return {frame:'Mixed new + salvaged metal',skin:'6 mil greenhouse poly',anchors:'Rebar or ground screws',costs:{frame:[350,950],skin:[220,520],anchors:[180,480],lumber:[120,320],barrels:[40,160],air:[80,220],beds:[150,420],vent:[80,240],misc:[120,320]}};
+  return {frame:'Cleaner hoop kit / rigidized frame',skin:'Upgraded poly / partial polycarbonate',anchors:'Ground screws or engineered hold-downs',costs:{frame:[900,1800],skin:[450,1200],anchors:[350,900],lumber:[250,650],barrels:[80,240],air:[150,400],beds:[250,700],vent:[180,420],misc:[200,450]}};
+}
+function getBom(mode,lengthFt,widthFt,hoops,spacingFt,showBarrels,showAirTube,showNursery,showRollSides){
+  const p = profile(mode).costs;
+  const footprint=Math.round(lengthFt*widthFt); const barrels=Math.max(4,Math.round(lengthFt/4)); const airTubeLen=Math.max(30,Math.round(lengthFt*1.25)); const hoopMetalFt=Math.round(hoops*(widthFt*1.7)); const baseboardFt=Math.round(lengthFt*2); const antiBillow=Math.max(4,hoops);
+  return [
+    {cat:'Frame / Estructura', item:'Hoops + ridge + side rails', qty:`${hoops} hoops; ~${hoopMetalFt} linear ft`, spec:`${fmt(spacingFt)} ft spacing`, cost:p.frame},
+    {cat:'Anchors / Anclajes', item:'Rebar, stakes, screws, collars', qty:`${hoops*2} base anchors`, spec:'Wind-critical', cost:p.anchors},
+    {cat:'Skin / Cubierta', item:'Outer cover + attachment', qty:`~${Math.round(footprint*1.6)} sq ft`, spec:mode==='scrappy'?'Vinyl / salvage poly':'Greenhouse poly', cost:p.skin},
+    {cat:'Base / Base', item:'Baseboards + end-wall framing', qty:`~${baseboardFt} ft`, spec:'Salvaged or treated lumber', cost:p.lumber},
+    {cat:'Wind / Viento', item:'Anti-billow straps + tie-downs', qty:`${antiBillow} straps`, spec:'Over each hoop bay', cost:p.misc},
+    {cat:'Beds / Camas', item:'Beds or soil zones', qty:'2 main beds', spec:showNursery?'Beds + nursery zone':'Beds only', cost:p.beds},
+    {cat:'Thermal / Térmico', item:'Water barrels / thermal mass', qty:showBarrels?`${barrels} barrels`:'Optional', spec:'North wall spine', cost:p.barrels},
+    {cat:'Air / Aire', item:'Buried tube + intake + gravel', qty:showAirTube?`~${airTubeLen} ft tube`:'Optional', spec:'Passive tempering', cost:p.air},
+    {cat:'Vent / Ventilación', item:'Roll-up sides / vents', qty:showRollSides?'2 sides + end vents':'Manual vents only', spec:'Low-tech ventilation', cost:p.vent},
+    {cat:'Misc / Varios', item:'Fasteners, tape, mesh, fittings', qty:'Allowance', spec:'Always needed', cost:p.misc}
+  ];
+}
+function renderBom(items){
+  const rows=items.map(it=>`<tr><td><b>${it.cat}</b><br><span class="muted">${it.item}</span></td><td>${it.qty}</td><td>${it.spec}</td><td>$${it.cost[0]}–$${it.cost[1]}</td></tr>`).join('');
+  bomWrap.innerHTML=`<div style="overflow:auto"><table><thead><tr><th>Category</th><th>Qty</th><th>Spec</th><th>Cost</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+  const low=items.reduce((a,it)=>a+it.cost[0],0), high=items.reduce((a,it)=>a+it.cost[1],0);
+  costWrap.innerHTML=`<div class="stat" style="margin-bottom:10px"><div class="k">Low estimate</div><div class="v">$${Math.round(low).toLocaleString()}</div></div><div class="stat" style="margin-bottom:10px"><div class="k">High estimate</div><div class="v">$${Math.round(high).toLocaleString()}</div></div><div class="muted" style="font-size:.92rem;line-height:1.4">Salvage-heavy builds save most on frame, skin, barrels, and bed materials. Anchoring is the last place to cheap out.</div>`;
+}
+function render(){
+  const lengthFt=Math.max(12,n(el.lengthFt.value)); const widthFt=Math.max(10,n(el.widthFt.value)); const spacingFt=Math.max(2,n(el.spacingFt.value)); const bermFt=Math.max(0,n(el.bermFt.value)); const trenchFt=Math.max(0,n(el.trenchFt.value)); const aisleFt=Math.max(1.5,n(el.aisleFt.value));
+  const hoops=Math.floor(lengthFt/spacingFt)+1; const footprint=Math.round(lengthFt*widthFt); const bedWidth=Math.max(1,(widthFt-aisleFt)/2); const mode=el.mode.value; const prof=profile(mode);
+  stat.footprint.textContent=`${footprint} sq ft`; stat.hoops.textContent=String(hoops); stat.beds.textContent=`2 x ${fmt(bedWidth)} ft`; stat.bias.textContent=`${bermFt>=2?'Thermal':'Light'} + wind`;
+  clear(plan); clear(section); clear(notes);
+
+  const px=110, py=170, pw=980, ph=350; rect(plan,px,py,pw,ph,{fill:'#fff',stroke:'#374151','stroke-width':2.5,rx:4}); text(plan,px-20,py+ph/2,'NORTH',{'text-anchor':'end','font-size':16,'font-weight':700,fill:'#8a6f2d'}); text(plan,px+pw+20,py+ph/2,'SOUTH',{'text-anchor':'start','font-size':16,'font-weight':700,fill:'#8a6f2d'});
+  const barrelBandH=52; if(el.showBarrels.checked){ rect(plan,px,py,pw,barrelBandH,{fill:'#edf7ee',stroke:'#215732','stroke-width':1.5}); const barrelCount=Math.max(6,Math.floor(lengthFt/2)); for(let i=0;i<barrelCount;i++){ const bx=px+18+i*((pw-36)/barrelCount); rect(plan,bx,py+10,20,30,{fill:'#c7dfca',stroke:'#215732','stroke-width':1}); } text(plan,px+12,py+46,'Thermal mass spine / Espina térmica',{'font-size':15,fill:'#215732','font-weight':700}); }
+  const usableY=py+barrelBandH+18; const usableH=ph-barrelBandH-36; const aisleW=pw*(aisleFt/widthFt); const bedW=(pw-aisleW)/2;
+  rect(plan,px,usableY,bedW,usableH,{fill:'#f0ead2',stroke:'#8a6f2d','stroke-width':1.5}); rect(plan,px+bedW+aisleW,usableY,bedW,usableH,{fill:'#f0ead2',stroke:'#8a6f2d','stroke-width':1.5}); rect(plan,px+bedW,usableY,aisleW,usableH,{fill:'#f8fafc',stroke:'#94a3b8','stroke-width':1.5,'stroke-dasharray':'8 6'});
+  text(plan,px+bedW/2,usableY+usableH/2,'Bed / Cama',{'text-anchor':'middle','font-size':20,'font-weight':700,fill:'#7c5a1a'}); text(plan,px+bedW+aisleW/2,usableY+usableH/2,'Aisle / Pasillo',{'text-anchor':'middle','font-size':20,'font-weight':700,fill:'#475569'}); text(plan,px+bedW+aisleW+bedW/2,usableY+usableH/2,'Bed / Cama',{'text-anchor':'middle','font-size':20,'font-weight':700,fill:'#7c5a1a'});
+  if(el.showNursery.checked){ rect(plan,px+pw-180,usableY+usableH-80,150,56,{fill:'#eef2ff',stroke:'#4f46e5','stroke-width':1.5,rx:10}); text(plan,px+pw-105,usableY+usableH-48,'Nursery /',{'text-anchor':'middle','font-size':16,'font-weight':700,fill:'#4338ca'}); text(plan,px+pw-105,usableY+usableH-28,'Semilleros',{'text-anchor':'middle','font-size':16,'font-weight':700,fill:'#4338ca'}); }
+  for(let i=0;i<hoops;i++){ const hx=px+(pw*(i/(hoops-1||1))); line(plan,hx,py-10,hx,py+ph+10,{stroke:'#9ca3af','stroke-width':1.3,'stroke-dasharray':'5 5'}); }
+  text(plan,px,py-22,`Hoops @ ${fmt(spacingFt)} ft o.c. / Arcos cada ${fmt(spacingFt)} ft`,{'font-size':15,fill:'#374151'}); dim(plan,px,py+ph+20,px+pw,py+ph+20,`${fmt(lengthFt)} ft / ${fmt(lengthFt*0.3048)} m`,24); dim(plan,px-18,py,px-18,py+ph,`${fmt(widthFt)} ft / ${fmt(widthFt*0.3048)} m`,-34);
+
+  const sx=110, sy=675, sw=980, sh=220; line(section,sx,sy+sh-30,sx+sw,sy+sh-30,{stroke:'#475569','stroke-width':2}); const bermHpx=Math.min(90,bermFt*26); rect(section,sx+10,sy+sh-30-bermHpx,180,bermHpx,{fill:'#d6c3a1',stroke:'#8a6f2d','stroke-width':1.5}); text(section,sx+100,sy+sh-38-bermHpx,'Earth berm / Berma',{'text-anchor':'middle','font-size':15,'font-weight':700,fill:'#8a6f2d'});
+  const trenchPx=trenchFt*20; line(section,sx+190,sy+sh-30,sx+270,sy+sh-30+trenchPx,{stroke:'#475569','stroke-width':2}); line(section,sx+270,sy+sh-30+trenchPx,sx+980,sy+sh-30+trenchPx,{stroke:'#475569','stroke-width':2}); const baseY=sy+sh-30+trenchPx; const leftX=sx+250, rightX=sx+830, peakX=(leftX+rightX)/2, peakY=sy+26; path(section,`M ${leftX} ${baseY} Q ${peakX} ${peakY} ${rightX} ${baseY}`,{fill:'none',stroke:'#215732','stroke-width':4}); text(section,peakX,peakY-10,'Hoop skin / Cubierta arqueada',{'text-anchor':'middle','font-size':15,'font-weight':700,fill:'#215732'});
+  if(el.showBarrels.checked){ for(let i=0;i<5;i++){ rect(section,sx+40+i*28,baseY-52,20,40,{fill:'#c7dfca',stroke:'#215732','stroke-width':1}); } text(section,sx+120,baseY-62,'Barrels / Barriles',{'text-anchor':'middle','font-size':14,fill:'#215732','font-weight':700}); }
+  if(el.showAirTube.checked){ line(section,sx+40,baseY+62,sx+400,baseY+62,{stroke:'#2563eb','stroke-width':4}); text(section,sx+220,baseY+54,'Buried air tube / Tubo enterrado',{'text-anchor':'middle','font-size':15,fill:'#1d4ed8','font-weight':700}); line(section,sx+40,baseY+62,sx+40,baseY+18,{stroke:'#2563eb','stroke-width':2,'marker-start':'url(#arrow)'}); }
+  if(el.showRollSides.checked){ line(section,leftX+40,baseY-4,leftX+100,baseY-4,{stroke:'#b45309','stroke-width':4}); line(section,rightX-100,baseY-4,rightX-40,baseY-4,{stroke:'#b45309','stroke-width':4}); text(section,peakX,baseY-16,'Roll-up sides / Laterales enrollables',{'text-anchor':'middle','font-size':14,fill:'#92400e','font-weight':700}); }
+  dim(section,leftX,baseY+10,rightX,baseY+10,`${fmt(widthFt)} ft span`,28); dim(section,sx+15,baseY,sx+15,baseY+trenchPx,`${fmt(trenchFt)} ft trench`,-26); dim(section,sx+840,baseY,sx+840,baseY-bermHpx,`${fmt(bermFt)} ft berm`,26);
+
+  rect(notes,1130,150,220,300,{fill:'#fff',stroke:'#d1d5db','stroke-width':1.5,rx:14}); text(notes,1240,182,'BUILD NOTES / NOTAS',{'text-anchor':'middle','font-size':18,'font-weight':700,fill:'#173523'});
+  [
+    `• Frame: ${prof.frame}`,
+    `• Skin: ${prof.skin}`,
+    `• Anchors: ${prof.anchors}`,
+    `• Footprint: ${footprint} sq ft`,
+    `• Hoops: ${hoops}`,
+    `• Beds: 2 x ${fmt(bedWidth)} ft`,
+    `• Aisle: ${fmt(aisleFt)} ft`,
+    `• Canon: low-tech first`
+  ].forEach((t,i)=>text(notes,1146,220+i*26,t,{'font-size':14,fill:'#374151'}));
+  rect(notes,1130,474,220,160,{fill:'#fff',stroke:'#d1d5db','stroke-width':1.5,rx:14}); text(notes,1240,506,'SCALE LOGIC / ESCALA',{'text-anchor':'middle','font-size':18,'font-weight':700,fill:'#173523'});
+  ['1. Extend length in 4 ft bays.','2. Keep north thermal spine.','3. Duplicate beds + aisle.','4. Add aqua spine later.'].forEach((t,i)=>text(notes,1146,542+i*24,t,{'font-size':14,fill:'#374151'}));
+
+  renderBom(getBom(mode,lengthFt,widthFt,hoops,spacingFt,el.showBarrels.checked,el.showAirTube.checked,el.showNursery.checked,el.showRollSides.checked));
+}
+function downloadSvg(){ const copy=svg.cloneNode(true); copy.setAttribute('xmlns','http://www.w3.org/2000/svg'); const data=new XMLSerializer().serializeToString(copy); const blob=new Blob([data],{type:'image/svg+xml;charset=utf-8'}); const url=URL.createObjectURL(blob); const a=document.createElement('a'); a.href=url; a.download='cgs-c1-blueprint.svg'; a.click(); URL.revokeObjectURL(url); }
+ids.forEach(id => el[id].addEventListener('input', render)); document.getElementById('svgBtn').addEventListener('click', downloadSvg); document.getElementById('printBtn').addEventListener('click', ()=>window.print()); render();
+</script>
+</body>
+</html>
