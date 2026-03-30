@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests" />
+  <meta name="color-scheme" content="light only" />
+  <meta name="description" content="Commons Greenhouse System calculator and blueprint generator for low-cost community greenhouse builds." />
+  <meta name="theme-color" content="#215732" />
+  <title>Commons Greenhouse Calculator Secure</title>
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="panel controls" aria-label="Calculator controls">
+      <header>
+        <h1>Commons Greenhouse Calculator</h1>
+        <p class="subhead">CGS-C1 / SIC-C1 · secure, offline-capable, bilingual.</p>
+        <p class="version">Canonical version <span id="appVersion">CGS-C1 v0.2.0</span></p>
+      </header>
+
+      <section>
+        <h2>Geometry</h2>
+        <div class="row-2">
+          <div>
+            <label for="lengthFt">Length (ft)</label>
+            <input id="lengthFt" name="lengthFt" type="number" min="12" max="120" step="1" value="32" />
+          </div>
+          <div>
+            <label for="widthFt">Width (ft)</label>
+            <input id="widthFt" name="widthFt" type="number" min="10" max="40" step="1" value="16" />
+          </div>
+        </div>
+        <div class="row-2">
+          <div>
+            <label for="spacingFt">Hoop spacing (ft)</label>
+            <input id="spacingFt" name="spacingFt" type="number" min="2" max="8" step="0.5" value="4" />
+          </div>
+          <div>
+            <label for="aisleFt">Aisle width (ft)</label>
+            <input id="aisleFt" name="aisleFt" type="number" min="1.5" max="4" step="0.5" value="2.5" />
+          </div>
+        </div>
+        <div class="row-2">
+          <div>
+            <label for="bermFt">Berm height (ft)</label>
+            <input id="bermFt" name="bermFt" type="number" min="0" max="6" step="0.5" value="2.5" />
+          </div>
+          <div>
+            <label for="trenchFt">Trench depth (ft)</label>
+            <input id="trenchFt" name="trenchFt" type="number" min="0" max="4" step="0.5" value="1.5" />
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Options</h2>
+        <div class="checks">
+          <label><input id="showBarrels" type="checkbox" checked /> Thermal barrels / barriles</label>
+          <label><input id="showAirTube" type="checkbox" checked /> Buried air tube / tubo enterrado</label>
+          <label><input id="showNursery" type="checkbox" checked /> Nursery zone / semilleros</label>
+          <label><input id="showRollSides" type="checkbox" checked /> Roll-up sides / laterales enrollables</label>
+        </div>
+      </section>
+
+      <section>
+        <h2>Build mode</h2>
+        <label for="mode">Profile</label>
+        <select id="mode" name="mode">
+          <option value="scrappy">Scrappy salvage / rescate</option>
+          <option value="balanced">Balanced low-cost / balanceado</option>
+          <option value="clean">Cleaner build / m&aacute;s limpio</option>
+        </select>
+      </section>
+
+      <div class="button-row">
+        <button id="downloadSvgBtn" type="button">Download SVG</button>
+        <button id="downloadJsonBtn" type="button" class="secondary">Export JSON</button>
+        <button id="printBtn" type="button" class="secondary">Print / Save PDF</button>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <section class="stats-grid" aria-label="Summary metrics">
+        <article class="stat-card"><div class="label">Footprint</div><div class="value" id="footprintValue"></div></article>
+        <article class="stat-card"><div class="label">Hoops</div><div class="value" id="hoopsValue"></div></article>
+        <article class="stat-card"><div class="label">Bed width</div><div class="value" id="bedsValue"></div></article>
+        <article class="stat-card"><div class="label">Bias</div><div class="value" id="biasValue"></div></article>
+      </section>
+
+      <section class="drawing-card" aria-label="Blueprint view">
+        <svg id="blueprintSvg" viewBox="0 0 1400 980" role="img" aria-labelledby="svgTitle svgDesc" xmlns="http://www.w3.org/2000/svg">
+          <title id="svgTitle">Commons Greenhouse System blueprint</title>
+          <desc id="svgDesc">Plan and section drawing with dimensions, thermal spine, beds, berm, and buried air tube.</desc>
+          <defs>
+            <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+              <path d="M20 0L0 0 0 20" fill="none" stroke="#ece7da" stroke-width="1"></path>
+            </pattern>
+            <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0L10 5L0 10z" fill="#6b7280"></path>
+            </marker>
+          </defs>
+          <rect width="1400" height="980" fill="#faf8f2"></rect>
+          <rect width="1400" height="980" fill="url(#grid)"></rect>
+          <text x="700" y="52" text-anchor="middle" font-size="32" font-weight="700" fill="#173523">Commons Greenhouse System — CGS-C1</text>
+          <text x="700" y="84" text-anchor="middle" font-size="18" fill="#6b7280">Calculator + blueprint • Calculadora + plano</text>
+          <text x="80" y="132" font-size="22" font-weight="700" fill="#215732">PLAN / PLANTA</text>
+          <g id="planGroup"></g>
+          <text x="80" y="620" font-size="22" font-weight="700" fill="#215732">SECTION / SECCI&Oacute;N</text>
+          <g id="sectionGroup"></g>
+          <g id="notesGroup"></g>
+        </svg>
+      </section>
+
+      <section class="info-grid">
+        <article class="card">
+          <h2>BOM / Lista de materiales</h2>
+          <div id="bomContainer"></div>
+        </article>
+        <article class="card">
+          <h2>Cost snapshot / Resumen de costos</h2>
+          <div id="costContainer"></div>
+        </article>
+      </section>
+
+      <section class="info-grid">
+        <article class="card">
+          <h2>Canonical spec / Especificaci&oacute;n can&oacute;nica</h2>
+          <ul class="canonical-list">
+            <li>Structure permanent, skin replaceable.</li>
+            <li>Earth + air + thermal mass before gadgets.</li>
+            <li>Anchoring is non-negotiable in wind zones.</li>
+            <li>Open plans, community-safe implementation.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h2>Security posture / Postura de seguridad</h2>
+          <ul class="canonical-list">
+            <li>No external libraries or trackers.</li>
+            <li>No accounts, no backend, no data uploads.</li>
+            <li>Strict CSP and offline PWA shell.</li>
+            <li>DOM built without innerHTML.</li>
+          </ul>
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>
