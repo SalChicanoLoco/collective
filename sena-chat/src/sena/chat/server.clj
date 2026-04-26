@@ -1,15 +1,17 @@
 (ns sena.chat.server
-  (:require [compojure.core          :refer [defroutes GET POST PUT context]]
-            [compojure.route         :as route]
-            [ring.adapter.jetty      :as jetty]
-            [ring.middleware.json    :refer [wrap-json-body wrap-json-response]]
-            [ring.middleware.params  :refer [wrap-params]]
-            [ring.util.response      :as resp]
-            [sena.chat.graph         :as graph]
-            [sena.chat.api           :as api]
-            [sena.chat.voices        :as voices]
-            [sena.chat.session       :as session]
-            [clojure.string          :as str])
+  (:require [compojure.core               :refer [defroutes GET POST PUT context]]
+            [compojure.route              :as route]
+            [ring.adapter.jetty           :as jetty]
+            [ring.middleware.json         :refer [wrap-json-body wrap-json-response]]
+            [ring.middleware.params       :refer [wrap-params]]
+            [ring.middleware.resource     :refer [wrap-resource]]
+            [ring.middleware.content-type :refer [wrap-content-type]]
+            [ring.util.response           :as resp]
+            [sena.chat.graph              :as graph]
+            [sena.chat.api                :as api]
+            [sena.chat.voices             :as voices]
+            [sena.chat.session            :as session]
+            [clojure.string               :as str])
   (:gen-class))
 
 ;;; ── In-memory live-session store ─────────────────────────────────────────────
@@ -111,6 +113,7 @@
 ;;; ── Routes ───────────────────────────────────────────────────────────────────
 
 (defroutes app-routes
+  (GET "/" [] (resp/redirect "/index.html"))
   (context "/api" []
     (GET  "/sessions"              req        (list-sessions req))
     (POST "/sessions"              req        (create-session req))
@@ -123,7 +126,9 @@
   (-> app-routes
       (wrap-json-body {:keywords? true})
       wrap-json-response
-      wrap-params))
+      wrap-params
+      (wrap-resource "public")
+      wrap-content-type))
 
 ;;; ── Entry point ──────────────────────────────────────────────────────────────
 
@@ -135,4 +140,5 @@
     (println "  GET  /api/sessions/:id")
     (println "  POST /api/sessions/:id/messages   {\"content\":\"...\"}")
     (println "  PUT  /api/sessions/:id/voice       {\"voice\":\"aria|nova|vex|grant\"}")
+    (println (str "  UI   http://localhost:" port "/"))
     (jetty/run-jetty app {:port port :join? true})))

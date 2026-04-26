@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sena Chat</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0c0c0f;
+      --sidebar:   #101013;
+      --surface:   #16161b;
+      --surface2:  #1c1c24;
+      --border:    #242430;
+      --text:      #dddde8;
+      --subtle:    #888898;
+      --muted:     #505060;
+
+      --aria:  #8b7cf8;
+      --nova:  #f87878;
+      --vex:   #4ed8a8;
+      --grant: #f0c050;
+
+      --user-bg: #1a1a2e;
+      --asst-bg: #0f1a14;
+      --r: 11px;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    }
+
+    html, body { height: 100%; overflow: hidden; }
+    body {
+      font-family: var(--font); font-size: 14px; line-height: 1.5;
+      background: var(--bg); color: var(--text);
+      display: flex;
+    }
+
+    /* ── Sidebar ──────────────────────────────────────────────── */
+    aside {
+      width: 220px; min-width: 220px;
+      background: var(--sidebar);
+      border-right: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      padding: 16px 12px;
+      overflow-y: auto;
+    }
+
+    .logo {
+      font-family: 'Courier New', monospace;
+      font-size: 13px; font-weight: 700; letter-spacing: .1em;
+      color: var(--aria);
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 16px;
+    }
+
+    .slabel {
+      font-size: 10px; font-weight: 600; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--muted);
+      padding: 0 4px 8px;
+    }
+
+    /* Voice buttons */
+    .vgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 20px; }
+    .vbtn {
+      background: var(--surface); border: 1px solid var(--border);
+      color: var(--muted); border-radius: 7px;
+      padding: 7px 4px; font-size: 12px; font-weight: 500;
+      cursor: pointer; transition: all .12s;
+    }
+    .vbtn:hover { color: var(--text); background: var(--surface2); }
+    .vbtn[data-v=aria].on  { border-color:var(--aria);  color:var(--aria);  background:rgba(139,124,248,.12); }
+    .vbtn[data-v=nova].on  { border-color:var(--nova);  color:var(--nova);  background:rgba(248,120,120,.12); }
+    .vbtn[data-v=vex].on   { border-color:var(--vex);   color:var(--vex);   background:rgba(78,216,168,.12); }
+    .vbtn[data-v=grant].on { border-color:var(--grant); color:var(--grant); background:rgba(240,192,80,.12); }
+
+    /* Session list */
+    .slist { display: flex; flex-direction: column; gap: 3px; flex: 1; margin-bottom: 8px; }
+    .sitem {
+      background: none; border: 1px solid transparent;
+      color: var(--muted); border-radius: 7px;
+      padding: 6px 8px; font-size: 11px;
+      font-family: 'Courier New', monospace;
+      text-align: left; cursor: pointer;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      transition: all .12s;
+    }
+    .sitem:hover { background: var(--surface); color: var(--subtle); }
+    .sitem.on    { background: var(--surface); border-color: var(--border); color: var(--text); }
+    .nbtn {
+      background: none; border: 1px dashed var(--border);
+      color: var(--muted); border-radius: 7px;
+      padding: 7px 8px; font-size: 12px; width: 100%;
+      text-align: left; cursor: pointer;
+      transition: all .12s; margin-bottom: 18px;
+    }
+    .nbtn:hover { border-color: var(--subtle); color: var(--text); }
+
+    /* Stats */
+    .stats {
+      border-top: 1px solid var(--border); padding-top: 12px;
+      font-size: 11px; font-family: 'Courier New', monospace;
+      color: var(--muted); display: flex; flex-direction: column; gap: 3px;
+    }
+    .stats b { color: var(--subtle); font-weight: normal; }
+
+    /* ── Main ─────────────────────────────────────────────────── */
+    main { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+
+    #msgs {
+      flex: 1; overflow-y: auto;
+      padding: 28px 32px 16px;
+      display: flex; flex-direction: column; gap: 4px;
+      scroll-behavior: smooth;
+    }
+
+    .ph {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      color: var(--muted); gap: 10px; text-align: center;
+      pointer-events: none;
+    }
+    .ph .glyph { font-size: 38px; opacity: .3; }
+    .ph p { font-size: 13px; }
+
+    /* Message rows */
+    .mrow { display: flex; flex-direction: column; max-width: 700px; }
+    .mrow.u { align-self: flex-end; align-items: flex-end; }
+    .mrow.a { align-self: flex-start; align-items: flex-start; }
+
+    .bubble {
+      padding: 11px 16px; border: 1px solid var(--border);
+      white-space: pre-wrap; word-break: break-word;
+      line-height: 1.65; font-size: 14px;
+    }
+    .mrow.u .bubble { background: var(--user-bg); border-radius: var(--r) var(--r) 4px var(--r); }
+    .mrow.a .bubble { background: var(--asst-bg); border-radius: var(--r) var(--r) var(--r) 4px; }
+
+    .vtag {
+      font-size: 9px; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; padding: 2px 7px; border-radius: 4px;
+      margin-bottom: 5px; display: inline-block;
+    }
+
+    /* Loading dots */
+    .ldrow { align-self: flex-start; }
+    .ldbubble {
+      padding: 13px 16px; background: var(--asst-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r) var(--r) var(--r) 4px;
+    }
+    .dots { display: flex; gap: 5px; }
+    .dots span {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--muted); animation: bop 1.1s infinite;
+    }
+    .dots span:nth-child(2) { animation-delay: .18s; }
+    .dots span:nth-child(3) { animation-delay: .36s; }
+    @keyframes bop {
+      0%,80%,100% { transform: translateY(0); opacity: .3; }
+      40%          { transform: translateY(-5px); opacity: 1; }
+    }
+
+    /* ── Input bar ────────────────────────────────────────────── */
+    #ibar {
+      padding: 12px 32px 22px;
+      border-top: 1px solid var(--border);
+      display: flex; gap: 8px; align-items: flex-end;
+    }
+    #inp {
+      flex: 1; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 10px;
+      color: var(--text); font-family: var(--font); font-size: 14px;
+      padding: 10px 14px; resize: none; outline: none;
+      min-height: 44px; max-height: 120px; line-height: 1.5;
+      transition: border-color .15s;
+    }
+    #inp:focus { border-color: #363648; }
+    #inp::placeholder { color: var(--muted); }
+    #sbtn {
+      height: 44px; padding: 0 20px; border: none;
+      border-radius: 10px; color: #fff;
+      font-family: var(--font); font-size: 13px; font-weight: 600;
+      cursor: pointer; flex-shrink: 0;
+      background: var(--aria); transition: opacity .15s, background .2s;
+    }
+    #sbtn:hover:not(:disabled) { opacity: .85; }
+    #sbtn:disabled { opacity: .35; cursor: not-allowed; }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  </style>
+</head>
+<body>
+
+<aside>
+  <div class="logo">✦ sena chat</div>
+
+  <div class="slabel">Voice</div>
+  <div class="vgrid">
+    <button class="vbtn on" data-v="aria">Aria</button>
+    <button class="vbtn"    data-v="nova">Nova</button>
+    <button class="vbtn"    data-v="vex">Vex</button>
+    <button class="vbtn"    data-v="grant">Grant</button>
+  </div>
+
+  <div class="slabel">Sessions</div>
+  <div class="slist" id="slist"></div>
+  <button class="nbtn" id="nbtn">＋ New session</button>
+
+  <div class="stats">
+    <div>nodes &nbsp;<b id="snodes">—</b></div>
+    <div>edges &nbsp;<b id="sedges">—</b></div>
+    <div>ver &nbsp;&nbsp;&nbsp;<b id="sver">—</b></div>
+  </div>
+</aside>
+
+<main>
+  <div id="msgs">
+    <div class="ph" id="ph">
+      <div class="glyph">✦</div>
+      <p>Select a session or create a new one</p>
+    </div>
+  </div>
+  <div id="ibar">
+    <textarea id="inp" placeholder="Type a message… (Enter to send · Shift+Enter for newline)" rows="1"></textarea>
+    <button id="sbtn">Send</button>
+  </div>
+</main>
+
+<script>
+'use strict';
+
+const ACCENT = { aria:'#8b7cf8', nova:'#f87878', vex:'#4ed8a8', grant:'#f0c050' };
+const VLABEL = { aria:'aria · teacher', nova:'nova · strategist', vex:'vex · researcher', grant:'grant · writer' };
+
+let sid = null, voice = 'aria';
+
+const $  = id => document.getElementById(id);
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+/* ── API ──────────────────────────────────────────────────────── */
+
+async function req(method, path, body) {
+  const init = { method };
+  if (body) { init.headers = {'Content-Type':'application/json'}; init.body = JSON.stringify(body); }
+  const r = await fetch(path, init);
+  if (!r.ok) { const e = await r.json().catch(()=>({})); throw new Error(e.error || r.statusText); }
+  return r.json();
+}
+
+/* ── Sidebar helpers ──────────────────────────────────────────── */
+
+function setVoice(v) {
+  voice = v;
+  document.querySelectorAll('.vbtn').forEach(b => {
+    b.className = 'vbtn' + (b.dataset.v === v ? ' on' : '');
+  });
+  $('sbtn').style.background = ACCENT[v] || ACCENT.aria;
+}
+
+function setStats(s) {
+  if (!s) return;
+  $('snodes').textContent = s.node_count ?? '—';
+  $('sedges').textContent = s.edge_count ?? '—';
+  $('sver').textContent   = s.version != null ? 'v' + s.version : '—';
+}
+
+async function refreshList() {
+  const data = await req('GET', '/api/sessions');
+  const list = $('slist');
+  list.innerHTML = '';
+  for (const id of (data.sessions || [])) {
+    const b = document.createElement('button');
+    b.className = 'sitem' + (id === sid ? ' on' : '');
+    b.textContent = id; b.dataset.sid = id;
+    b.onclick = () => openSess(id);
+    list.appendChild(b);
+  }
+}
+
+function markSess(id) {
+  document.querySelectorAll('.sitem').forEach(b => b.classList.toggle('on', b.dataset.sid === id));
+}
+
+/* ── Session open / create ────────────────────────────────────── */
+
+async function openSess(id) {
+  sid = id; markSess(id);
+  const data = await req('GET', `/api/sessions/${id}`);
+  const g = data.graph, m = data.meta;
+  setVoice(g['active-voice'] || 'aria');
+  renderAll(g.nodes || {});
+  setStats({ node_count: Object.keys(g.nodes||{}).length,
+             edge_count: (g.edges||[]).length, version: m.version });
+}
+
+async function newSess() {
+  const data = await req('POST', '/api/sessions');
+  sid = data.session_id;
+  setVoice(data.active_voice || 'aria');
+  setStats(data);
+  clearMsgs('Start the conversation');
+  await refreshList(); markSess(sid);
+  $('inp').focus();
+}
+
+/* ── Messages ─────────────────────────────────────────────────── */
+
+function clearMsgs(label) {
+  $('msgs').innerHTML =
+    `<div class="ph" id="ph"><div class="glyph">✦</div><p>${label||'Select a session'}</p></div>`;
+}
+
+function removePh() { const p = $('ph'); if (p) p.remove(); }
+
+function appendMsg(role, content, v, id) {
+  removePh();
+  const wrap = $('msgs');
+  const row  = document.createElement('div');
+  row.className = 'mrow ' + (role === 'user' ? 'u' : 'a');
+  if (id) row.dataset.mid = id;
+
+  let inner = '';
+  if (role !== 'user' && v) {
+    const c = ACCENT[v] || '#888';
+    inner += `<div class="vtag" style="color:${c};background:${c}1a">${esc(VLABEL[v]||v)}</div>`;
+  }
+  inner += `<div class="bubble">${esc(content)}</div>`;
+  row.innerHTML = inner;
+  wrap.appendChild(row);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+
+function renderAll(nodes) {
+  $('msgs').innerHTML = '';
+  const sorted = Object.values(nodes).sort((a,b) => a.id < b.id ? -1 : 1);
+  if (!sorted.length) { clearMsgs('Start the conversation'); return; }
+  for (const n of sorted) appendMsg(n.role, n.content, n.voice, n.id);
+}
+
+function showLoader() {
+  removePh();
+  const wrap = $('msgs');
+  const el = document.createElement('div');
+  el.className = 'mrow a ldrow'; el.id = 'ld';
+  el.innerHTML = '<div class="ldbubble"><div class="dots"><span></span><span></span><span></span></div></div>';
+  wrap.appendChild(el);
+  wrap.scrollTop = wrap.scrollHeight;
+}
+function hideLoader() { const e = $('ld'); if (e) e.remove(); }
+
+/* ── Send ─────────────────────────────────────────────────────── */
+
+async function send() {
+  const inp  = $('inp');
+  const text = inp.value.trim();
+  if (!text) return;
+  if (!sid) { alert('Create or select a session first.'); return; }
+
+  inp.value = ''; inp.style.height = 'auto';
+  $('sbtn').disabled = true;
+  appendMsg('user', text, voice);
+  showLoader();
+
+  try {
+    const d = await req('POST', `/api/sessions/${sid}/messages`, { content: text });
+    hideLoader();
+    appendMsg('assistant', d.assistant.content, d.assistant.voice, d.assistant.id);
+    setStats(d.summary);
+  } catch (e) {
+    hideLoader();
+    appendMsg('assistant', '⚠ ' + e.message, voice);
+  } finally {
+    $('sbtn').disabled = false;
+    inp.focus();
+  }
+}
+
+/* ── Voice switch ─────────────────────────────────────────────── */
+
+async function switchVoice(v) {
+  if (v === voice) return;
+  if (!sid) { setVoice(v); return; }
+  try {
+    const d = await req('PUT', `/api/sessions/${sid}/voice`, { voice: v });
+    setVoice(d.active_voice || v);
+    setStats(d.summary);
+  } catch(e) { console.error('voice switch failed', e); }
+}
+
+/* ── Init ─────────────────────────────────────────────────────── */
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.vbtn').forEach(b => { b.onclick = () => switchVoice(b.dataset.v); });
+  $('nbtn').onclick = newSess;
+  $('sbtn').onclick = send;
+
+  $('inp').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  });
+  $('inp').addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+  });
+
+  refreshList().catch(console.error);
+});
+</script>
+</body>
+</html>
