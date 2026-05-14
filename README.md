@@ -8,6 +8,12 @@
 * `Sena Colectivo` provides services, publication infrastructure, research workflows, and grants-as-a-service.
 * Service revenue supports site maintenance, publications, and seed funding for partner civic infrastructure.
 
+### Staging Note
+
+`staging/newmexicosocialists/nmnewsfeed.html` is a bridge/staging artifact.
+Primary `newmexicosocialists.org` production work should live in its dedicated repository.
+See `docs/NMS_REPO_EXTRACTION_PLAN.md` for migration/extraction details.
+
 ## Agent-friendly checks
 
 Agents should run the dependency-light verification harness before opening PRs:
