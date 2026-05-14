@@ -1,0 +1,15 @@
+{
+  "generated_at": "2026-05-14",
+  "lanes": {
+    "chuco": {
+      "canonical_repo": "chuco-site",
+      "canonical_branch": "main",
+      "allowed_in_collective": false
+    },
+    "newmexicosocialists": {
+      "canonical_repo": "newmexicosocialists",
+      "canonical_branch": "main",
+      "allowed_in_collective": false
+    }
+  }
+}
