@@ -23,3 +23,8 @@ make check
 ```
 
 This runs `python3 scripts/agent_check.py`, which checks Worker syntax, Biblioteca privacy/UI guardrails, Quetzal Core naming, JSON validity, and balanced Clojure delimiters without requiring Cloudflare auth, production secrets, Clojure CLI, or a browser. See `docs/WEB_DEV_BOT.md` for the web-dev bot workflow.
+
+
+## Lane convergence (2026-05-14)
+
+`collective` is no longer the canonical production repo for CHUCO or NewMexicoSocialists. See `docs/LANE_CONVERGENCE_STATUS.md`.
