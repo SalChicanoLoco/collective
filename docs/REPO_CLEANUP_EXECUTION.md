@@ -6,8 +6,7 @@ Date: 2026-05-14 (UTC)
 No production deployments until all cleanup gates are green.
 
 ## Phase 1 — Inventory (this repo)
-- Run `make cleanup-gate` (or scripts individually).
-- Canonical lane constraints are validated by `scripts/validate_canonical_lanes.sh`.
+- Run `bash scripts/repo_clean_audit.sh`.
 - Capture branch, dirty state, and deleted-file drift.
 - Confirm lane convergence docs are present.
 
@@ -17,9 +16,7 @@ No production deployments until all cleanup gates are green.
 - Ensure NMS canonical lane is only `newmexicosocialists`.
 
 ## Phase 3 — Branch hygiene
-- Run `bash scripts/branch_sprawl_audit.sh` to generate prune candidates.
-- Generate explicit delete commands with `bash scripts/branch_prune_plan.sh` (dry-run).
-- Prune obsolete branches in web UI or via reviewed commands.
+- Prune obsolete branches in web UI after merge checks.
 - Keep only active long-lived branches + in-flight work.
 
 ## Phase 4 — Alert hygiene
@@ -35,7 +32,5 @@ All must be true:
 - [ ] URL verification checklist ready.
 
 ## Deliverables for this phase
-- Generate and attach `docs/CLEANUP_SNAPSHOT.md` via `bash scripts/generate_cleanup_snapshot.sh`.
-- Audit output from both scripts attached to PR notes.
-- Branch prune command list reviewed before deletion (`MODE=dry-run` by default).
+- Audit output committed or attached to PR notes.
 - Explicit GO/NO-GO decision documented before any deploy action.
