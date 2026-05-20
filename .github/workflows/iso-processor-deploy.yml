@@ -1,0 +1,53 @@
+name: Deploy iso-processor
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'iso-processor/**'
+  workflow_dispatch:
+
+# Only one deploy at a time; queues any overlap so nothing is skipped.
+concurrency:
+  group: iso-processor-deploy
+  cancel-in-progress: false
+
+defaults:
+  run:
+    working-directory: iso-processor
+
+jobs:
+  deploy:
+    name: Test → Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: iso-processor/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run type-check
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Deploy Worker
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          workingDirectory: iso-processor
+
+      - name: Apply D1 migrations
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          workingDirectory: iso-processor
+          command: d1 execute iso-processor-db --remote --file=schema.sql

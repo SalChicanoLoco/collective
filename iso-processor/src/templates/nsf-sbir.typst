@@ -1,0 +1,125 @@
+// NSF SBIR Phase I — Bilingual Grant Application Template
+// Usage:
+//   Place document.json in the same directory, then:
+//   typst compile nsf-sbir.typst output.pdf
+
+#let config  = json("document.json")
+#let t       = config.template_config
+#let lang    = t.at("language_mode", default: "bilingual")
+#let fsize   = t.at("font_size",     default: 11)  * 1pt
+#let fname   = t.at("font",          default: "Linux Libertine")
+#let lsp     = t.at("line_spacing",  default: 1.15)
+#let mgn     = t.at("margin_mm",     default: 25.4) * 1mm
+
+// ─── Page layout ─────────────────────────────────────────────────────────────
+
+#set page(
+  paper:  "us-letter",
+  margin: (top: mgn, bottom: mgn + 12mm, left: mgn, right: mgn),
+  footer: context [
+    #line(length: 100%, stroke: 0.4pt + luma(180))
+    #v(0.15em)
+    #grid(
+      columns: (1fr, 1fr),
+      text(size: 8pt, fill: luma(120))[#config.metadata.organization],
+      align(right)[
+        #text(size: 8pt, fill: luma(120))[
+          Page #counter(page).display() of #counter(page).final().first()
+        ]
+      ]
+    )
+  ]
+)
+
+// ─── Typography ───────────────────────────────────────────────────────────────
+
+#set text(font: fname, size: fsize)
+#set par(leading: lsp * 0.6em, justify: true)
+
+#show heading.where(level: 1): it => {
+  v(1.3em)
+  text(size: fsize * 1.18, weight: "bold", tracking: 0.02em)[#upper(it.body)]
+  v(-0.15em)
+  line(length: 100%, stroke: 0.7pt)
+  v(0.4em)
+}
+
+#show heading.where(level: 2): it => {
+  v(0.7em)
+  text(size: fsize * 1.05, weight: "bold", style: "italic")[#it.body]
+  v(0.2em)
+}
+
+// ─── Cover block ─────────────────────────────────────────────────────────────
+
+#align(center)[
+  #v(0.4em)
+
+  #text(size: fsize * 1.55, weight: "bold")[#config.title_en]
+
+  #if lang in ("bilingual", "es") [
+    #v(0.35em)
+    #text(size: fsize * 1.1, style: "italic", fill: luma(80))[#config.title_es]
+  ]
+
+  #v(0.45em)
+  #text(size: fsize * 0.88, fill: luma(110))[
+    #config.metadata.organization
+    #sym.space.thin #sym.bullet #sym.space.thin
+    Version #config.metadata.version
+    #sym.space.thin #sym.bullet #sym.space.thin
+    #config.metadata.author
+  ]
+]
+
+#v(0.9em)
+#line(length: 100%, stroke: 1.2pt)
+#v(0.9em)
+
+// ─── Section loop ─────────────────────────────────────────────────────────────
+
+#for section in config.sections [
+
+  // English heading + body (shown in EN and bilingual modes)
+  #if lang in ("en", "bilingual") [
+    = #section.heading_en
+
+    #section.body_en
+  ]
+
+  // Spanish-only mode
+  #if lang == "es" [
+    = #section.heading_es
+
+    #section.body_es
+  ]
+
+  // Bilingual Spanish block — indented, italic, left-accented
+  #if lang == "bilingual" [
+    #v(0.5em)
+    #block(
+      fill:   luma(250),
+      stroke: (left: 3pt + blue.lighten(55%)),
+      inset:  (left: 10pt, top: 7pt, bottom: 7pt, right: 8pt),
+      width:  100%,
+      radius: (right: 2pt),
+    )[
+      #text(style: "italic", size: fsize * 0.95)[
+        == #section.heading_es
+
+        #section.body_es
+      ]
+    ]
+  ]
+
+  // Inline assets attached to this section
+  #for asset in section.assets.filter(a => a.position == "inline") [
+    #v(0.45em)
+    #align(center)[
+      #image(asset.url, width: asset.width_mm * 1mm)
+    ]
+    #v(0.2em)
+  ]
+
+  #v(1.3em)
+]
