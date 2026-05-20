@@ -1,0 +1,33 @@
+name                   = "iso-processor"
+main                   = "src/worker.ts"
+compatibility_date     = "2024-09-23"
+compatibility_flags    = ["nodejs_compat"]
+
+[[queues.producers]]
+binding = "DOC_QUEUE"
+queue   = "iso-processor-queue"
+
+[[queues.consumers]]
+queue             = "iso-processor-queue"
+max_batch_size    = 10
+max_batch_timeout = 30
+max_retries       = 3
+
+[[kv_namespaces]]
+binding = "PDF_STORAGE"
+id      = "PLACEHOLDER_KV_ID"
+
+[[d1_databases]]
+binding       = "DB"
+database_name = "iso-processor-db"
+database_id   = "PLACEHOLDER_D1_ID"
+
+[vars]
+TYPST_API_URL = "https://api.typst.app"
+
+# Runtime secrets — set via CLI before deploying:
+#   wrangler secret put GEMINI_API_KEY
+#   wrangler secret put JWT_SECRET
+
+[dev]
+port = 8787

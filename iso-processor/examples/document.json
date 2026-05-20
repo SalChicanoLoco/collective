@@ -1,0 +1,62 @@
+{
+  "doc_id": "nsf-sbir-2024-001",
+  "title_en": "Autonomous Pollination Drone Network for Precision Agriculture",
+  "title_es": "Red de Drones de Polinización Autónoma para Agricultura de Precisión",
+  "metadata": {
+    "author": "Dr. Maria Elena Vasquez",
+    "organization": "AgroTech Collective LLC",
+    "created_at": "2024-09-01T00:00:00Z",
+    "version": "1.0.0",
+    "tags": ["nsf-sbir", "agriculture", "robotics", "bilingual"]
+  },
+  "template_config": {
+    "font": "Linux Libertine",
+    "font_size": 11,
+    "line_spacing": 1.15,
+    "margin_mm": 25.4,
+    "language_mode": "bilingual",
+    "grant_type": "NSF_SBIR_PHASE1"
+  },
+  "sections": [
+    {
+      "id": "executive-summary",
+      "heading_en": "Executive Summary",
+      "heading_es": "Resumen Ejecutivo",
+      "body_en": "AgroTech Collective proposes a Phase I SBIR to develop an autonomous drone network capable of precision pollination in commercial greenhouse and open-field agricultural settings. Declining bee populations have created a $15B annual pollination gap in the U.S. market. Our AI-guided drones use computer vision and electrostatic pollen delivery to replicate natural pollination patterns at scale, targeting 30% yield improvement for strawberry and almond crops.",
+      "body_es": "AgroTech Collective propone un SBIR de Fase I para desarrollar una red de drones autónomos capaz de polinización de precisión en entornos agrícolas de invernadero y campo abierto. El declive en las poblaciones de abejas ha creado una brecha de polinización de $15B anuales en el mercado estadounidense. Nuestros drones guiados por IA usan visión computacional y entrega electrostática de polen para replicar patrones de polinización natural a escala.",
+      "char_count_parity": true,
+      "assets": [],
+      "order": 0
+    },
+    {
+      "id": "technical-innovation",
+      "heading_en": "Technical Innovation and Merit",
+      "heading_es": "Innovación Técnica y Mérito Científico",
+      "body_en": "The core innovation is a miniaturized electrostatic pollen applicator mounted on a sub-100g quadrotor platform, guided by a convolutional neural network trained on 2.3M annotated flower images. The system achieves sub-centimeter targeting accuracy and a 94% pollen viability rate under field conditions. Phase I will validate the CNNs cross-species generalization across five commercially critical crops.",
+      "body_es": "La innovación central es un aplicador de polen electrostático en miniatura montado en una plataforma cuadricóptero de menos de 100g, guiado por una red neuronal convolucional entrenada con 2.3M imágenes de flores anotadas. El sistema logra una precisión de apuntado de menos de un centímetro y una tasa de viabilidad del polen del 94% bajo condiciones de campo.",
+      "char_count_parity": true,
+      "assets": [],
+      "order": 1
+    },
+    {
+      "id": "commercialization",
+      "heading_en": "Commercialization Plan",
+      "heading_es": "Plan de Comercialización",
+      "body_en": "Target market: the $4.2B North American greenhouse vegetable segment. Go-to-market strategy relies on a SaaS subscription model (Pollination-as-a-Service) at $800/acre/season, undercutting manual pollination labor by 40%. Letters of intent have been received from three Salinas Valley strawberry cooperatives representing 8,400 acres under management. Phase II will scale hardware production and close a $3M Series A.",
+      "body_es": "Mercado objetivo: el segmento de vegetales en invernadero de $4.2B en Norteamérica. La estrategia de comercialización se basa en un modelo de suscripción SaaS (Polinización como Servicio) a $800/acre/temporada, reduciendo el costo de mano de obra de polinización manual en un 40%. Se han recibido cartas de intención de tres cooperativas de fresas del Valle de Salinas.",
+      "char_count_parity": true,
+      "assets": [],
+      "order": 2
+    },
+    {
+      "id": "team",
+      "heading_en": "Principal Investigator and Team",
+      "heading_es": "Investigador Principal y Equipo",
+      "body_en": "Dr. Maria Elena Vasquez (PI) holds a Ph.D. in Agricultural Robotics from UC Davis and has 12 years of experience in precision agriculture systems. Co-PI Dr. James Nakamura (MIT CSAIL) leads the computer vision subsystem. The team includes two senior robotics engineers and one full-time entomologist consultant. AgroTech Collective was founded in 2022 and is headquartered in Fresno, CA.",
+      "body_es": "La Dra. Maria Elena Vasquez (IP) tiene un doctorado en Robótica Agrícola de UC Davis y 12 años de experiencia en sistemas de agricultura de precisión. El Co-IP Dr. James Nakamura (MIT CSAIL) lidera el subsistema de visión computacional. El equipo incluye dos ingenieros de robótica senior y un consultor entomólogo a tiempo completo.",
+      "char_count_parity": true,
+      "assets": [],
+      "order": 3
+    }
+  ]
+}
