@@ -26,35 +26,39 @@ Cloudflare KV/D1    →  PDF storage + immutable audit log
 | LLM (brain) | Claude API |
 | LLM (eyes) | Gemini 2.0 Flash |
 
-## Quick start
+## Deploy (Cloudflare Git integration)
+
+Pushes to `main` that touch `iso-processor/**` trigger the GitHub Actions workflow
+(`.github/workflows/iso-processor-deploy.yml`) automatically — no manual `wrangler deploy` needed.
+
+### One-time bootstrap (run locally, once)
 
 ```bash
+cd iso-processor
+
+# 1. Install wrangler and log in
 npm install
-cp wrangler.toml wrangler.local.toml   # fill in real IDs
+wrangler login
 
-# Create resources
-wrangler kv:namespace create PDF_STORAGE
-wrangler d1 create iso-processor-db
-wrangler queues create iso-processor-queue
+# 2. Create cloud resources, patch wrangler.toml, set secrets
+bash setup-cloud.sh
 
-# Apply DB schema
-npm run db:init
+# 3. Commit the patched wrangler.toml (IDs are non-secret)
+git add wrangler.toml && git commit -m "chore: add real CF resource IDs"
 
-# Set secrets
-wrangler secret put GEMINI_API_KEY
-wrangler secret put JWT_SECRET
+# 4. Add CF_API_TOKEN to GitHub repo secrets
+#    GitHub → Settings → Secrets → Actions → New secret
+#    Name: CF_API_TOKEN   Value: (Cloudflare API token with Workers:Edit permission)
+```
 
-# Dev
-npm run dev
+After that, every `git push origin main` with a change under `iso-processor/` deploys automatically.
 
-# Test (unit)
-npm test
+### Local dev
 
-# E2E (requires running dev server)
-WORKER_URL=http://localhost:8787 npx vitest run tests/e2e.test.ts
-
-# Deploy
-npm run deploy
+```bash
+npm run dev              # wrangler dev on :8787
+npm test                 # unit tests
+WORKER_URL=http://localhost:8787 npx vitest run tests/e2e.test.ts  # e2e
 ```
 
 ## Test Typst template locally

@@ -1,8 +1,14 @@
-name                   = "iso-processor"
-main                   = "src/worker.ts"
-compatibility_date     = "2024-09-23"
-compatibility_flags    = ["nodejs_compat"]
+name               = "iso-processor"
+main               = "src/worker.ts"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
 
+# Same account as biblioteca-worker — fill once, commit once.
+# Find yours: wrangler whoami  OR  Cloudflare Dashboard → top-right account ID
+account_id = "8ebf20b18b7419bbfdb87e18038867b4"
+
+# ── Queues ──────────────────────────────────────────────────────────────────
+# Create once: wrangler queues create iso-processor-queue
 [[queues.producers]]
 binding = "DOC_QUEUE"
 queue   = "iso-processor-queue"
@@ -13,21 +19,28 @@ max_batch_size    = 10
 max_batch_timeout = 30
 max_retries       = 3
 
+# ── KV (PDF storage) ────────────────────────────────────────────────────────
+# Create once: wrangler kv namespace create PDF_STORAGE
+# Then paste the id from the output below.
 [[kv_namespaces]]
 binding = "PDF_STORAGE"
-id      = "PLACEHOLDER_KV_ID"
+id      = "REPLACE_WITH_KV_NAMESPACE_ID"
 
+# ── D1 (audit log) ──────────────────────────────────────────────────────────
+# Create once: wrangler d1 create iso-processor-db
+# Then paste the database_id from the output below.
 [[d1_databases]]
 binding       = "DB"
 database_name = "iso-processor-db"
-database_id   = "PLACEHOLDER_D1_ID"
+database_id   = "REPLACE_WITH_D1_DATABASE_ID"
 
+# ── Vars (non-secret) ───────────────────────────────────────────────────────
 [vars]
 TYPST_API_URL = "https://api.typst.app"
 
-# Runtime secrets — set via CLI before deploying:
-#   wrangler secret put GEMINI_API_KEY
-#   wrangler secret put JWT_SECRET
+# ── Secrets (set via CLI, never commit) ─────────────────────────────────────
+#   wrangler secret put GEMINI_API_KEY   ← Gemini 2.0 Flash free-tier key
+#   wrangler secret put JWT_SECRET       ← any strong random string
 
 [dev]
 port = 8787
