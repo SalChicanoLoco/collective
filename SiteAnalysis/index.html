@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Site Analysis · Sena's AI Collective</title>
+  <meta name="description" content="Run a quick security, architecture, and third-party dependency review for any website." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,900;1,9..144,300;1,9..144,600&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { --earth:#1a1209; --warm:#2a1f0e; --sand:#f5ead8; --terr:#c2603a; --gold:#e8a825; --cream:#fdf6ea; --border:rgba(194,96,58,.18); --serif:'Fraunces',serif; --sans:'DM Sans',sans-serif; --mono:'DM Mono',monospace; }
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{background:var(--earth);color:var(--sand);font-family:var(--sans);line-height:1.7}
+    .masthead{background:var(--earth);border-bottom:2px solid var(--terr);padding:16px 32px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+    .brand-name{font-family:var(--serif);font-size:22px;font-weight:900;color:var(--gold);text-decoration:none}
+    .brand-sub{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:rgba(245,234,216,.35)}
+    .hero{background:var(--warm);border-bottom:2px solid var(--border);padding:64px 32px}
+    .hero-inner,.section-inner,.footer-inner{max-width:940px;margin:0 auto}
+    .hero-eyebrow,.section-label,.tiny{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--terr)}
+    .hero-h1{font-family:var(--serif);font-size:clamp(34px,6vw,56px);line-height:1.08;margin:16px 0 12px}
+    .hero-sub{font-family:var(--serif);font-size:clamp(17px,2.4vw,22px);color:rgba(245,234,216,.6);max-width:740px}
+    .section{padding:56px 32px;border-bottom:1px solid var(--border)}
+    .panel{margin-top:24px;background:var(--warm);border:1px solid rgba(245,234,216,.08);border-top:2px solid var(--terr);padding:22px}
+    label{display:block;margin-bottom:8px;font-size:13px;color:rgba(245,234,216,.8)}
+    input{width:100%;padding:12px;background:#1f150a;border:1px solid rgba(245,234,216,.15);color:var(--sand);font-size:14px;border-radius:2px}
+    .actions{margin-top:14px;display:flex;gap:12px;flex-wrap:wrap}
+    .btn{display:inline-block;padding:11px 18px;background:var(--terr);border:none;color:var(--cream);font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+    .btn.alt{background:transparent;border:1px solid rgba(232,168,37,.4);color:var(--gold);text-decoration:none}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:20px}
+    .card{background:#21170c;border:1px solid rgba(245,234,216,.08);padding:16px;min-width:0}
+    .card h3{font-family:var(--serif);font-size:18px;margin-bottom:8px}
+    .mono{font-family:var(--mono);font-size:11px;letter-spacing:.08em}
+    ul{padding-left:18px;min-width:0}
+    li{margin-bottom:6px;color:rgba(245,234,216,.82);font-size:14px;overflow-wrap:anywhere;word-break:break-word;line-height:1.5}
+    pre{margin-top:16px;white-space:pre-wrap;background:#120c06;border:1px solid rgba(245,234,216,.1);padding:14px;color:rgba(245,234,216,.82);font-size:13px}
+    footer{padding:36px 32px}.footer-inner{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.footer-meta{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,234,216,.3)}
+    @media (max-width:640px){.masthead,.hero,.section,footer{padding-left:16px;padding-right:16px}}
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <div>
+      <a class="brand-name" href="/">Sena's AI Collective</a>
+      <div class="brand-sub">Santa Fe, NM</div>
+    </div>
+    <a class="btn alt" href="/">Back to Home</a>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Infrastructure Profiling Utility</div>
+      <h1 class="hero-h1">Site Analysis Checker</h1>
+      <p class="hero-sub">Quickly profile a website for baseline security headers, DOM bloat signals, and third-party dependency weight. This page mirrors your Playwright audit workflow and gives an action-ready summary.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-label">Run Check</div>
+      <div class="panel">
+        <label for="urlInput">Website URL to analyze</label>
+        <input id="urlInput" type="url" placeholder="https://example.com" value="https://example.com" />
+        <div class="actions">
+          <button id="analyzeBtn" class="btn">Analyze Site</button>
+        </div>
+        <div id="status" class="tiny" style="margin-top:10px;color:rgba(245,234,216,.65)">Ready.</div>
+      </div>
+
+      <div class="grid" id="results" style="display:none">
+        <div class="card">
+          <div class="mono">[1] SECURITY AUDIT</div>
+          <h3>Headers</h3>
+          <ul id="securityList"></ul>
+        </div>
+        <div class="card">
+          <div class="mono">[2] CODE & DOM</div>
+          <h3>Architecture</h3>
+          <ul id="domList"></ul>
+        </div>
+        <div class="card">
+          <div class="mono">[3] THIRD-PARTY SOUP</div>
+          <h3>External Dependencies</h3>
+          <ul id="thirdPartyList"></ul>
+        </div>
+      </div>
+
+      <pre id="notes">Tip: Browsers restrict direct cross-origin header/HTML inspection. For full accuracy in production, run your Playwright script server-side and return JSON to this page.</pre>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div>Sena's AI Collective</div>
+      <div class="footer-meta">SiteAnalysis · senacolectivo.com/SiteAnalysis</div>
+    </div>
+  </footer>
+
+  <script>
+    const securityHeaders = ['x-frame-options', 'strict-transport-security', 'content-security-policy', 'x-content-type-options'];
+
+    function addList(id, items) {
+      const node = document.getElementById(id);
+      node.innerHTML = '';
+      items.forEach((item) => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        node.appendChild(li);
+      });
+    }
+
+    async function analyzeSite() {
+      const url = document.getElementById('urlInput').value.trim();
+      const status = document.getElementById('status');
+      if (!url) return;
+      status.textContent = 'Running analysis…';
+
+      const proxyURL = `https://r.jina.ai/http://${url.replace(/^https?:\/\//, '')}`;
+      let text = '';
+      try {
+        const res = await fetch(proxyURL);
+        text = await res.text();
+      } catch (error) {
+        status.textContent = 'Could not fetch page content. Check URL or network restrictions.';
+        return;
+      }
+
+      const lower = text.toLowerCase();
+      const security = securityHeaders.map((h) => lower.includes(h) ? `${h}: ✓ Present in fetched response text` : `${h}: ✗ Missing or not visible`);
+
+      const domNodesEstimate = (text.match(/</g) || []).length;
+      const inlineScriptEstimate = (text.match(/<script(?![^>]*src=)/g) || []).length;
+      const wpPlugins = (text.match(/wp-content\/plugins\//g) || []).length;
+
+      const thirdPartyMatches = [...text.matchAll(/https?:\/\/[^\s"'<>]+/g)].map(m => m[0]);
+      const uniqueThirdParty = [...new Set(thirdPartyMatches.filter(link => !link.includes(new URL(url).hostname)))].slice(0, 5);
+
+      addList('securityList', security);
+      addList('domList', [
+        `Total DOM nodes (estimated): ${domNodesEstimate}`,
+        `Inline script blocks (estimated): ${inlineScriptEstimate}`,
+        `WordPress plugin footprints found: ${wpPlugins}`
+      ]);
+      addList('thirdPartyList', [
+        `Total detected external links/snippets: ${thirdPartyMatches.length}`,
+        ...uniqueThirdParty.map(item => `→ ${item.slice(0, 90)}`)
+      ]);
+
+      document.getElementById('results').style.display = 'grid';
+      status.textContent = `Analysis complete for ${url}`;
+    }
+
+    document.getElementById('analyzeBtn').addEventListener('click', analyzeSite);
+  </script>
+</body>
+</html>
