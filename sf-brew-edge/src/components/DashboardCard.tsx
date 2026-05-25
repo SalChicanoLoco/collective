@@ -1,0 +1,1 @@
+export default function DashboardCard({title,children}:{title:string;children?:React.ReactNode}){return <section className='bg-zinc-900 border border-zinc-800 rounded p-3'><h3 className='font-semibold mb-1'>{title}</h3>{children}</section>;}

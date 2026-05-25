@@ -1,0 +1,2 @@
+import { useCallback } from 'react';import { initialState } from '../domain/initialState';import { applyStaffAction } from '../domain/events';import { tickDemoState } from '../domain/rules';import { useLocalStorage } from './useLocalStorage';
+export function useDemoState(){const [state,setState]=useLocalStorage('sf-brew-edge',initialState);const doAction=useCallback((a:string)=>setState(s=>applyStaffAction(s,a)),[setState]);const tick=useCallback(()=>setState(s=>tickDemoState(s)),[setState]);return {state,setState,doAction,tick};}

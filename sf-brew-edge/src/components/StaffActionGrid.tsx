@@ -1,0 +1,2 @@
+export const actions=['New tab note','Flag keg low','86 item','Customer wait issue','Restock needed','Manager needed','Start rush mode','End rush mode'];
+export default function StaffActionGrid({onAction}:{onAction:(a:string)=>void}){return <div className='grid grid-cols-2 gap-2'>{actions.map(a=><button key={a} className='p-3 rounded bg-zinc-800 text-left text-sm' onClick={()=>onAction(a)}>{a}</button>)}</div>;}

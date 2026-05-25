@@ -1,0 +1,6 @@
+import { CompiledBreweryProfile, IntakeProfile } from './types';
+export function compileBreweryProfile(intake:IntakeProfile):CompiledBreweryProfile{
+  const p=intake.painPoints;
+  const rush=p.includes('Rush line friction'); const keg=p.includes('Keg/tap changes'); const pci=p.includes('PCI/payment risk');
+  return {recommendedView:rush?'Staff':keg?'TapBoard':'Dashboard',dashboardEmphasis:[rush&&'staff_flow',keg&&'keg_risk',pci&&'pci_boundary'].filter(Boolean) as string[],riskRules:[keg&&'keg_protection',rush&&'overload_suppression',pci&&'payment_boundary_lock'].filter(Boolean) as string[],staffPriorities:[rush&&'one_tap_signals',rush&&'fast_pour_mode',keg&&'low_keg_alerts'].filter(Boolean) as string[],promoSafety:[rush&&'suppress_complex_promos',keg&&'avoid_low_keg_promos',pci&&'disable_payment_claims'].filter(Boolean) as string[],nextSessions:['Shift flow mapping','Manager KPI alignment',pci?'POS/payment architecture map':'Promo playbook'].filter(Boolean) as string[],managerTalkingPoints:[keg?'Waste risk and over-promotion controls':'',rush?'Rush simplification improves speed':'',pci?'This app must remain outside card-data scope':'' ].filter(Boolean) as string[],pciBoundaryWarning:pci};
+}

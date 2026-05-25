@@ -1,0 +1,1 @@
+Concise notes: staff POS pain is speed/context switching; taprooms need quick keg-low signaling; promotions should be manager-approved to avoid service collapse; PCI-safe design requires strict boundary and processor references only.

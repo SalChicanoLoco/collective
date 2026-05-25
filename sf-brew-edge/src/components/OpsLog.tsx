@@ -1,0 +1,1 @@
+export default function OpsLog({items}:{items:{id:string;message:string;createdAt:string}[]}){return <div>{items.slice(0,6).map(i=><div key={i.id} className='text-xs border-b border-zinc-800 py-1'>{i.message}</div>)}</div>;}
