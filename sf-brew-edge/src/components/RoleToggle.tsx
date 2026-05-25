@@ -1,0 +1,1 @@
+import { Role } from '../domain/types'; export default function RoleToggle({role,setRole}:{role:Role;setRole:(r:Role)=>void}){return <div className='flex gap-2'>{(['Staff','Manager','Owner'] as Role[]).map(r=><button key={r} onClick={()=>setRole(r)} className={`px-2 py-1 rounded ${role===r?'bg-lime-400 text-black':'bg-zinc-700'}`}>{r}</button>)}</div>;}

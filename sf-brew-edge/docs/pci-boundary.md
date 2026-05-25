@@ -1,0 +1,1 @@
+This app must not become a card-data environment. Prohibited: PAN, CVV, track/magstripe, PIN, token secrets. Allowed: processor reference metadata only. Future approach: semi-integrated terminal with processor-hosted capture.

@@ -1,0 +1,1 @@
+export default function TapBoardView({taps}:{taps:any[]}){return <div className='space-y-2'>{taps.map(t=><div key={t.id} className='p-3 rounded bg-zinc-900'>{t.beer.name} — {t.fillPct}%</div>)}</div>;}

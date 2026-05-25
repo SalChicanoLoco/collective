@@ -1,0 +1,1 @@
+POS-adjacent edge architecture with local-only state, intake compiler, deterministic rules engine, and future adapters: POS read-only, payment reference, inventory/keg, marketing/event, dashboard/reporting.

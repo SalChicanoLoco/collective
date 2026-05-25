@@ -1,0 +1,1 @@
+import DashboardCard from '../../components/DashboardCard'; export default function DashboardView(){return <DashboardCard title='Cockpit'>Manager visibility, staff flow, and PCI-safe boundary.</DashboardCard>;}

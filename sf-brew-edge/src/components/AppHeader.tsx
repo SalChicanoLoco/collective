@@ -1,0 +1,1 @@
+export default function AppHeader(){return <header className='sticky top-0 p-3 bg-zinc-950 border-b border-zinc-800'><h1 className='text-lg font-bold text-lime-400'>Santa Fe Brew Edge — Brian Demo Mode</h1></header>;}
