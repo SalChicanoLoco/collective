@@ -9,3 +9,7 @@ sena-chat/sessions/
 !.dev.vars.example
 .env*
 !.env.example
+
+# local JS deps
+node_modules/
+*/node_modules/
