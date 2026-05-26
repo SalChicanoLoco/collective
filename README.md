@@ -28,3 +28,7 @@ This runs `python3 scripts/agent_check.py`, which checks Worker syntax, Bibliote
 ## Lane convergence (2026-05-14)
 
 `collective` is no longer the canonical production repo for CHUCO or NewMexicoSocialists. See `docs/LANE_CONVERGENCE_STATUS.md`.
+
+## Extracted app note (2026-05-26)
+
+`sf-brew-edge` has been extracted out of this repository into a dedicated standalone repository (`sf-brew-taproom-cockpit`) to reduce merge noise and keep demo app iteration isolated.
