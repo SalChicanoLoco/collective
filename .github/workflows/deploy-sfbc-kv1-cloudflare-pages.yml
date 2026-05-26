@@ -1,0 +1,56 @@
+name: Deploy SFBC KV1 to Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - sfbc-kv1-https-demo
+    paths:
+      - 'sfbrewdemo/site/**'
+      - '.github/workflows/deploy-sfbc-kv1-cloudflare-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  deployments: write
+
+concurrency:
+  group: sfbc-kv1-cloudflare-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy static site
+    runs-on: ubuntu-latest
+    environment: sfbc-kv1-demo
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_PAGES_PROJECT: ${{ vars.CLOUDFLARE_PAGES_PROJECT || 'sfbc-kv1-demo' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate deploy inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -d sfbrewdemo/site
+          test -f sfbrewdemo/site/index.html
+          test -f sfbrewdemo/site/_headers
+          test -f sfbrewdemo/site/_redirects
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "CLOUDFLARE_API_TOKEN secret is not set. Deployment intentionally blocked."
+            exit 1
+          fi
+          if [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ]; then
+            echo "CLOUDFLARE_ACCOUNT_ID secret is not set. Deployment intentionally blocked."
+            exit 1
+          fi
+          echo "Static source validated. Deploying project: ${CLOUDFLARE_PAGES_PROJECT}"
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy sfbrewdemo/site --project-name=${{ vars.CLOUDFLARE_PAGES_PROJECT || 'sfbc-kv1-demo' }} --branch=${{ github.ref_name }}
