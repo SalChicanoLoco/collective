@@ -1,0 +1,24 @@
+{
+  "title": "AI Data Centers in Arid Regions",
+  "author": "Salvador Sena",
+  "publisher": "Sena Colectivo",
+  "draft_date": "2026-05-25",
+  "metrics": {
+    "us_data_center_electricity_2023_twh": 176,
+    "us_data_center_electricity_2028_low_twh": 325,
+    "us_data_center_electricity_2028_high_twh": 580,
+    "global_data_center_electricity_2030_twh": 945
+  },
+  "formulas": {
+    "annual_it_energy_kwh": "MW * 1000 * 8760",
+    "annual_water_liters": "IT_energy_kWh * WUE_L_per_kWh",
+    "annual_water_gallons": "annual_water_liters / 3.78541",
+    "pue": "total_facility_energy / it_equipment_energy",
+    "wue": "water_use / it_equipment_energy"
+  },
+  "notes": [
+    "Planning-scale calculations only.",
+    "Use current official data before formal publication.",
+    "In arid basins, PUE should not be disclosed without WUE and water-source classification."
+  ]
+}
