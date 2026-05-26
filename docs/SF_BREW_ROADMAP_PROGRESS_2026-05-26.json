@@ -1,0 +1,11 @@
+{
+  "as_of": "2026-05-26",
+  "project": "sf-brew extraction and standalone activation",
+  "phases": [
+    {"name": "monorepo_extraction", "done": 3, "total": 3},
+    {"name": "integrity_ops_hygiene", "done": 3, "total": 3},
+    {"name": "standalone_activation", "done": 2.5, "total": 4},
+    {"name": "follow_through", "done": 0, "total": 3}
+  ],
+  "overall": {"done": 8.5, "total": 13, "percent": 65.4}
+}
