@@ -19,6 +19,21 @@ KISS plus Occam's Razor:
 - Avoid runtime dependencies unless they solve a real business problem.
 - Keep human approval in the loop before public publishing.
 
+## Hard lesson from SFBC demo
+
+> Use what we have. Why fake it when we have the Cloudflare API?
+
+If access control matters, do not build a fake frontend passcode gate. Use Cloudflare Access, Cloudflare Pages project settings, GitHub-triggered deployment, and the platform API. Frontend-only gates create friction without creating real security.
+
+## Access-control rule
+
+- Prototype with a private link if sensitivity is low.
+- Use Cloudflare Access when the audience is named people.
+- Use email allow-lists for Brian, Jenna, and Salvador.
+- Do not store passwords in JavaScript.
+- Do not hide real content with CSS/JS and call it secure.
+- Do not debug fake auth when the edge already provides real auth.
+
 ## When to use this skill
 
 Use this mode when a project needs:
@@ -42,6 +57,7 @@ Use this mode when a project needs:
 6. Optimize images before deployment.
 7. Use static `_headers` and `_redirects` on Cloudflare Pages or Netlify.
 8. Keep payment, authentication, and private data out of the first static demo.
+9. If access control is required, use Cloudflare Access instead of frontend gate code.
 
 ## Performance checklist
 
@@ -64,6 +80,8 @@ Use this mode when a project needs:
 - No `.env` in repo.
 - No cardholder data.
 - No customer tracking unless explicitly approved.
+- No fake frontend auth.
+- Cloudflare Access for real private previews.
 - No Cloudflare Worker unless there is a server-side reason.
 
 ## Community use
@@ -72,7 +90,7 @@ This skill is intended for low-budget, high-need community work where speed and 
 
 ## Example one-liner
 
-"We can build the first useful version fast because we keep the architecture honest: static first, HTTPS by default, no unnecessary backend, no overbuilt framework, and no hidden complexity."
+"We can build the first useful version fast because we keep the architecture honest: static first, HTTPS by default, no unnecessary backend, no overbuilt framework, no fake access control, and no hidden complexity."
 
 ## NUMARA KV1 note
 
@@ -80,5 +98,6 @@ Mode: KISS_OCCAM_FAST_RESPONSE
 State: STATIC_FIRST
 Risk posture: LOW_SURFACE_AREA
 Default deployment: Cloudflare Pages or Netlify
+Access posture: CLOUDFLARE_ACCESS_WHEN_PRIVATE
 Worker posture: HOLD unless server-side logic is required
 Human gate: REQUIRED
