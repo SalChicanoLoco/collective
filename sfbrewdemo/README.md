@@ -30,6 +30,10 @@ The full local packet includes WebP hero images, the deeper multi-page site, Lig
 
 Use Netlify or Cloudflare Pages first. GitHub Pages gives HTTPS, but Netlify/Cloudflare can apply the included security headers more directly.
 
+## Merge note
+
+This branch is safe to merge as a static demo package. It does not introduce Worker code, POS integration, payment handling, secrets, or customer tracking.
+
 ## Boundaries
 
 No payment handling. No cardholder data. No POS replacement. No surveillance. Human approval required before publishing.
