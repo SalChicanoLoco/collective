@@ -59,7 +59,18 @@ Use clear status language:
 - Final
 - Archived
 
-## Current active package
+## Current active packages
+
+- `Future Weather EPW Morphing for Building Simulation` (Green Tech & Building Energy Modeling)
+  - Hub: `/publications/future-weather-epw/`
+  - Public brief: `/publications/future-weather-epw/newspaper.html`
+  - Longform: `/publications/future-weather-epw/periodical.html`
+  - Political-economics brief: `/publications/future-weather-epw/political-economics.html`
+  - Calculation spine: `/publications/future-weather-epw/calculations.html`
+  - Source & BibTeX ledger: `/publications/future-weather-epw/sources.html`
+  - Master BibTeX Archive: `/archive/green_tech.bib`
+  - Compiled LaTeX PDF: `/publications/future-weather-epw/future_weather_epw_brief.pdf`
+  - Archival Engine: `/tools/archive_engine/archive_engine.py`
 
 - `AI Data Centers in Arid Regions`
   - Hub: `/publications/ai-data-centers/`

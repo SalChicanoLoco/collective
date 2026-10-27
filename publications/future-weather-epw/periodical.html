@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Future Weather EPW Morphing — Technical Periodical | Sena Colectivo</title>
+<style>
+:root{--earth:#171008;--warm:#261b0f;--panel:#312313;--sand:#f6ead7;--muted:rgba(246,234,215,.68);--faint:rgba(246,234,215,.38);--terr:#c2603a;--gold:#e8a825;--sage:#789b68;--border:rgba(194,96,58,.26);--serif:Georgia,'Times New Roman',serif;--sans:system-ui,-apple-system,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--earth);color:var(--sand);font-family:var(--sans);line-height:1.75}
+a{color:var(--gold)}.mast{border-bottom:2px solid var(--terr);padding:18px 26px;display:flex;justify-content:space-between;gap:16px}
+.brand{font-family:var(--serif);font-weight:900;color:var(--gold);font-size:22px;text-decoration:none}
+.wrap{max-width:960px;margin:auto;padding:40px 24px}
+.kicker{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+h1{font-family:var(--serif);font-size:clamp(32px,5vw,50px);line-height:1.1;margin:12px 0 16px}
+h2{font-family:var(--serif);color:var(--gold);font-size:26px;margin-top:36px;border-bottom:1px solid var(--border);padding-bottom:8px}
+h3{font-family:var(--serif);font-size:20px;color:var(--sand);margin-top:24px}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
+.btn{border:1px solid rgba(232,168,37,.44);padding:6px 10px;text-decoration:none;font-family:var(--mono);font-size:10px;text-transform:uppercase}
+.btn.sage{background:var(--sage);color:#fff;border-color:var(--sage)}
+.callout{background:var(--warm);border-left:4px solid var(--sage);padding:18px 22px;margin:24px 0}
+pre{background:#110a05;border:1px solid rgba(246,234,215,.15);padding:16px;color:#a8e6cf;font-family:var(--mono);font-size:13px;overflow-x:auto}
+</style>
+</head>
+<body>
+<header class="mast">
+  <a class="brand" href="/">Sena's AI Collective</a>
+  <div class="kicker">Technical Periodical / Building Energy Modeling & Green Tech</div>
+</header>
+<div class="wrap">
+  <div class="kicker">In-Depth Architecture · Climate Downscaling</div>
+  <h1>A Transparent Morphing Workflow for Future EnergyPlus Weather Files</h1>
+  <p class="meta">Review of Reolon, Marengo, and Picco (2026) · Ingested for the Sena Colectivo Engineering & Resilience Archive</p>
+
+  <div class="nav">
+    <a class="btn" href="index.html">Hub</a>
+    <a class="btn" href="newspaper.html">Public Brief</a>
+    <a class="btn" href="political-economics.html">Policy Brief</a>
+    <a class="btn" href="calculations.html">Calculations</a>
+    <a class="btn" href="sources.html">Sources</a>
+    <a class="btn sage" href="future_weather_epw_brief.pdf" target="_blank">📄 Download Compiled LaTeX PDF</a>
+  </div>
+
+  <h2>1. The Mechanical Limits of Static TMY Weather Files</h2>
+  <p>Typical Meteorological Year (TMY) datasets combine twelve typical calendar months selected from historical weather station observations (e.g., 1991–2020). While effective for sizing equipment under past weather regimes, TMY files fail to reflect two dominant climate signals: the secular shift in mean annual temperatures and the amplified volatility of extreme heat events.</p>
+  <p>In building performance simulation (BEM) using tools like EnergyPlus, heating and cooling demands depend non-linearly on ambient dry-bulb temperature, solar radiation, humidity, and atmospheric long-wave infrared radiation. Overheating risk assessment under standards such as CIBSE TM59 requires hourly resolution data that captures the peak thermal stresses of future decades.</p>
+
+  <h2>2. The Five-Step Morphing Procedure</h2>
+  <p>Originally formulated by Belcher et al. (2005), "morphing" modifies a baseline hourly weather file by applying additive (shift) and multiplicative (stretch) transformations derived from climate model projections. Reolon et al. (2026) systematize this into a five-step, fully auditable workflow:</p>
+
+  <div class="callout">
+    <strong>Step 1: Baseline EPW Selection.</strong> Obtain an authentic baseline EPW (TMY, IWEC, or calibrated station data) establishing diurnal patterns and site microclimate.<br><br>
+    <strong>Step 2: GCM Climate Anomaly Extraction.</strong> Extract monthly anomalies (deviations between future and historical periods) from a Global Climate Model (e.g., HadCM3, CMIP6 ensembles).<br><br>
+    <strong>Step 3: Spatial Interpolation.</strong> Map coarse global model outputs (~100–300 km) to the exact latitude and longitude of the weather station using inverse-distance squared weighting of the four nearest grid cells.<br><br>
+    <strong>Step 4: Variable-Specific Transformations.</strong> Apply shift transformations to temperature and atmospheric pressure; stretch transformations to solar radiation and wind speed; and combined shift-and-stretch to dry-bulb temperature.<br><br>
+    <strong>Step 5: Psychrometric Derivation of Secondary Data.</strong> Calculate dew-point temperature, vapor pressure, and atmospheric infrared radiation using standard ASHRAE thermodynamic equations rather than blindly morphing them.
+  </div>
+
+  <h2>3. Mathematical Consistency & Psychrometrics</h2>
+  <p>A crucial flaw in rudimentary future-weather generators is the independent scaling of coupled thermodynamic parameters. For example, stretching temperature while separately stretching relative humidity can generate impossible states where water vapor pressure exceeds saturation vapor pressure.</p>
+  <p>Reolon et al. enforce physical consistency by treating dry-bulb temperature and atmospheric pressure as primary variables, while re-deriving psychrometric properties using standard formulations (Perez et al. for radiation components, ASHRAE Handbook of Fundamentals for vapor pressure and dew point).</p>
+
+  <h2>4. Benchmarking Outcomes & Limitations</h2>
+  <p>The workflow was evaluated against PROMETHEUS (UKCP09 probabilistic data), Meteonorm (commercial multi-source), and the Future Weather Generator (FWG). Pearson correlation coefficients for hourly dry-bulb temperature across 2080 projections in Exeter ranged from <strong>0.748 to 0.799 (p &lt; 0.05)</strong>, confirming high statistical consistency with existing generators while exposing all mathematical transformations.</p>
+  <p>The authors note that because morphing preserves the baseline temporal sequence, extreme heat events absent from the historical record are not synthesized. Morphing is therefore ideal for early-stage design sensitivity and long-term energy modeling, but should be supplemented with synthetic extreme reference years (e.g., CIBSE DSYs) for catastrophic heat dome survival analysis.</p>
+</div>
+</body>
+</html>

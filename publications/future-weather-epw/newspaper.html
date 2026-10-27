@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Building Climate Gap | Sena Colectivo Broadsheet</title>
+<style>
+:root{--earth:#171008;--warm:#261b0f;--sand:#f6ead7;--faint:rgba(246,234,215,.38);--terr:#c2603a;--gold:#e8a825;--serif:Georgia,'Times New Roman',serif;--sans:system-ui,-apple-system,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--earth);color:var(--sand);font-family:var(--sans);line-height:1.7}
+a{color:var(--gold)}.mast{border-bottom:2px solid var(--terr);padding:18px 26px;display:flex;justify-content:space-between;gap:16px}
+.brand{font-family:var(--serif);font-weight:900;color:var(--gold);font-size:22px;text-decoration:none}
+.wrap{max-width:960px;margin:auto;padding:40px 24px}
+.kicker{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+h1{font-family:var(--serif);font-size:clamp(32px,5vw,52px);line-height:1.1;margin:12px 0 16px}
+.lead{font-family:var(--serif);font-size:20px;line-height:1.45;color:rgba(246,234,215,.88);border-bottom:1px solid rgba(194,96,58,.3);padding-bottom:20px}
+.columns{column-count:2;column-gap:36px;margin-top:28px;text-align:justify}
+@media(max-width:768px){.columns{column-count:1}}
+p{margin-top:0;margin-bottom:18px}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px}
+.btn{border:1px solid rgba(232,168,37,.44);padding:6px 10px;text-decoration:none;font-family:var(--mono);font-size:10px;text-transform:uppercase}
+</style>
+</head>
+<body>
+<header class="mast">
+  <a class="brand" href="/">Sena's AI Collective</a>
+  <div class="kicker">Civic Broadsheet / Green Tech & Built Environment</div>
+</header>
+<div class="wrap">
+  <div class="kicker">Public Edition · Climate Resilience</div>
+  <h1>Designing Tomorrow’s Homes with Yesterday’s Thermometer</h1>
+  <div class="lead">Why historical weather files leave our homes vulnerable to deadly heatwaves—and how a transparent mathematical tool bridges global climate models with neighborhood architecture.</div>
+  
+  <div class="nav">
+    <a class="btn" href="index.html">Hub</a>
+    <a class="btn" href="periodical.html">Longform Tech</a>
+    <a class="btn" href="political-economics.html">Policy Brief</a>
+    <a class="btn" href="calculations.html">Calculations</a>
+    <a class="btn" href="sources.html">Sources</a>
+    <a class="btn" href="future_weather_epw_brief.pdf" target="_blank">PDF Brief</a>
+  </div>
+
+  <div class="columns">
+    <p>When an architect designs a home, school, or clinic today, building regulations require computer simulations to estimate how much energy it will consume and whether it will overheat in the summer. Yet in nearly every city, those simulations run on "Typical Meteorological Year" (TMY) datasets constructed from historical weather records from the 1980s and 1990s.</p>
+
+    <p>Buildings erected today are expected to stand for fifty to eighty years. Relying on past climate data guarantees that cooling demands will be vastly underestimated, passive ventilation strategies will fail during unmodeled heat spikes, and vulnerable occupants—particularly low-income elders and working families—will face severe thermal stress.</p>
+
+    <p>A new open-access study published in <em>Academia Green Energy</em> by researchers Mattia Reolon, Marco Marengo, and Marco Picco presents a solution: a transparent, reproducible workflow to generate future EnergyPlus Weather (EPW) files by "morphing" baseline local weather with Global Climate Model (GCM) projections.</p>
+
+    <p>Unlike commercial tools that hide their calculations behind proprietary walls, this workflow explicitly documents every step: mapping global climate grids to local coordinates via inverse distance weighting, scaling temperature swings, and rebalancing humidity and radiation equations so the simulated air doesn't violate the laws of physics.</p>
+
+    <p>In testing across Exeter, UK and Bahía Blanca, Argentina, the methodology captured the steep upward shift in summer maximum temperatures—rising over 4.5°C in Exeter by the 2080s—while closely matching established benchmarks.</p>
+
+    <p>For high-altitude and arid communities like Northern New Mexico, where passive solar adobe design and community greenhouses (MILPA/CGS-C1) must withstand both freezing winter nights and blazing summer droughts, open future weather files are not an academic luxury. They are essential public infrastructure for climate survival.</p>
+  </div>
+</div>
+</body>
+</html>

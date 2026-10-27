@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Future Weather EPW Morphing for Building Simulation | Sena Colectivo</title>
+<meta name="description" content="A transparent, location-agnostic workflow to generate future EnergyPlus Weather (EPW) files using Global Climate Model anomalies.">
+<style>
+:root{--earth:#171008;--warm:#261b0f;--panel:#312313;--sand:#f6ead7;--muted:rgba(246,234,215,.68);--faint:rgba(246,234,215,.38);--terr:#c2603a;--gold:#e8a825;--sage:#789b68;--sky:#5c8db4;--border:rgba(194,96,58,.26);--serif:Georgia,'Times New Roman',serif;--sans:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--earth);color:var(--sand);font-family:var(--sans);line-height:1.65}
+a{color:var(--gold)}.mast{border-bottom:2px solid var(--terr);padding:18px 26px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{font-family:var(--serif);font-weight:900;color:var(--gold);font-size:22px;text-decoration:none}
+.kicker{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+.hero{padding:70px 26px 52px;background:linear-gradient(135deg,var(--warm),#120b06)}
+.wrap{max-width:1120px;margin:auto}
+.hero h1{font-family:var(--serif);font-size:clamp(36px,6vw,72px);line-height:1.05;margin:10px 0 20px}
+.dek{font-family:var(--serif);font-size:clamp(18px,2.5vw,26px);line-height:1.3;max-width:920px;color:rgba(246,234,215,.85)}
+.meta{font-family:var(--mono);font-size:11px;color:var(--faint);text-transform:uppercase;letter-spacing:.08em;margin-top:24px}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+.btn{border:1px solid rgba(232,168,37,.44);padding:10px 14px;text-decoration:none;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;display:inline-block}
+.btn.primary{background:var(--terr);border-color:var(--terr);color:#fff}
+.btn.sage{background:var(--sage);border-color:var(--sage);color:#fff}
+.section{padding:46px 26px;border-top:1px solid var(--border)}
+h2{font-family:var(--serif);font-size:clamp(28px,4vw,44px);line-height:1.05;margin:0 0 18px}
+h3{font-family:var(--serif);font-size:22px;margin:24px 0 10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+.card,.note{background:var(--warm);border:1px solid rgba(246,234,215,.08);border-top:3px solid var(--terr);padding:22px}
+.card.green{border-top-color:var(--sage)}
+.card h3{margin-top:0}
+.big{font-family:var(--serif);font-size:40px;font-weight:900;color:var(--gold);line-height:1}
+.small{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--faint)}
+table{width:100%;border-collapse:collapse;margin:18px 0;background:var(--warm)}
+th,td{padding:12px;border:1px solid rgba(246,234,215,.12);vertical-align:top}
+th{text-align:left;color:var(--gold);font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+footer{padding:34px 26px;color:var(--faint);font-family:var(--mono);font-size:11px}
+</style>
+</head>
+<body>
+<header class="mast">
+  <div><a class="brand" href="/">Sena's AI Collective</a><div class="kicker">Publications / Green Tech & Climate Adaptation</div></div>
+  <a class="btn" href="/publications/">← All Publications</a>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="kicker">Peer-Reviewed Paper Ingest · Academia Green Energy (2026)</div>
+    <h1>Future Weather EPW Morphing for Building Energy Simulation</h1>
+    <div class="dek">A transparent, location-agnostic workflow to generate future EnergyPlus Weather files by morphing baseline TMY datasets with Global Climate Model anomalies.</div>
+    <div class="meta">Authors: Mattia Reolon, Marco Marengo, Marco Picco · DOI: 10.20935/AcadEnergy8325 · Archived by Salvador Sena</div>
+    <nav class="nav">
+      <a class="btn primary" href="/publications/future-weather-epw/">Hub</a>
+      <a class="btn" href="newspaper.html">Public Brief</a>
+      <a class="btn" href="periodical.html">Longform Tech</a>
+      <a class="btn" href="political-economics.html">Policy Brief</a>
+      <a class="btn" href="calculations.html">Calculations & Equations</a>
+      <a class="btn" href="sources.html">Sources & BibTeX</a>
+      <a class="btn sage" href="future_weather_epw_brief.pdf" target="_blank">📄 Download LaTeX PDF</a>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <h2>Why static weather files compromise building design</h2>
+    <div class="grid">
+      <a class="card green" href="newspaper.html">
+        <div class="small">Audience: Public & Architects</div>
+        <h3>The Newspaper Edition</h3>
+        <p>Short, accessible overview: why designing buildings with 1990s weather data creates dangerous overheating risks, and how morphing brings climate reality to architecture.</p>
+      </a>
+      <a class="card green" href="periodical.html">
+        <div class="small">Audience: Engineers & Modelers</div>
+        <h3>The Periodical Edition</h3>
+        <p>Complete technical breakdown of the 5-step workflow: GCM anomalies, inverse-distance spatial weighting, shift and stretch transformations, and psychrometric derivation.</p>
+      </a>
+      <a class="card green" href="political-economics.html">
+        <div class="small">Audience: Civic Leaders & Planners</div>
+        <h3>Public Leverage & Policy Brief</h3>
+        <p>Building codes, heatwave vulnerability in social housing, UN Sustainable Development Goals (SDG 7 & 13), and the civic mandate for open-source climate files.</p>
+      </a>
+      <a class="card green" href="calculations.html">
+        <div class="small">Audience: Analysts & Researchers</div>
+        <h3>Calculations & Equations</h3>
+        <p>Mathematical spine: shift, stretch, and variability scaling formulations, psychrometric conversions, and statistical validation against Meteonorm, FWG, and PROMETHEUS.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <h2>Core Validation Highlights (2080 Horizon)</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="big">+4.6°C</div>
+        <p>Annual peak dry-bulb temperature increase projected for Exeter, UK (from 27.0°C to 31.6°C).</p>
+      </div>
+      <div class="card">
+        <div class="big">r = 0.799</div>
+        <p>Strong Pearson correlation between the morphed series and PROMETHEUS high-emissions baseline (p &lt; 0.05).</p>
+      </div>
+      <div class="card">
+        <div class="big">Dual-Hemisphere</div>
+        <p>Tested and benchmarked across data-rich Exeter (UK) and data-sparse Bahía Blanca (Argentina).</p>
+      </div>
+      <div class="card">
+        <div class="big">Psychrometric</div>
+        <p>Preserves internal thermodynamic consistency across relative humidity, dew point, and sky infrared radiation.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">Sena Colectivo Green Tech & Climate Adaptation Research Archive · Archived for local community resilience & green architecture.</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculations & Morphing Equations | Sena Colectivo</title>
+<style>
+:root{--earth:#171008;--warm:#261b0f;--panel:#312313;--sand:#f6ead7;--muted:rgba(246,234,215,.68);--faint:rgba(246,234,215,.38);--terr:#c2603a;--gold:#e8a825;--sage:#789b68;--border:rgba(194,96,58,.26);--serif:Georgia,'Times New Roman',serif;--sans:system-ui,-apple-system,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--earth);color:var(--sand);font-family:var(--sans);line-height:1.65}
+a{color:var(--gold)}.mast{border-bottom:2px solid var(--terr);padding:18px 26px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{font-family:var(--serif);font-weight:900;color:var(--gold);font-size:22px;text-decoration:none}
+.wrap{max-width:1120px;margin:auto}.hero{padding:54px 26px 40px;background:var(--warm)}
+.kicker{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--faint)}
+h1{font-family:var(--serif);font-size:clamp(30px,5vw,56px);margin:10px 0}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.btn{border:1px solid rgba(232,168,37,.44);padding:8px 12px;text-decoration:none;font-family:var(--mono);font-size:11px;text-transform:uppercase}
+.section{padding:40px 26px;border-top:1px solid var(--border)}
+.eq-box{background:#1a120a;border:1px solid rgba(194,96,58,.4);border-left:4px solid var(--gold);padding:18px;margin:20px 0;font-family:var(--mono);font-size:14px;color:#fff}
+table{width:100%;border-collapse:collapse;margin:20px 0;background:var(--warm)}
+th,td{padding:12px;border:1px solid rgba(246,234,215,.12);text-align:left}
+th{color:var(--gold);font-family:var(--mono);font-size:11px;text-transform:uppercase}
+</style>
+</head>
+<body>
+<header class="mast">
+  <a class="brand" href="/">Sena's AI Collective</a>
+  <div class="kicker">Future Weather EPW / Calculations Spine</div>
+</header>
+<section class="hero">
+  <div class="wrap">
+    <div class="kicker">Calculation & Psychrometric Spine</div>
+    <h1>Morphing Equations & Benchmarks</h1>
+    <nav class="nav">
+      <a class="btn" href="index.html">Hub</a>
+      <a class="btn" href="newspaper.html">Newspaper</a>
+      <a class="btn" href="periodical.html">Periodical</a>
+      <a class="btn" href="political-economics.html">Policy Brief</a>
+      <a class="btn" href="sources.html">Sources</a>
+      <a class="btn" href="future_weather_epw_brief.pdf" target="_blank">Download PDF</a>
+    </nav>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <h2>1. The Core Dry-Bulb Temperature Morphing Formulation</h2>
+    <p>To preserve diurnal and seasonal weather patterns while injecting long-term Global Climate Model (GCM) warming trends, a <em>combined shift and stretch</em> operation is applied:</p>
+
+    <div class="eq-box">
+      <strong>Monthly Anomaly:</strong><br>
+      ΔT_m = T_m(GCM, future) - T_m(GCM, baseline)<br><br>
+      <strong>Variability Scaling Factor:</strong><br>
+      α_m = (ΔT_MAX,m - ΔT_MIN,m) / (&lang;T_max&rang;_m,a - &lang;T_min&rang;_m,a)<br><br>
+      <strong>Future Hourly Dry-Bulb Temperature:</strong><br>
+      T_f = T_a + ΔT_m + α_m · (T_a - &lang;T_m,a&rang;)
+    </div>
+
+    <h2>2. Spatial Interpolation (Inverse Distance Weighting)</h2>
+    <p>Because GCM grids are coarse (~300 km for HadCM3, ~100 km for CMIP6), anomalies at site location <em>(x, y)</em> are weighted inversely by distance squared from the 4 surrounding nodes:</p>
+    <div class="eq-box">
+      w_i = 1 / (d_i)^2<br>
+      Anomaly(site) = Σ (w_i · Anomaly_i) / Σ w_i
+    </div>
+
+    <h2>3. Statistical Benchmarking Results (Centred on 2080s)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Metric / Parameter</th>
+          <th>Exeter (Baseline)</th>
+          <th>Exeter (2080 Morphed)</th>
+          <th>Bahía Blanca (Baseline)</th>
+          <th>Bahía Blanca (2080 Morphed)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Annual Mean Temperature</td>
+          <td>10.1 °C</td>
+          <td>12.8 °C</td>
+          <td>15.7 °C</td>
+          <td>18.3 °C</td>
+        </tr>
+        <tr>
+          <td>Annual Maximum Temperature</td>
+          <td>27.0 °C</td>
+          <td>31.6 °C</td>
+          <td>38.0 °C</td>
+          <td>39.6 °C</td>
+        </tr>
+        <tr>
+          <td>Annual Minimum Temperature</td>
+          <td>-4.4 °C</td>
+          <td>-2.5 °C</td>
+          <td>-6.0 °C</td>
+          <td>-3.0 °C</td>
+        </tr>
+        <tr>
+          <td>Pearson Correlation (r) vs Reference</td>
+          <td colspan="2">0.748 to 0.799 (p &lt; 0.05)</td>
+          <td colspan="2">0.744 to 0.767 (p &lt; 0.05)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+</body>
+</html>

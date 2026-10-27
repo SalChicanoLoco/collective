@@ -1,0 +1,43 @@
+{
+  "title": "A Transparent Workflow for Future EnergyPlus Weather (EPW) Files",
+  "short_title": "Future Weather EPW Morphing",
+  "category": "Green Tech & Building Simulation",
+  "status": "Archived Review",
+  "authors": [
+    "Mattia Reolon",
+    "Marco Marengo",
+    "Marco Picco"
+  ],
+  "corresponding_author": "mpicco@lancashire.ac.uk",
+  "journal": "Academia Green Energy",
+  "publication_date": "2026-05-29",
+  "doi": "10.20935/AcadEnergy8325",
+  "issn": "2998-3665",
+  "archived_by": "Salvador Sena (xavaanes@gmail.com)",
+  "archived_date": "2026-10-27",
+  "equations": {
+    "monthly_temp_anomaly": "Delta_Tm = T_GCM_f_m - T_GCM_a_m",
+    "variability_scaling_factor": "alpha_m = (Delta_TMAX_m - Delta_TMIN_m) / (<Tmax>_m,a - <Tmin>_m,a)",
+    "morphed_hourly_drybulb": "Tf = Ta + Delta_Tm + alpha_m * (Ta - <Tm,a>)"
+  },
+  "benchmarks": {
+    "exeter_uk": {
+      "baseline_avg_c": 10.1,
+      "morphed_avg_2080_c": 12.8,
+      "baseline_max_c": 27.0,
+      "morphed_max_2080_c": 31.6,
+      "pearson_r_range": [0.748, 0.799]
+    },
+    "bahia_blanca_argentina": {
+      "baseline_avg_c": 15.7,
+      "morphed_avg_2080_c": 18.3,
+      "baseline_max_c": 38.0,
+      "morphed_max_2080_c": 39.6,
+      "pearson_r_range": [0.744, 0.767]
+    }
+  },
+  "downloads": {
+    "latex_pdf": "/publications/future-weather-epw/future_weather_epw_brief.pdf",
+    "bibtex": "/archive/green_tech.bib"
+  }
+}

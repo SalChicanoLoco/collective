@@ -1,0 +1,150 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=0.85in]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{microtype}
+\usepackage[most]{tcolorbox}
+\usepackage{cite}
+
+% Colectivo Color Palette
+\definecolor{primary}{HTML}{1A5235}     % Forest Green
+\definecolor{secondary}{HTML}{2D7A50}   % Muted Emerald
+\definecolor{accent}{HTML}{C2603A}      % Terracotta
+\definecolor{darkslate}{HTML}{1E293B}   % Deep Slate
+\definecolor{boxbg}{HTML}{F4F9F5}       % Soft Mint Grey
+\definecolor{amberbg}{HTML}{FFFBEB}     % Warm Amber
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=primary,
+    citecolor=secondary,
+    urlcolor=accent,
+    pdftitle={Future EnergyPlus Weather (EPW) Morphing Workflow for Building Simulation},
+    pdfauthor={Sena Colectivo Academic Archive}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small \textcolor{darkslate}{\textsf{Sena Colectivo $\cdot$ Green Tech \& Climate Adaptation Archive}}}
+\fancyhead[R]{\small \textcolor{darkslate}{\textsf{\thepage}}}
+\fancyfoot[C]{\footnotesize \textcolor{gray}{\textit{Academia Green Energy} (2026) $\cdot$ DOI: 10.20935/AcadEnergy8325}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.2pt}
+
+\newtcolorbox{infobox}[1][]{
+    colback=boxbg,
+    colframe=primary,
+    fonttitle=\bfseries\sffamily,
+    title=#1,
+    boxrule=1pt,
+    arc=3pt
+}
+
+\newtcolorbox{alertbox}[1][]{
+    colback=amberbg,
+    colframe=accent,
+    fonttitle=\bfseries\sffamily,
+    title=#1,
+    boxrule=1pt,
+    arc=3pt
+}
+
+\title{\LARGE\textbf{\textcolor{primary}{A Transparent Workflow for Future EnergyPlus Weather (EPW) Files in Building Energy Simulation}}\\[0.4em]
+\large\textsf{Research Brief, Canonical Equations \& Ingest Audit}}
+\author{\textbf{Mattia Reolon}$^1$, \textbf{Marco Marengo}$^1$, and \textbf{Marco Picco}$^{2,*}$\\[0.3em]
+\small $^1$Department of Civil Engineering and Architecture, University of Pavia, Italy\\
+\small $^2$School of Engineering and Computing, University of Lancashire, Preston, UK\\
+\small $^*$Corresponding Author: \texttt{mpicco@lancashire.ac.uk}\\[0.5em]
+\small \textbf{Archived by Salvador Sena} $\cdot$ \textit{Sena Colectivo Green Tech Lane} $\cdot$ \texttt{xavaanes@gmail.com}}
+\date{Published: 29 May 2026 $\cdot$ Ingested: October 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Traditional building performance assessments rely heavily on historical Typical Meteorological Year (TMY) datasets, creating significant blind spots for long-lived architecture facing mid-to-late 21st-century thermal stress. This archival brief documents the open, reproducible 5-step morphing methodology developed by Reolon, Marengo, and Picco \cite{Reolon2026_EnergyPlusWeather}. By extracting monthly Global Climate Model (GCM) anomalies via inverse-distance spatial weighting, applying variable-specific shift and stretch transformations, and rigorously computing psychrometric secondary variables, the authors deliver location-agnostic future EnergyPlus Weather (EPW) files benchmarked against PROMETHEUS \cite{Eames2011_Prometheus}, Meteonorm, and the Future Weather Generator (FWG) \cite{Rodrigues2023_FWG}.
+\end{abstract}
+
+\section{Problem Context \& Significance}
+Global mean surface temperatures will continue rising throughout the 21st century across all IPCC emissions pathways \cite{IPCC2021_AR6_WGI}. In building energy modeling (BEM), relying on static historical baselines (e.g., TMY3 \cite{Belcher2005_Morphing}) systematically underestimates cooling loads, peak grid draws, and severe domestic overheating risks formalised in codes like CIBSE TM59 \cite{CIBSE_TM59}.
+While stochastic tools exist, many operate as proprietary black boxes (Meteonorm) or are tied to localized regional models (PROMETHEUS for the UK). The proposed workflow provides an open-source, global, reproducible pipeline.
+
+\section{The 5-Step Canonical Morphing Architecture}
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabularx}{\textwidth}{llX}
+\toprule
+\textbf{Step} & \textbf{Operation} & \textbf{Physical Mechanism \& Rationale} \\
+\midrule
+\textbf{1} & Baseline EPW Selection & Establish local diurnal/seasonal baseline (TMY, IWEC, or station observations). \\
+\textbf{2} & GCM Anomaly Extraction & Extract monthly absolute ($\Delta$) or relative (\%) anomalies for the target horizon (e.g., 2080s SRES A2 / CMIP6 SSPs). \\
+\textbf{3} & Inverse-Distance Weighting & Bilinear spatial interpolation across the four nearest grid cells: $w_i \propto 1 / d_i^2$. \\
+\textbf{4} & Shift \& Stretch Transformations & Modify primary variables: Shift (temp, pressure), Stretch (radiation, wind), Combined (dry-bulb temp). \\
+\textbf{5} & Psychrometric Rebalancing & Re-derive dew-point, vapor pressure, and atmospheric long-wave radiation to prevent thermodynamic contradiction. \\
+\bottomrule
+\end{tabularx}
+\caption{The 5-step transparent morphing workflow from Reolon et al.\ \cite{Reolon2026_EnergyPlusWeather}.}
+\end{table}
+
+\section{Core Mathematical Formulations}
+
+Dry-bulb temperature requires a \textbf{combined shift and stretch} transformation to adjust both the monthly mean shift and the daily temperature swing:
+
+\begin{infobox}[Dry-Bulb Temperature Morphing Formulation]
+\begin{align}
+\Delta T_m &= T_m^{\text{GCM},f} - T_m^{\text{GCM},a} \label{eq:delta_t} \\
+\alpha_m &= \frac{\Delta T_{\text{MAX},m} - \Delta T_{\text{MIN},m}}{\langle T_{\text{max}} \rangle_{m,a} - \langle T_{\text{min}} \rangle_{m,a}} \label{eq:alpha} \\
+T_f &= T_a + \Delta T_m + \alpha_m \cdot (T_a - \langle T_{m,a} \rangle) \label{eq:tf}
+\end{align}
+\end{infobox}
+
+where:
+\begin{itemize}
+    \item $T_a$ is the current baseline hourly dry-bulb temperature;
+    \item $\langle T_{m,a} \rangle$ is the baseline monthly average dry-bulb temperature;
+    \item $\Delta T_m$ is the monthly mean temperature anomaly from the climate model;
+    \item $\alpha_m$ is the diurnal variability scaling factor representing changes in daily thermal range.
+\end{itemize}
+
+\section{Empirical Validation \& Benchmarking}
+The authors validated the workflow across two contrasting climatic regimes for the 2080s time horizon:
+
+\begin{table}[h!]
+\centering
+\small
+\begin{tabularx}{\textwidth}{lccccr}
+\toprule
+\textbf{Case Study Location} & \textbf{Baseline Avg / Max} & \textbf{2080 Morphed Avg / Max} & \textbf{Pearson $r$} & \textbf{Benchmarked Tools} \\
+\midrule
+\textbf{Exeter (UK)} (Marine West Coast) & $10.1^\circ\text{C}$ / $27.0^\circ\text{C}$ & $12.8^\circ\text{C}$ / $31.6^\circ\text{C}$ & $0.748 - 0.799$ & PROMETHEUS, Meteonorm, FWG \\
+\textbf{Bah\'ia Blanca (Argentina)} (Southern Semi-Arid) & $15.7^\circ\text{C}$ / $38.0^\circ\text{C}$ & $18.3^\circ\text{C}$ / $39.6^\circ\text{C}$ & $0.744 - 0.767$ & Meteonorm (RCP 4.5 / 8.5) \\
+\bottomrule
+\end{tabularx}
+\caption{Validation summary from Reolon et al.\ (all $p$-values $< 0.05$).}
+\end{table}
+
+\begin{alertbox}[Critical Finding: Radiation \& Sky-Cover Sensitivity]
+While temperature anomalies ($\Delta T_m$) are mathematically robust across models, horizontal infrared radiation (HIR) exhibits high sensitivity to cloud-cover assumptions:
+\begin{itemize}
+    \item Baseline cloud-cover retention yields a mean annual HIR of \textbf{$359.73\text{ Wh/m}^2$};
+    \item Projected cloud-cover (FWG) yields a mean annual HIR of \textbf{$347.66\text{ Wh/m}^2$}.
+\end{itemize}
+The authors emphasize that derived psychrometric variables must be explicitly checked rather than black-box interpolated.
+\end{alertbox}
+
+\section{Civic Relevance for Sena Colectivo \& Green Tech}
+In Northern New Mexico and arid high-altitude basins (e.g., Santa Fe and Taos), reliance on historic TMY3 weather files conceals critical summer overheating thresholds and winter heat retention requirements for passive solar adobe architecture, community greenhouses (MILPA / CGS-C1), and low-carbon residential retrofits. Adopting this transparent morphing workflow enables the Colectivo's civic technology suite to model resilient thermal envelopes under 2050s and 2080s climate regimes with full mathematical transparency.
+
+\bibliographystyle{IEEEtran}
+\bibliography{../../archive/green_tech}
+
+\end{document}
