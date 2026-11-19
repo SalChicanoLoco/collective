@@ -1,0 +1,96 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const volumes = [
+  { num: 'Vol. 1', href: '/biblioteca/vol1/index.html', titleEn: 'Volume 1 — Foundations & Land', titleEs: 'Volumen 1 — Fundamentos y Tierra' },
+  { num: 'Vol. 2', href: '/biblioteca/vol2/index.html', titleEn: 'Volume 2 — Water & Acequias', titleEs: 'Volumen 2 — Agua y Acequias' },
+  { num: 'Vol. 3', href: '/biblioteca/vol3/index.html', titleEn: 'Volume 3 — Labor & Economy', titleEs: 'Volumen 3 — Trabajo y Economía' },
+  { num: 'Vol. 4', href: '/biblioteca/vol4/index.html', titleEn: 'Volume 4 — Energy & Arid Grid', titleEs: 'Volumen 4 — Energía y Red Árida' },
+  { num: 'Vol. 5', href: '/biblioteca/vol5/index.html', titleEn: 'Volume 5 — Build MILPA', titleEs: 'Volumen 5 — Construye MILPA' },
+  { num: 'Vol. 6', href: '/biblioteca/vol6/index.html', titleEn: 'Volume 6 — Civic Infrastructure', titleEs: 'Volumen 6 — Infraestructura Cívica' },
+];
+
+const linkedPubs = [
+  {
+    kicker: 'DOI: 10.20935/AcadEnergy8325',
+    titleEn: 'Future Weather EPW Morphing',
+    titleEs: 'Transformación EPW de clima futuro',
+    href: '/publications/future-weather-epw/index.html',
+  },
+  {
+    kicker: 'PUE / WUE · Arid Basins',
+    titleEn: 'AI Data Centers in Arid Regions',
+    titleEs: 'Centros de datos de IA en regiones áridas',
+    href: '/publications/ai-data-centers/index.html',
+  },
+  {
+    kicker: 'CCGS-C1 · CC-BY',
+    titleEn: "The People's Greenhouse",
+    titleEs: "The People's Greenhouse",
+    href: '/publications/the-peoples-greenhouse/index.html',
+  },
+];
+---
+
+<BaseLayout
+  title="La Biblioteca | Sena's AI Collective"
+  description="La Biblioteca: bilingual civic, land, water, energy, and greenhouse research archive indexed with Sena Colectivo publications."
+  canonical="https://senacolectivo.com/biblioteca/"
+>
+  <Header />
+  <main id="main">
+    <section class="hero">
+      <div class="wrap">
+        <p class="eyebrow en">La Biblioteca · Bilingual Research Archive</p>
+        <p class="eyebrow es">La Biblioteca · Archivo de Investigación Bilingüe</p>
+        <h1 class="en">Volumes &amp; published research.</h1>
+        <h1 class="es">Volúmenes e investigación publicada.</h1>
+        <p class="dek en">
+          Long-form civic, land, water, labor, and climate-resilience volumes paired directly with our active publication packages.
+        </p>
+        <p class="dek es">
+          Volúmenes sobre lo cívico, la tierra, el agua, el trabajo y la resiliencia climática vinculados directamente con nuestras publicaciones activas.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="eyebrow en">Six-Volume Archive</div>
+        <div class="eyebrow es">Archivo de seis volúmenes</div>
+        <h2 class="en">La Biblioteca Volumes</h2>
+        <h2 class="es">Volúmenes de La Biblioteca</h2>
+        <div class="grid grid--spaced">
+          {volumes.map((vol) => (
+            <a class="card" href={vol.href}>
+              <div class="kicker">{vol.num}</div>
+              <h3 class="en">{vol.titleEn}</h3>
+              <h3 class="es">{vol.titleEs}</h3>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="eyebrow en">Indexed from /publications/</div>
+        <div class="eyebrow es">Indexado desde /publications/</div>
+        <h2 class="en">Active Publication Packages</h2>
+        <h2 class="es">Paquetes de Publicación Activos</h2>
+        <div class="grid grid--spaced">
+          {linkedPubs.map((pub) => (
+            <a class="card" href={pub.href}>
+              <div class="kicker">{pub.kicker}</div>
+              <h3 class="en">{pub.titleEn}</h3>
+              <h3 class="es">{pub.titleEs}</h3>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

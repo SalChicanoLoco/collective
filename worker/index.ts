@@ -1,3 +1,5 @@
+import { auditSite } from './audit';
+
 export interface Env {
   ASSETS: Fetcher;
   SITE_URL?: string;
@@ -56,6 +58,14 @@ export default {
           site: env.SITE_URL ?? 'https://senacolectivo.com',
           timestamp: new Date().toISOString(),
         }),
+      );
+    }
+
+    if (url.pathname === '/api/audit') {
+      const target = url.searchParams.get('url') ?? '';
+      const result = await auditSite(target);
+      return withSecurityHeaders(
+        Response.json(result, { status: result.ok ? 200 : result.status }),
       );
     }
 

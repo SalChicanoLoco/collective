@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const publications = [
+  {
+    kickerEn: 'Green Tech · Peer-reviewed archival brief',
+    kickerEs: 'Tecnología verde · Resumen archivado',
+    titleEn: 'Future Weather EPW Morphing',
+    titleEs: 'Transformación de archivos climáticos EPW futuros',
+    descEn:
+      'Transparent workflow for future EnergyPlus Weather (EPW) files for building energy simulation (Reolon, Marengo, Picco, DOI: 10.20935/AcadEnergy8325). Includes 6-part web package and 2-page LaTeX PDF.',
+    descEs:
+      'Flujo transparente para archivos futuros EnergyPlus Weather (EPW) en simulación energética de edificios. Incluye paquete web de 6 partes y PDF LaTeX de 2 páginas.',
+    href: '/publications/future-weather-epw/index.html',
+    pdfHref: '/publications/future-weather-epw/future_weather_epw_brief.pdf',
+  },
+  {
+    kickerEn: 'Infrastructure · 6-part package',
+    kickerEs: 'Infraestructura · Paquete de 6 partes',
+    titleEn: 'AI Data Centers in Arid Regions',
+    titleEs: 'Centros de datos de IA en regiones áridas',
+    descEn:
+      'Water, power, compute, PUE/WUE calculations, and the political economy of infrastructure in New Mexico and the Southwest.',
+    descEs:
+      'Agua, energía, cómputo, cálculos PUE/WUE y economía política de la infraestructura en Nuevo México y el suroeste.',
+    href: '/publications/ai-data-centers/index.html',
+  },
+  {
+    kickerEn: 'Community Systems · CC-BY',
+    kickerEs: 'Sistemas comunitarios · CC-BY',
+    titleEn: "The People's Greenhouse — CCGS-C1",
+    titleEs: "The People's Greenhouse — CCGS-C1",
+    descEn:
+      'Passive solar, earth berm, thermal mass, aquaponics, and compute heat integration — architecture, heat math, and build steps.',
+    descEs:
+      'Solar pasiva, berma de tierra, masa térmica, acuaponía e integración de calor de cómputo — arquitectura, cálculos y construcción.',
+    href: '/publications/the-peoples-greenhouse/index.html',
+  },
+];
+---
+
+<BaseLayout
+  title="Publications | Sena's AI Collective"
+  description="Public research packages, LaTeX briefs, and calculation spines from Sena's AI Collective."
+  canonical="https://senacolectivo.com/publications/"
+>
+  <Header />
+  <main id="main">
+    <section class="hero">
+      <div class="wrap">
+        <p class="eyebrow en">Publications · Readable, printable, inspectable</p>
+        <p class="eyebrow es">Publicaciones · Legibles, imprimibles, inspeccionables</p>
+        <h1 class="en">Public research archive.</h1>
+        <h1 class="es">Archivo público de investigación.</h1>
+        <p class="dek en">
+          Every package includes primary sources, calculation spines, and plain-language briefs.
+        </p>
+        <p class="dek es">
+          Cada paquete incluye fuentes primarias, ejes de cálculo y resúmenes en lenguaje claro.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="grid grid--spaced">
+          {publications.map((pub) => (
+            <article class="card">
+              <div class="kicker en">{pub.kickerEn}</div>
+              <div class="kicker es">{pub.kickerEs}</div>
+              <h2 class="en">{pub.titleEn}</h2>
+              <h2 class="es">{pub.titleEs}</h2>
+              <p class="en">{pub.descEn}</p>
+              <p class="es">{pub.descEs}</p>
+              <div class="button-row">
+                <a class="button button--primary en" href={pub.href}>Open package</a>
+                <a class="button button--primary es" href={pub.href}>Abrir paquete</a>
+                {pub.pdfHref && (
+                  <>
+                    <a class="button button--ghost en" href={pub.pdfHref}>Download PDF</a>
+                    <a class="button button--ghost es" href={pub.pdfHref}>Descargar PDF</a>
+                  </>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
