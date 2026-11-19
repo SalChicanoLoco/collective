@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>The People's Greenhouse — CCGS-C1 · Sena Colectivo</title>
+  <meta name="description" content="Two separate projects, same isomorphism: the community greenhouse (half-buried, no power) and the center (education + sustainable data center, where the compute lives). Sustainable. Inexpensive. For the people.">
+  <meta name="robots" content="index,follow">
+  <link rel="stylesheet" href="../assets/css/site.css">
+  <style>
+    /* Page-scoped graphics: equations as big display text, the loop as a
+       drawn chain, spec values, and the BOM table. Site tokens only —
+       earth, sand, gold, system sans. No new fonts, no gradients. */
+    .eq-block {
+      border-top: 2px solid var(--gold);
+      border-bottom: 1px solid var(--line);
+      padding: 32px 0;
+      margin-top: 32px;
+    }
+    .eq-line {
+      font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin: 0;
+    }
+    .eq-line + .eq-line { margin-top: 8px; }
+    .eq-result {
+      color: var(--gold);
+      font-size: clamp(2rem, 5vw, 3.25rem);
+    }
+    .eq-note { color: var(--muted); max-width: 65ch; margin: 16px 0 0; }
+    .pull {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      border-top: 2px solid var(--gold);
+      padding-top: 24px;
+      margin: 48px 0 0;
+      max-width: 28ch;
+      text-wrap: balance;
+    }
+    .pull + .note { margin-top: 16px; }
+    .flow { margin-top: 32px; }
+    .flow-node {
+      background: var(--earth-2);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 20px 24px;
+      max-width: 520px;
+      margin-inline: auto;
+      text-align: center;
+    }
+    .flow-node strong {
+      display: block;
+      font-size: 1.25rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .flow-node span { color: var(--muted); font-size: 15px; }
+    .flow-node--in { border-color: var(--gold); }
+    .flow-arrow { text-align: center; color: var(--gold); font-size: 1.75rem; line-height: 1.4; }
+    .spec-item .label {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin: 0;
+    }
+    .spec-item .value { font-size: 1.75rem; font-weight: 700; line-height: 1.15; margin: 8px 0 0; }
+    .spec-item .value small { font-size: 15px; font-weight: 400; color: var(--muted); }
+    table.bom { width: 100%; border-collapse: collapse; margin-top: 32px; }
+    table.bom th, table.bom td { text-align: left; padding: 12px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+    table.bom th { font-size: 15px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
+    table.bom td { color: var(--muted); }
+    table.bom td:first-child { color: var(--sand); font-weight: 600; }
+    table.bom tr.total td { color: var(--gold); font-weight: 700; border-bottom: 0; }
+    .phase-cost { font-size: 1.25rem; font-weight: 700; color: var(--gold); margin: 16px 0 0; }
+    .card ul { margin: 12px 0 0; padding-left: 20px; color: var(--muted); }
+    .card ul li + li { margin-top: 6px; }
+    .part-label {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border-top: 2px solid var(--gold);
+      padding-top: 24px;
+      margin: 0 0 16px;
+    }
+  </style>
+</head>
+<body class="lang-en">
+<a class="skip-link en" href="#main">Skip to content</a>
+<a class="skip-link es" href="#main">Saltar al contenido</a>
+<header class="site-masthead">
+  <div class="site-masthead__inner">
+    <div>
+      <a class="brand" href="../index.html">Sena's AI Collective</a>
+      <p class="brand-sub">Sena Colectivo · New Mexico</p>
+    </div>
+    <nav aria-label="Main navigation">
+      <ul class="nav-list">
+        <li><a href="../index.html">Home</a></li>
+        <li><a href="../index.html#greenhouse">Greenhouse</a></li>
+        <li><a href="../publications/index.html">Publications</a></li>
+        <li><a href="../biblioteca/index.html">La Biblioteca</a></li>
+      </ul>
+    </nav>
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button type="button" data-lang-button="en" aria-pressed="true">EN</button>
+      <button type="button" data-lang-button="es" aria-pressed="false">ES</button>
+    </div>
+  </div>
+</header>
+<main id="main">
+  <section class="hero">
+    <div class="wrap">
+      <div class="eyebrow en">Sangre Community Greenhouse · CCGS-C1</div>
+      <div class="eyebrow es">Invernadero Comunitario Sangre · CCGS-C1</div>
+      <h1 class="en">The People's Greenhouse</h1>
+      <h1 class="es">El Invernadero del Pueblo</h1>
+      <p class="dek en">Sustainable. Inexpensive. For the people.</p>
+      <p class="dek es">Sostenible. Económico. Para la gente.</p>
+      <p class="section-lead en" style="margin-top:16px">Two separate projects, same isomorphism. <strong style="color:var(--sand)">Project 1 — the community greenhouse:</strong> a half-buried structure, earth berm, buried heatpipes, vents, insulation. It needs no power at all. <strong style="color:var(--sand)">Project 2 — the center:</strong> education and a sustainable data center, where the compute lives. Both start simple and step up only as the community's surplus earns each step.</p>
+      <p class="section-lead es" style="margin-top:16px">Dos proyectos separados, mismo isomorfismo. <strong style="color:var(--sand)">Proyecto 1 — el invernadero comunitario:</strong> una estructura semienterrada, berma de tierra, tubos de calor enterrados, ventilación, aislamiento. No necesita electricidad. <strong style="color:var(--sand)">Proyecto 2 — el centro:</strong> educación y un centro de datos sostenible, donde vive el cómputo. Ambos empiezan simple y suben solo cuando el excedente de la comunidad gana cada paso.</p>
+      <p class="section-lead en" style="margin-top:16px">Solar, wind, and electricity can come in anytime to augment either project — even at Phase 0 — although both work without them.</p>
+      <p class="section-lead es" style="margin-top:16px">La solar, la eólica y la electricidad pueden entrar en cualquier momento para aumentar cualquiera de los dos proyectos — incluso en la Fase 0 — aunque ambos funcionan sin ellas.</p>
+      <p class="pull">Electricity flows in. Compute cycles burn. Heat transfers to water. Biology does the rest.</p>
+      <p class="note">This is not metaphor — this is the acequia, running on electricity. The hot water comes from the center; the greenhouse and the fish are what it sustains.</p>
+    </div>
+  </section>
+
+  <section class="section" id="ladder">
+    <div class="wrap">
+      <div class="eyebrow">The ladder · One pattern, two projects</div>
+      <h2>Start simple. Step up as surplus earns each step.</h2>
+      <p class="section-lead">The tiers are isomorphic: the same cell, stepped up. The most common misunderstanding about this project is reading a higher tier's features into the base build. The base greenhouse has no QAP, no controller, and no compute — the compute lives in the center.</p>
+      <div class="grid grid--spaced">
+        <article class="card"><div class="kicker">Tier 0 · Greenhouse project</div><h3>Ancient-tech greenhouse</h3><p>Earth berm, buried earth tubes, black thermal barrels, 50° south glazing, roll-up sides. No power, no fish, no sensors, no controller.</p></article>
+        <article class="card"><div class="kicker">Tier 1 · Greenhouse project</div><h3>Plus aquaponics</h3><p>Tier 0 plus the fish loop: fish tank, clarifier, biofilter, algae, chinampa grow beds. Low-tech only. Fish need a permit.</p></article>
+        <article class="card"><div class="kicker">Tier 2 · Center project</div><h3>Plus compute heat + controller</h3><p>The center's first step: compute waste heat and the sensor controller / QAP, heating the greenhouse water from the center.</p></article>
+        <article class="card"><div class="kicker">Tier 3 · Center project</div><h3>The full center</h3><p>Sustainable community training center and teaching institution; living aquaponics center; large compute heats the water and holds the community database and AI — a closed-loop sustainable data center.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="greenhouse-project">
+    <div class="wrap">
+      <p class="part-label">Part 1 · Project 1 — The Community Greenhouse</p>
+      <h2>So we can eat out here.</h2>
+      <p class="section-lead">Food prices are ridiculous. The community greenhouse exists so we can eat out here — and done correctly, we sustain ourselves. Greens first, surplus shared with neighbors. SFCC does good work — they fed people through COVID, running their traditional greenhouse on a huge solar array. Their program is good. But in practice, the commons can afford this design: it needs no power at all. This project has no compute in it. The compute lives in the center, Part 2.</p>
+
+      <div class="eyebrow" style="margin-top:48px">Tier 0 · Passive first</div>
+      <h2 style="margin-top:16px">The greenhouse holds its own heat.</h2>
+      <p class="section-lead">A half-buried structure: earth berm, buried heatpipes, thermal barrels, roll-up vents. It needs no power. Sun → 50° glazing → thermal barrels + earth tubes → vents.</p>
+      <div class="grid grid--spaced">
+        <article class="card"><div class="kicker">Natural heat</div><h3>The sun and the mass do the heating.</h3><p>50° south glazing catches maximum winter gain and sheds summer heat. Black thermal barrels along the north wall absorb daytime solar gain and release it through the night. The 500-gallon tank is the largest thermal battery in the building. Deep soil holds 55–60°F year-round.</p></article>
+        <article class="card"><div class="kicker">Natural cool</div><h3>The earth and the vents do the cooling.</h3><p>Buried earth tubes — corrugated pipe 6 to 8 feet down — pre-condition incoming air passively, without electricity. Roll-up sides and vents dump the hot air. The steep glazing angle sheds summer heat on its own. A greenhouse here is a wind job first: spring gusts pass 30 mph, and the structure has to respect that.</p></article>
+        <article class="card"><div class="kicker">Underground</div><h3>Even a mushroom farm.</h3><p>A certain part of the underground houses a mushroom farm — the buried part stays cool, dark, and humid, which is exactly what mushrooms want. The greenhouse grows food above and below grade.</p></article>
+      </div>
+      <div class="grid grid--spaced">
+        <article class="card spec-item"><p class="label">Long axis</p><p class="value">East–West <small>orientation</small></p></article>
+        <article class="card spec-item"><p class="label">Glazing face</p><p class="value">True South <small>± 10°</small></p></article>
+        <article class="card spec-item"><p class="label">Glazing angle</p><p class="value">50° <small>from horizontal</small></p></article>
+        <article class="card spec-item"><p class="label">Winter solar noon</p><p class="value">~31° <small>altitude</small></p></article>
+        <article class="card spec-item"><p class="label">Phase 1 footprint</p><p class="value">600 <small>sq ft ideal</small></p></article>
+        <article class="card spec-item"><p class="label">Glazing material</p><p class="value">8–16mm <small>polycarbonate</small></p></article>
+        <article class="card spec-item"><p class="label">Earth tube depth</p><p class="value">6–8 <small>feet</small></p></article>
+        <article class="card spec-item"><p class="label">Earth tube length</p><p class="value">40–100 <small>feet</small></p></article>
+        <article class="card spec-item"><p class="label">Stable soil temp</p><p class="value">55–60°F <small>year-round</small></p></article>
+      </div>
+      <p class="note" style="margin-top:24px">Build geometry, Santa Fe latitude 35.5°N. Earth-tube length is unresolved across the sources (40–100 ft here; 30–50 ft and 40–60 ft elsewhere) — see the plan.</p>
+
+      <div class="eyebrow" style="margin-top:64px">Tier 1 · Aquaponics, at some point</div>
+      <h2 style="margin-top:16px">The fish loop — no compute in it.</h2>
+      <p class="section-lead">Aquaponics comes at some point: fish tank, clarifier, biofilter, algae, chinampa grow beds, sump, back to the tank. The heat comes in from the center — the heat exchanger is the boundary between the two projects.</p>
+      <div class="flow">
+        <div class="flow-node flow-node--in"><strong>Heat in</strong><span> — hot water from the Center (heat exchanger) · the boundary between the projects</span></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node"><strong>Fish tank</strong><span> — 500 gal · stable 24–27°C · tilapia or trout · fish need a permit</span></div>
+        <div class="flow-arrow">↓ fish waste + water</div>
+        <div class="flow-node"><strong>Swirl clarifier</strong><span> — solids removed</span></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node"><strong>Biofilter</strong><span> — ammonia → nitrite → nitrate</span></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node"><strong>Algae</strong><span> — augments filtration · harvest → plant food + fish food · abundance → biofuel</span></div>
+        <div class="flow-arrow">↓ nutrient-rich water</div>
+        <div class="flow-node"><strong>DWC grow beds</strong><span> — chinampa-style floating gardens, not plastic rafts · lettuce, herbs, greens, starts</span></div>
+        <div class="flow-arrow">↓ clean water</div>
+        <div class="flow-node"><strong>Sump</strong></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node"><strong>Back to fish tank</strong><span> — closed loop · 95% water savings</span></div>
+      </div>
+      <div class="grid grid--spaced">
+        <article class="card"><div class="kicker">SYS-AQUAPONICS</div><h3>Fish + Plant System</h3><p>Fish waste → biofilter → plant nutrients → clean water return. The grow beds are chinampa-style rafts — Mayan/Aztec floating gardens, not modern plastic. Algae augments the filtration — harvested algae becomes plant food and fish food, and biofuel if there's an abundance. Temperature stability from the thermal loop increases nitrification efficiency. The biology runs cleaner when it is warm and consistent.</p></article>
+        <article class="card"><div class="kicker">SYS-COMPUTE — LIVES IN THE CENTER</div><h3>Not in this project</h3><p>The compute rack is not part of the greenhouse. It lives in the center, Part 2, where its waste heat becomes the hot water that sustains this loop. The boundary is the heat exchanger.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="phases">
+    <div class="wrap">
+      <div class="eyebrow">Phases · Greenhouse project</div>
+      <h2>Do not build everything at once.</h2>
+      <p class="section-lead">Phase 0 is not production — it is data. You test the structure against the wind, measure the thermal stability of the buried earth system, and learn how your site behaves before you invest serious capital.</p>
+      <div class="grid grid--spaced">
+        <article class="card"><div class="kicker">Phase 0 · Now</div><h3>Hoop + Earth Hybrid</h3><p>16′ × 32′ hoop + earth hybrid — no fish yet. Goal: data + wind test, not production.</p><p class="phase-cost">Target cost: $1,500 – $3,500</p></article>
+        <article class="card"><div class="kicker">Phase 1 · 6–12 months</div><h3>Passive Solar Upgrade</h3><p>20′ × 30′ reinforced passive-solar shell, 50° south glazing, insulated north wall, full aquaponic loop, tilapia permit from NM Game &amp; Fish, solar PV + battery backup for life support, sensor array, night thermal curtain.</p><p class="phase-cost">Target cost: $8,000 – $20,000</p></article>
+      </div>
+      <p class="section-lead" style="margin-top:48px">From upcycled to bought — the calculator prices the same 32×16-foot cell (512 sq ft) three ways.</p>
+      <div class="grid grid--spaced">
+        <article class="card"><div class="kicker">Scrappy salvage</div><p class="stat">$819 – $2,304</p><p>$1.60–$4.50 per sq ft. Upcycled: free food-grade barrels, DIY earthwork, salvaged poly — hardly any money.</p></article>
+        <article class="card"><div class="kicker">Balanced low-cost</div><p class="stat">$1,126 – $3,174</p><p>$2.20–$6.20 per sq ft. A mix of salvaged and bought.</p></article>
+        <article class="card"><div class="kicker">Cleaner build</div><p class="stat">$1,587 – $4,352</p><p>$3.10–$8.50 per sq ft. Buying new.</p></article>
+      </div>
+      <p class="note" style="margin-top:24px">Same build, same 512 sq ft — the range is what you salvage versus what you buy. Phase 0's cost also drifts across the sources ($1,500–$3,500 paper; $1,800–$4,000 and $2,000–$5,000 in chat) — see the plan.</p>
+    </div>
+  </section>
+
+  <section class="section" id="bom">
+    <div class="wrap">
+      <div class="eyebrow">Phase 0 · Bill of materials</div>
+      <h2>Build it cheap. Build it first.</h2>
+      <p class="section-lead">A fully operational grow structure, no fish yet. Document everything. Then build it bigger.</p>
+      <table class="bom">
+        <thead><tr><th>Component</th><th>Spec</th><th>Source</th><th>Cost range</th></tr></thead>
+        <tbody>
+          <tr><td>Hoop frame kit</td><td>Galvanized steel, 16′ × 32′, 4 ft spacing</td><td>FarmTek / Gothic Arch / DIY EMT</td><td>$800 – $1,500</td></tr>
+          <tr><td>Greenhouse poly</td><td>6 mil, UV-stabilized, double layer if possible</td><td>Tractor Supply / online</td><td>$200 – $400</td></tr>
+          <tr><td>Anchoring system</td><td>Rebar stakes + concrete collars OR ground screws</td><td>Local hardware / rental</td><td>$200 – $600</td></tr>
+          <tr><td>Anti-billow straps</td><td>Every 4–6 ft over plastic, wiggle wire base</td><td>Greenhouse supply</td><td>$80 – $150</td></tr>
+          <tr><td>Earth air tubes</td><td>4″ corrugated drain pipe, 40–60 ft, buried 6 ft</td><td>Home Depot</td><td>$60 – $200</td></tr>
+          <tr><td>Thermal mass barrels</td><td>4–10 × 55-gal, painted black, north wall</td><td>Free (food grade) / Craigslist</td><td>$0 – $200</td></tr>
+          <tr><td>Grow beds (Phase 0)</td><td>Raised beds / DWC troughs, no fish yet</td><td>DIY / Upcycle</td><td>$100 – $400</td></tr>
+          <tr><td>End wall framing</td><td>2×6 wood frame, braced, one door + vent</td><td>Local lumber</td><td>$200 – $400</td></tr>
+          <tr><td>Earthwork (berm)</td><td>1–2 ft excavation, berm north + west, DIY</td><td>Manual / tractor rental</td><td>$0 – $500</td></tr>
+          <tr class="total"><td>Phase 0 Total</td><td colspan="2">Fully operational grow structure, no fish</td><td>$1,500 – $3,500</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section" id="pilot">
+    <div class="wrap">
+      <div class="eyebrow">Funding + first build</div>
+      <h2>First build: Lone Butte, Tier 0.</h2>
+      <p class="section-lead">A 16×32-foot Tier 0 community garden, greens first, surplus shared with neighbors. Alicia, lead grower. Status: scoping — no site agreement, no permit, no partner secured yet. The soil and compost ask to Reunity is a proposal only; no agreement exists.</p>
+      <div class="grid grid--spaced">
+        <article class="card"><div class="kicker">Phase 0 match</div><h3>USDA NRCS — EQIP High Tunnel</h3><p>Best fit for Phase 0. Covers hoop structure, sometimes irrigation. Typical: several thousand dollars, can cover the majority of Phase 0 cost. Lead only — nothing filed.</p></article>
+        <article class="card"><div class="kicker">Community</div><h3>USDA Urban Agriculture</h3><p>Grants for community food systems and innovative production. Aquaponics qualifies. Frame around food security, community access, and workforce development. Lead only — nothing filed.</p></article>
+        <article class="card"><div class="kicker">State</div><h3>NM Department of Agriculture</h3><p>Specialty crop grants, sustainability funding, local ag development. Smaller awards, easier to win. Good for Phase 0 documentation costs. Lead only — nothing filed.</p></article>
+        <article class="card"><div class="kicker">Phase 2</div><h3>USDA Rural Development — REAP</h3><p>Renewable energy and efficiency upgrades. The solar funding path for Phase 1/2. Apply after Phase 0 is operational and producing data. Lead only — nothing filed.</p></article>
+      </div>
+      <p class="note" style="margin-top:24px">Why this is bigger than a greenhouse: the communities stripped of land and water in northern New Mexico do not have to wait for courts or legislatures to give it back. They can build infrastructure right now that makes the dispossession functionally irrelevant. A greenhouse that feeds families and produces fish, sustained by the center's waste heat, is not a political statement. It is a material fact.</p>
+      <p class="note">Build it cheap. Build it first. Document everything. Then build it bigger.</p>
+    </div>
+  </section>
+
+  <section class="section" id="center-project">
+    <div class="wrap">
+      <p class="part-label">Part 2 · Project 2 — The Center</p>
+      <h2>The center: teaches, produces food, very efficient.</h2>
+      <p class="section-lead">This is the second project, not a phase of the first. The compute lives here — in the center, which is the education. Two threads meet here: the community greenhouse, and sustainable data centers — hot water from compute sustaining the greenhouse and the fish.</p>
+      <div class="grid grid--spaced">
+        <article class="card"><div class="kicker">Teaches</div><h3>Education + dashboard</h3><p>Community dashboard and education programs. The greenhouse produces food and trains people to grow food — the output is not just calories, it is capacity.</p></article>
+        <article class="card"><div class="kicker">Produces food</div><h3>Full loop, above and below grade</h3><p>Full aquaponic loop with multi-species zones and a fruiting crop section, algae and mushrooms in the system, second bay to 900–1,200 sq ft.</p></article>
+        <article class="card"><div class="kicker">Very efficient, tech and all</div><h3>Compute heat, used not wasted</h3><p>HPC rack 5–10 kW, plate heat exchanger to the fish tank loop, geothermal hydronic loop, NUMARA orchestration — solar, wind, and electricity augmenting whenever they come in.</p></article>
+      </div>
+
+      <div class="eyebrow" style="margin-top:64px">The compute lives here</div>
+      <h2 style="margin-top:16px">Hot water out — to the greenhouse.</h2>
+      <p class="section-lead">The data-center thread, on its own. Electricity in, compute burns, heat transfers to water — and the hot water leaves the center for the greenhouse fish tank. The heat exchanger is the boundary between the two projects.</p>
+      <div class="flow">
+        <div class="flow-node"><strong>Electricity</strong><span> — solar, wind, grid · augment anytime, even at Phase 0</span></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-node"><strong>Compute rack</strong><span> — HPC / AI cluster · 5–10 kW load · processed data, AI workloads</span></div>
+        <div class="flow-arrow">↓ heat</div>
+        <div class="flow-node"><strong>Heat exchanger</strong><span> — plate exchanger or immersion coil, 5–10 GPM, closed loop</span></div>
+        <div class="flow-arrow">↓ hot water out</div>
+        <div class="flow-node flow-node--in"><strong>To the greenhouse fish tank</strong><span> — the boundary · Part 1, Tier 1</span></div>
+      </div>
+
+      <div class="eyebrow" style="margin-top:64px">The Center's math · SPEC-T1 baseline</div>
+      <h2 style="margin-top:16px">What the compute adds.</h2>
+      <p class="section-lead">This is the center's math — the data-center thread. It is Tier 2/3 module math, not a property of the Tier 0 greenhouse, which has no tank heater and no compute rack. Every data center on earth is hemorrhaging heat. At 5 kilowatts of compute load, a single rack generates over 17,000 BTUs of heat per hour. That is enough to sustain life.</p>
+      <div class="eq-block">
+        <p class="eq-line">5 kW compute load × 3,412 BTU/kWh</p>
+        <p class="eq-line eq-result">= 17,060 BTU/hr heat output</p>
+        <p class="eq-line">500 gal tank × 8.34 lb/gal × 1 BTU/lb°F = 4,170 BTU per °F</p>
+        <p class="eq-line">17,060 BTU/hr × 0.80 efficiency = 13,648 BTU/hr into the tank</p>
+        <p class="eq-line eq-result">13,648 ÷ 4,170 = ~3.27°F/hr temperature rise</p>
+        <p class="eq-note">The 5 kW figure is one rack at high utilization. The math was verified against the paper's own arithmetic.</p>
+      </div>
+
+      <div class="grid grid--spaced">
+        <article class="card"><div class="kicker">Tier 2 · Center project</div><h3>Sensor + Control Layer (QAP)</h3><ul><li><strong>State A, Earth:</strong> geothermal 12°C constant, earth-tube flow 0–1 (max 0.5 m³/s).</li><li><strong>State B, Water:</strong> 20–25°C tilapia target, pH 6.8, dissolved oxygen 6.5 mg/L, pump 1.2 L/s.</li><li><strong>State C, Structure:</strong> 24-inch adobe wall, thermal capacity 8,000,000 J/°C, 4-hour thermal lag.</li><li><strong>State D, Air &amp; Compute:</strong> ambient target 22°C, compute 2–10 kW, exhaust 35°C.</li><li>Rule: bang-bang — below target, +1 kW and tubes closed; at or above, −1 kW and tubes open.</li><li>QAP: 11-byte header + 4-byte float32 payload = 15-byte packets.</li></ul><p style="margin-top:16px"><strong style="color:var(--gold)">Honest status: protocol proven, regulation NOT proven.</strong> In the May 2026 sim re-run, water hit 47.5°C at midday — fish would not survive — and the adobe wall never moved, its coupling scaled down ~10,000×. No "stabilized" claim until a re-run holds water in 20–27°C for 24 hours.</p></article>
+        <article class="card"><div class="kicker">Phase 2 · Year 2+</div><h3>Compute Integration</h3><p>HPC rack installation, 5–10 kW load, plate heat exchanger to the fish tank thermal loop, NUMARA orchestration layer connected, second bay expansion to 900–1,200 sq ft, geothermal hydronic loop, multi-species zones, fruiting crop section, community dashboard + education programs, full REAP solar funding application.</p><p class="phase-cost">Target cost: $25,000 – $60,000</p></article>
+      </div>
+      <p class="note" style="margin-top:24px">The QAP, the controller, and the compute heat are the prototype of the center. The greenhouse scales up to them; it does not start there. The center is the destination, not a footnote.</p>
+    </div>
+  </section>
+
+  <section class="section" id="source">
+    <div class="wrap">
+      <div class="eyebrow">Sources · Tools</div>
+      <h2>Where this comes from.</h2>
+      <div class="grid grid--spaced">
+        <a class="card" href="../publications/the-peoples-greenhouse/index.html"><div class="kicker">Research paper · April 2026 · CC-BY</div><h3>The People's Greenhouse — CCGS-C1</h3><p>The full paper this page is built from. Salvador Sena + AI Collective.</p></a>
+        <a class="card" href="../cgs-community-suite/index.html"><div class="kicker">Blueprints · Plan + section</div><h3>Community Suite blueprints</h3><p>Plan, section, and article graphics for the canonical 32×16-foot cell — the plans, drawn to scale. No ruler needed.</p></a>
+        <a class="card" href="../commons-greenhouse-calculator-secure/index.html"><div class="kicker">Calculator · Free tool, live</div><h3>Commons Greenhouse Calculator</h3><p>Try the numbers: cell size, yield, and thermal mass for a build.</p></a>
+        <a class="card" href="../biblioteca/vol5/index.html"><div class="kicker">La Biblioteca · Build guide</div><h3>Build MILPA</h3><p>Pit greenhouse, brick thermal mass, and the chinampa water cycle — ancient knowledge for a backyard build.</p></a>
+      </div>
+      <p class="note" style="margin-top:24px">Spanish version of this page follows Salvador's review of the translations. The numbers, the loop, and the build specs need no translation.</p>
+    </div>
+  </section>
+</main>
+<footer class="site-footer"><div class="wrap"><p>Sena Colectivo · The People's Greenhouse — CCGS-C1 · Sustainable. Inexpensive. For the people.</p></div></footer>
+<script src="../assets/js/site.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<!-- saved from url=(0071)file:///Users/xavasena/Documents/NM%20Socialists/ccgs_natgeo_paper.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The People's Greenhouse — CCGS-C1 Research Paper</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Barlow+Condensed:wght@300;400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --void:    #0d0f0a;
+  --deep:    #141810;
+  --forest:  #1e2a18;
+  --moss:    #2d4a22;
+  --lime:    #7ab83a;
+  --sun:     #f0c040;
+  --soil:    #8b5e3c;
+  --clay:    #c2784a;
+  --paper:   #f4f0e4;
+  --fog:     rgba(244,240,228,0.65);
+  --dim:     rgba(244,240,228,0.35);
+  --rule:    rgba(122,184,58,0.2);
+  --serif:   'Libre Baskerville', Georgia, serif;
+  --cond:    'Barlow Condensed', sans-serif;
+  --sans:    'Barlow', sans-serif;
+  --mono:    'DM Mono', monospace;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--paper);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  background: var(--void);
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 60%, rgba(45,74,34,0.7) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(122,184,58,0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 10% 10%, rgba(240,192,64,0.08) 0%, transparent 40%),
+    linear-gradient(180deg, rgba(13,15,10,0.3) 0%, rgba(13,15,10,0.95) 100%);
+  z-index: 1;
+}
+
+/* Animated data lines */
+.hero-grid {
+  position: absolute; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(122,184,58,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(122,184,58,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.hero-orb {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(45,74,34,0.8) 0%, transparent 70%);
+  top: -100px; left: -100px;
+  animation: pulse 8s ease-in-out infinite;
+  z-index: 0;
+}
+@keyframes pulse { 0%,100%{transform:scale(1);opacity:0.6} 50%{transform:scale(1.1);opacity:1} }
+
+.hero-content {
+  position: relative; z-index: 2;
+  padding: 60px 64px 64px;
+  max-width: 900px;
+}
+
+.hero-kicker {
+  font-family: var(--mono);
+  font-size: 9px; letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--lime);
+  margin-bottom: 20px;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-kicker::before {
+  content: '';
+  width: 40px; height: 1px;
+  background: var(--lime);
+}
+
+.hero-title {
+  font-family: var(--cond);
+  font-size: clamp(56px, 8vw, 100px);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -1px;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+
+.hero-title .accent { color: var(--lime); }
+.hero-title .sub-accent { color: var(--sun); }
+
+.hero-deck {
+  font-family: var(--serif);
+  font-size: clamp(16px, 2vw, 20px);
+  font-style: italic;
+  color: var(--fog);
+  max-width: 640px;
+  line-height: 1.6;
+  margin-bottom: 36px;
+  border-left: 3px solid var(--lime);
+  padding-left: 20px;
+}
+
+.hero-meta {
+  display: flex; gap: 32px; flex-wrap: wrap;
+}
+
+.meta-item {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.meta-label {
+  font-family: var(--mono);
+  font-size: 8px; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--lime);
+}
+.meta-val {
+  font-family: var(--cond);
+  font-size: 15px; font-weight: 600;
+  color: var(--paper);
+}
+
+/* Scroll indicator */
+.scroll-hint {
+  position: absolute; bottom: 30px; right: 64px;
+  z-index: 2;
+  font-family: var(--mono); font-size: 8px;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--dim);
+  display: flex; align-items: center; gap: 8px;
+  writing-mode: vertical-rl;
+}
+
+/* ── PAGE ── */
+.page { max-width: 1000px; margin: 0 auto; padding: 0 40px; }
+
+/* ── SECTION LABELS ── */
+.section-marker {
+  display: flex; align-items: center; gap: 16px;
+  padding: 64px 0 32px;
+}
+.sm-num {
+  font-family: var(--mono);
+  font-size: 9px; color: var(--lime);
+  letter-spacing: 3px;
+}
+.sm-line { flex: 1; height: 1px; background: var(--rule); }
+.sm-title {
+  font-family: var(--cond);
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 4px; text-transform: uppercase;
+  color: var(--lime);
+}
+
+/* ── BODY TEXT ── */
+.body-text {
+  font-family: var(--serif);
+  font-size: 17px; line-height: 1.85;
+  color: var(--fog);
+  max-width: 680px;
+}
+
+.body-text p { margin-bottom: 1.4em; }
+
+.body-text p:first-child::first-letter {
+  font-family: var(--cond);
+  font-size: 72px; font-weight: 900;
+  float: left; line-height: 0.75;
+  margin: 8px 10px 0 0;
+  color: var(--lime);
+  text-transform: uppercase;
+}
+
+.body-text em { font-style: italic; color: var(--paper); }
+.body-text strong { font-weight: 700; color: var(--sun); font-style: normal; font-family: var(--sans); font-size: 15px; letter-spacing: 0.5px; }
+
+/* ── PULL QUOTE ── */
+.pull-quote {
+  margin: 48px 0;
+  padding: 32px 40px;
+  border-top: 2px solid var(--lime);
+  border-bottom: 1px solid var(--rule);
+  position: relative;
+}
+
+.pull-quote::before {
+  content: '"';
+  position: absolute; top: -20px; left: 32px;
+  font-family: var(--cond);
+  font-size: 80px; font-weight: 900;
+  color: var(--lime); line-height: 1;
+}
+
+.pq-text {
+  font-family: var(--cond);
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--paper);
+  margin-bottom: 12px;
+}
+
+.pq-attr {
+  font-family: var(--mono);
+  font-size: 9px; letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--lime);
+}
+
+/* ── SPEC PANEL ── */
+.spec-panel {
+  background: var(--forest);
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--lime);
+  padding: 32px;
+  margin: 40px 0;
+}
+
+.sp-title {
+  font-family: var(--mono);
+  font-size: 9px; letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--lime); margin-bottom: 24px;
+}
+
+.spec-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.spec-item {
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 12px;
+}
+
+.spec-key {
+  font-family: var(--mono);
+  font-size: 9px; letter-spacing: 1px;
+  color: var(--dim); text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.spec-val {
+  font-family: var(--cond);
+  font-size: 20px; font-weight: 700;
+  color: var(--paper);
+}
+
+.spec-unit {
+  font-family: var(--mono);
+  font-size: 11px; color: var(--lime);
+  margin-left: 4px;
+}
+
+/* ── FLOW DIAGRAM (ASCII enhanced) ── */
+.flow-diagram {
+  background: var(--deep);
+  border: 1px solid var(--rule);
+  padding: 32px;
+  margin: 40px 0;
+  overflow-x: auto;
+}
+
+.fd-title {
+  font-family: var(--mono);
+  font-size: 9px; letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--sun); margin-bottom: 24px;
+}
+
+.fd-flow {
+  font-family: var(--mono);
+  font-size: 13px; line-height: 2;
+  color: var(--paper);
+  white-space: pre;
+}
+
+.fd-flow .node { color: var(--lime); font-weight: 700; }
+.fd-flow .arrow { color: var(--dim); }
+.fd-flow .label { color: var(--sun); font-size: 11px; }
+
+/* ── DATA TABLE ── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 32px 0;
+  font-size: 13px;
+}
+
+.data-table th {
+  font-family: var(--mono);
+  font-size: 8px; letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--lime);
+  border-bottom: 2px solid var(--lime);
+  padding: 10px 16px;
+  text-align: left;
+  background: var(--forest);
+}
+
+.data-table td {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--fog);
+  font-family: var(--sans);
+}
+
+.data-table tr:last-child td { border-bottom: none; }
+.data-table .highlight td { color: var(--sun); }
+
+/* ── PHASE CARDS ── */
+.phase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  margin: 32px 0;
+}
+
+.phase-card {
+  background: var(--deep);
+  border: 1px solid var(--rule);
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.phase-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--lime);
+}
+
+.phase-card.p2::before { background: var(--sun); }
+.phase-card.p3::before { background: var(--clay); }
+
+.phase-num {
+  font-family: var(--cond);
+  font-size: 64px; font-weight: 900;
+  color: rgba(122,184,58,0.12);
+  position: absolute; top: 8px; right: 16px;
+  line-height: 1;
+}
+
+.phase-label {
+  font-family: var(--mono);
+  font-size: 8px; letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--lime); margin-bottom: 8px;
+}
+.phase-card.p2 .phase-label { color: var(--sun); }
+.phase-card.p3 .phase-label { color: var(--clay); }
+
+.phase-title {
+  font-family: var(--cond);
+  font-size: 20px; font-weight: 700;
+  color: var(--paper); margin-bottom: 12px;
+}
+
+.phase-items {
+  list-style: none;
+  font-size: 12px; color: var(--dim);
+  line-height: 1.9;
+}
+
+.phase-items li::before {
+  content: '→ ';
+  color: var(--lime);
+}
+.phase-card.p2 .phase-items li::before { color: var(--sun); }
+
+.phase-cost {
+  margin-top: 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--lime);
+}
+
+/* ── GRANT BOX ── */
+.grant-box {
+  background: rgba(240,192,64,0.06);
+  border: 1px solid rgba(240,192,64,0.2);
+  border-left: 4px solid var(--sun);
+  padding: 28px 32px;
+  margin: 40px 0;
+}
+
+.gb-title {
+  font-family: var(--mono);
+  font-size: 9px; letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--sun); margin-bottom: 20px;
+}
+
+.grant-item {
+  display: flex; gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(240,192,64,0.1);
+  align-items: flex-start;
+}
+.grant-item:last-child { border-bottom: none; }
+
+.gi-badge {
+  font-family: var(--mono);
+  font-size: 9px; padding: 3px 8px;
+  background: rgba(240,192,64,0.15);
+  color: var(--sun);
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.gi-text { font-size: 13px; color: var(--fog); line-height: 1.5; }
+.gi-text strong { color: var(--paper); }
+
+/* ── MATH BLOCK ── */
+.math-block {
+  background: var(--deep);
+  border: 1px solid var(--rule);
+  padding: 28px 32px;
+  margin: 32px 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 2.2;
+  color: var(--fog);
+}
+
+.math-block .eq { color: var(--lime); font-weight: 700; }
+.math-block .result { color: var(--sun); font-size: 16px; }
+.math-block .comment { color: var(--dim); font-size: 11px; }
+
+/* ── CCGS NODE MAP ── */
+.node-map {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 32px 0;
+}
+
+.node-card {
+  background: var(--forest);
+  border: 1px solid var(--rule);
+  padding: 16px 20px;
+}
+
+.nc-id {
+  font-family: var(--mono);
+  font-size: 9px; letter-spacing: 2px;
+  color: var(--lime); margin-bottom: 6px;
+}
+
+.nc-name {
+  font-family: var(--cond);
+  font-size: 16px; font-weight: 700;
+  color: var(--paper); margin-bottom: 6px;
+}
+
+.nc-desc {
+  font-size: 12px; color: var(--dim); line-height: 1.5;
+}
+
+/* ── FOOTER ── */
+.paper-footer {
+  margin-top: 80px;
+  border-top: 2px solid var(--rule);
+  padding: 40px 0 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.footer-brand {
+  font-family: var(--cond);
+  font-size: 24px; font-weight: 900;
+  color: var(--lime); letter-spacing: -0.5px;
+}
+
+.footer-meta {
+  font-family: var(--mono);
+  font-size: 9px; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--dim);
+  line-height: 2.2;
+  text-align: right;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+  .hero-content { padding: 40px 24px; }
+  .page { padding: 0 20px; }
+  .node-map { grid-template-columns: 1fr; }
+  .paper-footer { flex-direction: column; }
+  .footer-meta { text-align: left; }
+  .spec-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb"></div>
+  <div class="hero-bg"></div>
+
+  <div class="hero-content">
+    <div class="hero-kicker">CCGS-C1 · Creative Commons Research Paper · Sena's AI Collective</div>
+    <h1 class="hero-title">
+      THE <span class="accent">PEOPLE'S</span><br>
+      GREEN<span class="sub-accent">HOUSE</span>
+    </h1>
+    <p class="hero-deck">
+      How a community in the high desert of New Mexico is turning compute waste heat, aquaponic biology, and centuries-old acequia logic into a model for regenerative food sovereignty — and how you can build it for under $5,000.
+    </p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-label">Location</span>
+        <span class="meta-val">Santa Fe, NM · 87508</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Elevation</span>
+        <span class="meta-val">7,000 ft</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Published</span>
+        <span class="meta-val">April 2026</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">License</span>
+        <span class="meta-val">Creative Commons CC-BY</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">System</span>
+        <span class="meta-val">SANGRE_KV1 · CCGS-C1</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">Scroll to read</div>
+</div>
+
+<!-- ── BODY ── -->
+<div class="page">
+
+  <!-- SECTION 01 — THE IDEA -->
+  <div class="section-marker">
+    <span class="sm-num">01</span>
+    <div class="sm-line"></div>
+    <span class="sm-title">The Idea</span>
+  </div>
+
+  <div class="body-text">
+    <p>Every data center on earth is hemorrhaging heat. Racks of processors working through the night, running calculations for the global economy, bleed thermal energy into the air at a rate most engineers treat as pure waste — a problem to be solved with expensive cooling systems, not an asset to be harvested. At 5 kilowatts of compute load, a single rack generates over 17,000 BTUs of heat per hour. That is enough to raise a 500-gallon fish tank by 3 degrees Fahrenheit every hour. That is enough, in other words, to sustain <em>life</em>.</p>
+
+    <p>The Community Compute Greenhouse System — CCGS-C1 — begins with this observation and takes it seriously. What if the waste product of the digital economy could become the input of a biological one? What if a community that has been systematically dispossessed of land and water for over a century could build, right now, a closed-loop food system that requires almost no external energy, produces fresh fish and vegetables year-round, and costs less than a used car to prototype?</p>
+
+    <p>This is not a thought experiment. It is a build specification.</p>
+  </div>
+
+  <div class="pull-quote">
+    <p class="pq-text">Electricity flows in. Compute cycles burn. Heat transfers to water. Biology does the rest. This is not metaphor — this is the acequia, running on electricity.</p>
+    <span class="pq-attr">SANGRE_KV1 · FLOW-ENERGY Node · CCGS-C1 Architecture</span>
+  </div>
+
+  <!-- SECTION 02 — THE CLIMATE PROBLEM -->
+  <div class="section-marker">
+    <span class="sm-num">02</span>
+    <div class="sm-line"></div>
+    <span class="sm-title">The Climate Problem (and the Opportunity)</span>
+  </div>
+
+  <div class="body-text">
+    <p>Zip code 87508 sits at 7,000 feet above sea level on the high desert plateau of northern New Mexico. The sun here is merciless in summer and criminally low in winter. The wind comes from the southwest without apology — spring gusts routinely exceed 30 mph, and any structure that does not respect this fact will be dismantled by the landscape itself. Nights drop below freezing from October through April. And then, in the middle of a brilliant winter afternoon, the temperature can swing 40 degrees in six hours.</p>
+
+    <p>This is, paradoxically, excellent greenhouse country. The solar resource is extraordinary. The latitude — roughly 35.5°N — means a south-facing glazing surface angled at <strong>50° from horizontal</strong> captures maximum winter solar gain while the steep angle sheds summer heat naturally. The challenge is not light. The challenge is thermal stability and wind loads. A greenhouse here is a wind job first and a food system second.</p>
+
+    <p>The traditional response is to spend enormous capital on HVAC. The CCGS approach is to use what the land already offers: deep soil temperatures that remain a stable 55–60°F year-round, even when the surface swings between 10°F and 90°F. Buried air tubes — corrugated pipe run 6 to 8 feet underground — pre-condition incoming air passively, without electricity. Thermal mass barrels along the north wall absorb daytime solar gain and release it through the night. The fish tank itself, 500 gallons of water, is the largest thermal battery in the building.</p>
+
+    <p>Add compute waste heat as a supplemental source and the system becomes <em>robust</em>. The biology and the machines are keeping each other warm.</p>
+  </div>
+
+  <!-- THERMAL MATH -->
+  <div class="math-block">
+    <div style="font-family:var(--mono);font-size:9px;letter-spacing:3px;color:var(--sun);margin-bottom:16px;text-transform:uppercase;">Verified Thermal Math · SPEC-T1 Baseline</div>
+    <span class="eq">5 kW compute load</span> <span class="comment">// 1 rack, high utilization</span><br>
+    <span class="eq">× 3,412 BTU/kWh</span><br>
+    <span class="result">= 17,060 BTU/hr heat output</span> <span class="comment">// primary thermal input</span><br>
+    <br>
+    <span class="eq">500 gal tank × 8.34 lb/gal × 1 BTU/lb°F</span><br>
+    <span class="eq">= 4,170 BTU per °F</span><br>
+    <span class="eq">÷ (17,060 × 0.80 efficiency)</span><br>
+    <span class="result">= ~3.27°F/hr temperature rise</span> <span class="comment">// at 80% transfer efficiency</span><br>
+    <br>
+    <span class="eq">Aquaponics water savings vs. traditional farming:</span> <span class="result">95%</span><br>
+    <span class="eq">Closed-loop nitrogen cycle efficiency:</span> <span class="result">fish waste → plant nutrient → clean water</span>
+  </div>
+
+  <!-- SECTION 03 — THE SYSTEM -->
+  <div class="section-marker">
+    <span class="sm-num">03</span>
+    <div class="sm-line"></div>
+    <span class="sm-title">The System Architecture</span>
+  </div>
+
+  <div class="body-text">
+    <p>CCGS-C1 is built from six interlocking subsystems. Each one has been designed to degrade gracefully — if compute goes down, the buried earth tubes and thermal mass maintain temperature. If the pumps fail, the biofilter keeps cycling on aeration alone. The system was designed by someone who has seen enough single points of failure to make redundancy a religion.</p>
+  </div>
+
+  <!-- NODE MAP -->
+  <div class="node-map">
+    <div class="node-card">
+      <div class="nc-id">SYS-COMPUTE</div>
+      <div class="nc-name">HPC / AI Cluster</div>
+      <div class="nc-desc">Primary heat generator. 5–10 kW load. High utilization maintains thermal consistency. The machine's inefficiency becomes the system's feature.</div>
+    </div>
+    <div class="node-card">
+      <div class="nc-id">SYS-THERMAL</div>
+      <div class="nc-name">Heat Capture Loop</div>
+      <div class="nc-desc">Plate heat exchanger or immersion coil. 5–10 GPM flow. Closed-loop preferred — isolated from biological contamination. Transfers compute heat to the water column.</div>
+    </div>
+    <div class="node-card">
+      <div class="nc-id">SYS-AQUAPONICS</div>
+      <div class="nc-name">Fish + Plant System</div>
+      <div class="nc-desc">Fish waste → biofilter → plant nutrients → clean water return. Temperature stability from the thermal loop increases nitrification efficiency. The biology runs cleaner when it is warm and consistent.</div>
+    </div>
+    <div class="node-card">
+      <div class="nc-id">SYS-CONTROL</div>
+      <div class="nc-name">Sensor + Control Layer</div>
+      <div class="nc-desc">Temp, pH, ammonia, dissolved oxygen. Fail-safe thermal bypass if thresholds are exceeded. The system monitors itself and decouples failure modes. No single sensor kills the fish.</div>
+    </div>
+    <div class="node-card">
+      <div class="nc-id">SYS-COMMUNITY</div>
+      <div class="nc-name">Education + Distribution</div>
+      <div class="nc-desc">The greenhouse produces food and trains people to grow food. Dashboards make the data visible to the neighborhood. The output is not just calories — it is capacity.</div>
+    </div>
+    <div class="node-card">
+      <div class="nc-id">THERMAL-BIO-LOOP</div>
+      <div class="nc-name">The Core Principle</div>
+      <div class="nc-desc">Compute entropy → biological productivity. Waste heat is not waste. It is the delta between what the machine needs and what it uses — and that delta is where life grows.</div>
+    </div>
+  </div>
+
+  <!-- FLOW DIAGRAM -->
+  <div class="flow-diagram">
+    <div class="fd-title">⚡ Energy + Water Flow · CCGS-C1</div>
+    <div class="fd-flow"><span class="node">ELECTRICITY</span>
+    <span class="arrow">    ↓</span>
+<span class="node">COMPUTE RACK</span>      <span class="label">↘ processed data, AI workloads</span>
+    <span class="arrow">    ↓ heat</span>
+<span class="node">HEAT EXCHANGER</span>
+    <span class="arrow">    ↓ heated water</span>
+<span class="node">FISH TANK</span>          <span class="label">← stable 24–27°C · tilapia or trout</span>
+    <span class="arrow">    ↓ fish waste + water</span>
+<span class="node">SWIRL CLARIFIER</span>    <span class="label">← solids removed</span>
+    <span class="arrow">    ↓</span>
+<span class="node">BIOFILTER</span>          <span class="label">← ammonia → nitrite → nitrate</span>
+    <span class="arrow">    ↓ nutrient-rich water</span>
+<span class="node">DWC GROW BEDS</span>      <span class="label">← lettuce, herbs, greens, starts</span>
+    <span class="arrow">    ↓ clean water</span>
+<span class="node">SUMP</span>
+    <span class="arrow">    ↓</span>
+<span class="node">BACK TO FISH TANK</span>  <span class="label">← closed loop · 95% water savings</span></div>
+  </div>
+
+  <!-- SECTION 04 — THE BUILD -->
+  <div class="section-marker">
+    <span class="sm-num">04</span>
+    <div class="sm-line"></div>
+    <span class="sm-title">How to Build It</span>
+  </div>
+
+  <div class="body-text">
+    <p>The phased build strategy is the most important design decision in the entire project. Do not build everything at once. The goal of Phase 0 is not production — it is data. You are testing the structure against the wind. You are measuring the thermal stability of the buried earth system. You are learning how your specific site behaves before you invest serious capital. Every farmer in history knew this. Every software engineer should.</p>
+  </div>
+
+  <!-- PHASE CARDS -->
+  <div class="phase-grid">
+    <div class="phase-card">
+      <div class="phase-num">0</div>
+      <div class="phase-label">Phase 0 · Now</div>
+      <div class="phase-title">Hoop + Earth Hybrid</div>
+      <ul class="phase-items">
+        <li>16' × 32' hoop frame, galvanized steel</li>
+        <li>Ground screws or rebar + concrete collars</li>
+        <li>Anti-billow straps, reinforced end walls</li>
+        <li>1–2 ft earth berm on north + west</li>
+        <li>4" corrugated pipe, 30–50 ft, buried 6 ft</li>
+        <li>4–10 × 55-gal black thermal barrels</li>
+        <li>Raised beds or DWC troughs, no fish yet</li>
+        <li>6 mil UV greenhouse poly</li>
+        <li>Apply for EQIP High Tunnel grant</li>
+      </ul>
+      <div class="phase-cost">Target cost: $1,500 – $3,500</div>
+    </div>
+    <div class="phase-card p2">
+      <div class="phase-num">1</div>
+      <div class="phase-label" style="color:var(--sun)">Phase 1 · 6–12 Months</div>
+      <div class="phase-title">Passive Solar Upgrade</div>
+      <ul class="phase-items" style="--c:var(--sun)">
+        <li>20' × 30' reinforced passive-solar shell</li>
+        <li>50° south glazing, 8–16mm polycarbonate</li>
+        <li>Insulated north wall, continuous footing</li>
+        <li>Full aquaponic loop: fish + biofilter + beds</li>
+        <li>Tilapia permit from NM Game &amp; Fish</li>
+        <li>Solar PV + battery backup for life support</li>
+        <li>Sensor array: temp, pH, ammonia, DO</li>
+        <li>Night thermal curtain</li>
+      </ul>
+      <div class="phase-cost" style="color:var(--sun)">Target cost: $8,000 – $20,000</div>
+    </div>
+    <div class="phase-card p3">
+      <div class="phase-num">2</div>
+      <div class="phase-label" style="color:var(--clay)">Phase 2 · Year 2+</div>
+      <div class="phase-title">Compute Integration</div>
+      <ul class="phase-items">
+        <li>HPC rack installation, 5–10 kW load</li>
+        <li>Plate heat exchanger to fish tank thermal loop</li>
+        <li>NUMARA orchestration layer connected</li>
+        <li>Second bay expansion to 900–1,200 sq ft</li>
+        <li>Geothermal hydronic loop (buried PEX)</li>
+        <li>Multi-species zones, fruiting crop section</li>
+        <li>Community dashboard + education programs</li>
+        <li>Full REAP solar funding application</li>
+      </ul>
+      <div class="phase-cost" style="color:var(--clay)">Target cost: $25,000 – $60,000</div>
+    </div>
+  </div>
+
+  <!-- GEOMETRY SPEC -->
+  <div class="spec-panel">
+    <div class="sp-title">⚙ Build Geometry · Santa Fe Latitude 35.5°N</div>
+    <div class="spec-grid">
+      <div class="spec-item">
+        <div class="spec-key">Long Axis</div>
+        <div class="spec-val">East–West<span class="spec-unit">orientation</span></div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-key">Glazing Face</div>
+        <div class="spec-val">True South<span class="spec-unit">± 10°</span></div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-key">Glazing Angle</div>
+        <div class="spec-val">50°<span class="spec-unit">from horizontal</span></div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-key">Winter Solar Noon</div>
+        <div class="spec-val">~31°<span class="spec-unit">altitude</span></div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-key">Phase 1 Footprint</div>
+        <div class="spec-val">600<span class="spec-unit">sq ft ideal</span></div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-key">Glazing Material</div>
+        <div class="spec-val">8–16mm<span class="spec-unit">polycarbonate</span></div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-key">Earth Tube Depth</div>
+        <div class="spec-val">6–8<span class="spec-unit">feet</span></div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-key">Earth Tube Length</div>
+        <div class="spec-val">40–100<span class="spec-unit">feet</span></div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-key">Stable Soil Temp</div>
+        <div class="spec-val">55–60°F<span class="spec-unit">year-round</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 05 — GRANTS -->
+  <div class="section-marker">
+    <span class="sm-num">05</span>
+    <div class="sm-line"></div>
+    <span class="sm-title">Funding the Build</span>
+  </div>
+
+  <div class="body-text">
+    <p>The grants exist. The language that unlocks them is specific. You are not building a greenhouse — you are building <em>"a climate-resilient, water-efficient, aquaponic-supported food system for two households in a high-desert environment."</em> Those words map directly onto USDA program priorities. Use them.</p>
+  </div>
+
+  <div class="grant-box">
+    <div class="gb-title">💰 Active Grant Paths · New Mexico · 2026</div>
+
+    <div class="grant-item">
+      <div class="gi-badge">P0 MATCH</div>
+      <div class="gi-text"><strong>USDA NRCS — EQIP High Tunnel Initiative</strong> — Best fit for Phase 0. Covers hoop structure, sometimes irrigation. Typical: several thousand dollars, can cover majority of Phase 0 cost. Apply immediately — build first, document, then apply for Phase 1 funding.</div>
+    </div>
+    <div class="grant-item">
+      <div class="gi-badge">COMMUNITY</div>
+      <div class="gi-text"><strong>USDA Urban Agriculture / Innovative Production</strong> — Grants for community food systems and innovative ag. Aquaponics qualifies as innovative production. Frame around food security, community access, and workforce development.</div>
+    </div>
+    <div class="grant-item">
+      <div class="gi-badge">STATE</div>
+      <div class="gi-text"><strong>New Mexico Department of Agriculture</strong> — Specialty crop grants, sustainability funding, local ag development. Smaller awards, easier to win. Good for Phase 0 documentation costs.</div>
+    </div>
+    <div class="grant-item">
+      <div class="gi-badge">PHASE 2</div>
+      <div class="gi-text"><strong>USDA Rural Development — REAP</strong> — Renewable energy and efficiency upgrades. This is the solar funding path for Phase 1/2. Apply after Phase 0 is operational and producing data.</div>
+    </div>
+    <div class="grant-item">
+      <div class="gi-badge">LOCAL</div>
+      <div class="gi-text"><strong>Conservation Districts · Water Boards · Santa Fe Sustainability Fund</strong> — Smaller, faster, relationship-driven. The acequia association connections are the door opener here. NM Socialists network is an asset.</div>
+    </div>
+  </div>
+
+  <!-- SECTION 06 — THE CONNECTION -->
+  <div class="section-marker">
+    <span class="sm-num">06</span>
+    <div class="sm-line"></div>
+    <span class="sm-title">Why This Is Bigger Than a Greenhouse</span>
+  </div>
+
+  <div class="body-text">
+    <p>The CCGS-C1 is a node in a larger argument. The argument is that the communities who were stripped of land and water in northern New Mexico — through <em>United States v. Sandoval</em>, through the Santa Fe Ring, through the systematic distortion of Spanish and Mexican communal property law after 1848 — do not have to wait for courts or legislatures to give it back. They can build infrastructure right now that makes the dispossession functionally irrelevant.</p>
+
+    <p>A greenhouse that feeds two families, produces fish, reuses 95% of its water, and runs on compute waste heat is not a political statement. It is a material fact. You cannot take back what someone grows inside their own structure, on their own land, from their own fish, with their own water. The acequia logic runs through all of it: water flows to where the community directs it, not to where the market prices it.</p>
+
+    <p>The SANGRE_KV1 knowledge graph assigns this project a node with infinite persistence — meaning the research loop on the Acequia–Pueblo–Hopi communal flow does not decay. It is a load-bearing concept. The greenhouse is not separate from the land rights work. It <em>is</em> the land rights work, expressed in polycarbonate and tilapia and lettuce.</p>
+
+    <p>Build it cheap. Build it first. Document everything. Then build it bigger.</p>
+  </div>
+
+  <div class="pull-quote">
+    <p class="pq-text">The acequia flows not because someone grants permission. It flows because someone built the channel, maintained it, and kept it clean. That is all this is. A channel.</p>
+    <span class="pq-attr">SANGRE_KV1 · n_meta_2 · Morphology / Veins / Mayordomía</span>
+  </div>
+
+  <!-- BOM TABLE -->
+  <div class="section-marker">
+    <span class="sm-num">07</span>
+    <div class="sm-line"></div>
+    <span class="sm-title">Phase 0 Bill of Materials</span>
+  </div>
+
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Component</th>
+        <th>Spec</th>
+        <th>Source</th>
+        <th>Cost Range</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Hoop frame kit</td>
+        <td>Galvanized steel, 16' × 32', 4 ft spacing</td>
+        <td>FarmTek / Gothic Arch / DIY EMT</td>
+        <td>$800 – $1,500</td>
+      </tr>
+      <tr>
+        <td>Greenhouse poly</td>
+        <td>6 mil, UV-stabilized, double layer if possible</td>
+        <td>Tractor Supply / online</td>
+        <td>$200 – $400</td>
+      </tr>
+      <tr>
+        <td>Anchoring system</td>
+        <td>Rebar stakes + concrete collars OR ground screws</td>
+        <td>Local hardware / rental</td>
+        <td>$200 – $600</td>
+      </tr>
+      <tr>
+        <td>Anti-billow straps</td>
+        <td>Every 4–6 ft over plastic, wiggle wire base</td>
+        <td>Greenhouse supply</td>
+        <td>$80 – $150</td>
+      </tr>
+      <tr>
+        <td>Earth air tubes</td>
+        <td>4" corrugated drain pipe, 40–60 ft, buried 6 ft</td>
+        <td>Home Depot</td>
+        <td>$60 – $200</td>
+      </tr>
+      <tr>
+        <td>Thermal mass barrels</td>
+        <td>4–10 × 55-gal, painted black, north wall</td>
+        <td>Free (food grade) / Craigslist</td>
+        <td>$0 – $200</td>
+      </tr>
+      <tr>
+        <td>Grow beds (Phase 0)</td>
+        <td>Raised beds / DWC troughs, no fish yet</td>
+        <td>DIY / Upcycle</td>
+        <td>$100 – $400</td>
+      </tr>
+      <tr>
+        <td>End wall framing</td>
+        <td>2×6 wood frame, braced, one door + vent</td>
+        <td>Local lumber</td>
+        <td>$200 – $400</td>
+      </tr>
+      <tr>
+        <td>Earthwork (berm)</td>
+        <td>1–2 ft excavation, berm north + west, DIY</td>
+        <td>Manual / tractor rental</td>
+        <td>$0 – $500</td>
+      </tr>
+      <tr class="highlight">
+        <td><strong>Phase 0 Total</strong></td>
+        <td colspan="2"><strong>Fully operational grow structure, no fish</strong></td>
+        <td><strong>$1,500 – $3,500</strong></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- FOOTER -->
+  <div class="paper-footer">
+    <div>
+      <div class="footer-brand">Sena's AI Collective</div>
+      <div style="font-family:var(--sans);font-size:13px;color:var(--dim);margin-top:4px;max-width:320px;line-height:1.6;">CCGS-C1 is part of the SANGRE_KV1 knowledge graph — research infrastructure for New Mexico land and water sovereignty, built by and for the communities it documents.</div>
+    </div>
+    <div class="footer-meta">
+      CCGS-C1 Research Paper · v0.2<br>
+      SANGRE_KV1 · Node: CCGS-C1<br>
+      License: Creative Commons CC-BY 4.0<br>
+      Authors: Salvador Sena + AI Collective<br>
+      Santa Fe, New Mexico · April 2026<br>
+      La acequia flows on.
+    </div>
+  </div>
+
+</div>
+
+
+
+</body></html>

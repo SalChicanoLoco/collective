@@ -3,6 +3,11 @@ __pycache__/
 .DS_Store
 sena-chat/sessions/
 
+# node / astro
+node_modules/
+.astro/
+dist/
+
 # wrangler files
 .wrangler
 .dev.vars*

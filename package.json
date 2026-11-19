@@ -1,0 +1,26 @@
+{
+  "name": "senacolectivo-site",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sena's AI Collective / Sena Colectivo — edge-first website and AI Worker platform.",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro build && wrangler dev",
+    "deploy": "astro build && wrangler deploy",
+    "typecheck": "astro check && tsc --noEmit"
+  },
+  "dependencies": {
+    "astro": "^5.0.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.0",
+    "@cloudflare/workers-types": "^5.20261118.1",
+    "typescript": "^5.7.0",
+    "wrangler": "^4.90.0"
+  }
+}

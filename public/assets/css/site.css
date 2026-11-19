@@ -1,0 +1,334 @@
+/* Sena Colectivo — modern site system (feature/site-modern rebuild)
+   Design brief: docs/REBUILD-BRIEF.md
+   Flat earth ground, sand text, gold as the single accent. System sans
+   throughout — no serif, no gradient, no terracotta, no boxed labels.
+   Static first: one stylesheet, no dependencies, no web fonts.
+   Architecture, top to bottom: tokens → base → layout → components.
+   Logical properties throughout; .wrap only centres and caps width —
+   padding belongs to the context that owns it, so no rule undoes
+   another rule. One !important in the file, and only for the bilingual
+   display switch it exists to enforce. The hero is a .section variant,
+   not a second shell — one section pattern, shared by every section
+   and every subpage that uses it. Shared by subpages site-wide:
+   every legacy class name is kept and restyled in the new language,
+   none deleted. */
+
+:root {
+  --earth: #171008;
+  --earth-2: #1f160c;
+  --sand: #f6ead7;
+  --cream: #fff8ed;
+  --muted: rgba(246, 234, 215, 0.72); /* 8.53:1 on earth */
+  --faint: rgba(246, 234, 215, 0.68); /* 7.69:1 on earth */
+  --line: rgba(246, 234, 215, 0.12);
+  --gold: #e8a825; /* 9.03:1 on earth */
+  --ink: #19110a; /* 8.93:1 on gold */
+  --sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --max: 1120px;
+}
+
+* { box-sizing: border-box; }
+
+html { color-scheme: dark; }
+
+body {
+  margin: 0;
+  background: var(--earth);
+  color: var(--sand);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.65;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg { max-width: 100%; height: auto; }
+
+a { color: var(--gold); text-underline-offset: 0.18em; }
+a:hover { color: var(--cream); }
+
+:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 8px;
+  z-index: 999;
+  background: var(--gold);
+  color: var(--ink);
+  padding: 12px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.skip-link:focus { left: 8px; }
+
+/* Layout — .wrap only centres and caps width. Padding belongs to the
+   context that owns it (masthead, hero, section, footer), so no rule
+   ever has to undo another rule's padding. */
+.wrap {
+  max-width: var(--max);
+  margin-inline: auto;
+}
+
+/* Masthead — flat, one hairline, no terracotta rule */
+.site-masthead {
+  border-bottom: 1px solid var(--line);
+  background: var(--earth);
+  padding-block: 16px;
+}
+.site-masthead__inner {
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px 24px;
+  flex-wrap: wrap;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+  color: var(--sand);
+  text-decoration: none;
+}
+.brand:hover { color: var(--cream); }
+.brand-sub {
+  font-size: 15px;
+  color: var(--faint);
+  margin: 2px 0 0;
+}
+.nav-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.nav-list a {
+  display: inline-block;
+  padding-block: 12px; /* 44px+ tap target with line-height */
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 16px;
+}
+.nav-list a:hover { color: var(--gold); text-decoration: underline; }
+
+/* Language toggle — plain text buttons, active state is gold + underline
+   (never colour alone). Behaviour in assets/js/site.js, unchanged. */
+.lang-toggle { display: inline-flex; align-items: center; gap: 4px; }
+.lang-toggle button {
+  border: 0;
+  background: transparent;
+  min-height: 44px;
+  padding: 10px 12px;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--faint);
+  cursor: pointer;
+}
+.lang-toggle button:hover { color: var(--sand); }
+.lang-toggle button[aria-pressed="true"] {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+}
+
+/* Labels — first-fixation content: 15px, never smaller, gold on earth.
+   One label pattern for every section, including the hero status line:
+   a label that re-declares these values is a defect, not a variant. */
+.eyebrow,
+.kicker,
+.meta,
+.hero-status {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0;
+}
+
+/* Hero — a .section variant, not a second shell. The shell (padding,
+   inline rhythm) lives on the shared .section rule below; the hero
+   only shortens the bottom so the next section sits closer, and sets
+   the h1 scale. Flat, left-aligned, spacing only. No gradient, no border.
+   .hero is shared by subpages (projects, tools, publications) — never
+   rename it or remove it. */
+.hero h1,
+.page-title {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  margin: 16px 0 24px;
+  max-width: 20ch;
+}
+/* The hero dek is the section lead — one rule, shared. See .dek,
+   .section-lead under Sections. */
+.hero-status {
+  margin: 32px 0 0;
+}
+.button-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 24px; }
+
+/* Hero image — the one hero visual: a gold-node constellation over
+   dark earth, full width of the wrap, intrinsic 16:9 ratio from the
+   width/height attributes. One hairline and the panel radius so its
+   edge reads against the flat earth ground; no overlay, no scrim,
+   no text on the image. */
+.hero-media { margin: 48px 0 0; }
+.hero-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+/* Featured section background — a full-bleed image behind a section,
+   one modifier on the shared section shell, same treatment for every
+   section that carries one (featured section: constellation; contact
+   area: mesa network). The image is an <img class="section-bg">, first
+   child of the section, below-fold so loading="lazy"; content stays in
+   .wrap above it. Flat earth fallback if the image fails. No overlay,
+   no scrim, no text treatment beyond the image itself. */
+.section--featured {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--earth);
+}
+.section-bg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.section--featured .wrap { position: relative; }
+
+/* Buttons — plain sans, 16px, 44px+ targets. No tiny mono uppercase. */
+.button {
+  display: inline-block;
+  min-height: 48px;
+  padding: 14px 22px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  color: var(--sand);
+  background: transparent;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-decoration: none;
+}
+.button:hover { border-color: var(--gold); color: var(--cream); }
+.button--primary {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--ink);
+}
+.button--primary:hover { background: var(--cream); border-color: var(--cream); color: var(--ink); }
+
+/* Sections — separated by whitespace, not rules. One shell shared by
+   every section and by the hero: .hero only overrides the bottom. */
+.section,
+.hero { padding: 96px 24px; }
+.hero { padding-bottom: 80px; }
+.section h2 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  margin: 16px 0 18px;
+}
+/* The lead paragraph — the hero dek and every section lead are the
+   same pattern: 18px, 65ch, muted. One rule, two names, never two
+   declarations of the same values. */
+.dek,
+.section-lead {
+  max-width: 65ch;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Grids and cards — flat panels, one hairline, no top accent bar */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.grid--spaced { margin-top: 32px; }
+.card {
+  display: block;
+  background: var(--earth-2);
+  color: inherit;
+  text-decoration: none;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 24px;
+  min-height: 100%;
+}
+a.card:hover { border-color: color-mix(in srgb, var(--gold) 55%, transparent); }
+.card h3 {
+  margin: 12px 0 8px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.card p { color: var(--muted); margin: 0; }
+.card p + p { margin-top: 12px; }
+.stat {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--gold);
+}
+.note { color: var(--muted); max-width: 65ch; }
+
+/* Footer — one hairline, 15px text */
+.site-footer {
+  border-top: 1px solid var(--line);
+  padding: 32px 24px;
+  color: var(--faint);
+  font-size: 15px;
+}
+.site-footer p { margin: 0; }
+
+/* Bilingual toggle — behaviour lives in assets/js/site.js */
+.lang-es .en,
+.lang-en .es { display: none !important; }
+
+/* Mobile — 16px floor, labels stay 15px, 44px+ targets, no overflow */
+@media (max-width: 720px) {
+  .site-masthead__inner { padding-inline: 18px; align-items: flex-start; }
+  .section,
+  .hero { padding: 64px 18px; }
+  .hero { padding-bottom: 56px; }
+  .site-footer { padding: 32px 18px; }
+}
+
+@media print {
+  html { color-scheme: light; }
+  body, .site-masthead, .hero, .section, .site-footer, .card {
+    background: #fff;
+    color: #111;
+  }
+  .site-masthead, .site-footer, .card { border-color: #999; }
+  .nav-list, .lang-toggle, .button-row { display: none; }
+  a { color: #111; }
+  .eyebrow, .kicker, .hero-status, .stat { color: #111; }
+}
