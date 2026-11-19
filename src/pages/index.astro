@@ -4,26 +4,29 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 ---
 
-<BaseLayout>
+<BaseLayout
+  title="Sena's AI Collective | Site Revamp in Progress"
+  description="Sena's AI Collective (Sena Colectivo) is currently rebuilding senacolectivo.com. Contact salvadorsena@senacolectivo.com or (505) 451-9341."
+>
   <Header />
   <main id="main">
-    <section class="hero">
+    <section class="hero" id="status">
       <div class="wrap">
-        <p class="eyebrow en">AI systems · civic infrastructure · bilingual publishing</p>
-        <p class="eyebrow es">Sistemas de IA · infraestructura cívica · publicación bilingüe</p>
-        <h1 class="en">Research, systems, and civic infrastructure for New Mexico.</h1>
-        <h1 class="es">Investigación, sistemas e infraestructura cívica para Nuevo México.</h1>
+        <p class="eyebrow en">Maintenance in progress · New build underway</p>
+        <p class="eyebrow es">Mantenimiento en curso · Nueva versión en construcción</p>
+        <h1 class="en">We're rebuilding senacolectivo.com.</h1>
+        <h1 class="es">Estamos reconstruyendo senacolectivo.com.</h1>
         <p class="dek en">
-          Sena's AI Collective builds practical AI systems, publication engines, local commerce tools, and public-interest web platforms.
+          Our public tools, publications, and archive are being rebuilt cleanly on Cloudflare Workers. While we finish and verify each component, the practice remains open for paid work.
         </p>
         <p class="dek es">
-          Sena Colectivo construye sistemas prácticos de IA, motores de publicación, herramientas de comercio local y plataformas web de interés público.
+          Nuestras herramientas públicas, publicaciones y archivo se están reconstruyendo en Cloudflare Workers. Mientras terminamos y verificamos cada componente, la práctica sigue abierta para proyectos pagados.
         </p>
         <p class="hero-status en">Accepting paid projects · (505) 451-9341</p>
         <p class="hero-status es">Aceptando proyectos pagados · (505) 451-9341</p>
         <div class="button-row">
-          <a class="button button--primary en" href="mailto:salvadorsena@senacolectivo.com">Start a project</a>
-          <a class="button button--primary es" href="mailto:salvadorsena@senacolectivo.com">Inicia un proyecto</a>
+          <a class="button button--primary en" href="mailto:salvadorsena@senacolectivo.com">Email salvadorsena@senacolectivo.com</a>
+          <a class="button button--primary es" href="mailto:salvadorsena@senacolectivo.com">Escribe a salvadorsena@senacolectivo.com</a>
           <a class="button button--ghost en" href="tel:+15054519341">Call (505) 451-9341</a>
           <a class="button button--ghost es" href="tel:+15054519341">Llama al (505) 451-9341</a>
         </div>
@@ -40,331 +43,41 @@ import Footer from '../components/Footer.astro';
       </div>
     </section>
 
-    <section class="section" id="services">
+    <section class="section" id="contact">
       <div class="wrap">
-        <div class="eyebrow en">Paid work · Prices published where fixed</div>
-        <div class="eyebrow es">Trabajo pagado · Precios publicados donde son fijos</div>
-        <h2 class="en">Hire the practice.</h2>
-        <h2 class="es">Contrata la práctica.</h2>
+        <div class="eyebrow en">Direct contact · Northern New Mexico</div>
+        <div class="eyebrow es">Contacto directo · Norte de Nuevo México</div>
+        <h2 class="en">Start a project while we rebuild.</h2>
+        <h2 class="es">Inicia un proyecto mientras reconstruimos.</h2>
         <p class="section-lead en">
-          Consulting and grant writing are paid services; Merc Mercado is a separate asset for sale. Fixed prices are published here so nobody has to ask twice. Scope and price are agreed before work starts.
+          IT &amp; AI consulting, custom systems, and grant writing. Scope and price agreed up front.
         </p>
         <p class="section-lead es">
-          La consultoría y la redacción de subvenciones son servicios pagados; Merc Mercado es un activo aparte en venta. Los precios fijos están publicados aquí para que nadie tenga que preguntar dos veces. El alcance y el precio se acuerdan antes de empezar el trabajo.
+          Consultoría de TI e IA, sistemas a medida y redacción de subvenciones. Alcance y precio acordados por adelantado.
         </p>
         <div class="grid grid--spaced">
           <article class="card">
-            <div class="kicker en">Consulting · Active since 2003</div>
-            <div class="kicker es">Consultoría · Activo desde 2003</div>
-            <h3 class="en">Sena IT and AI services</h3>
-            <h3 class="es">Servicios de TI e IA de Sena</h3>
-            <p class="en">
-              Computer setup and repair, Wi-Fi and networks, and custom AI tools and automation for homes, schools, and small businesses in Northern New Mexico. 22 years doing this.
-            </p>
-            <p class="es">
-              Instalación y reparación de computadoras, Wi-Fi y redes, y herramientas de IA y automatización a medida para hogares, escuelas y pequeños negocios del norte de Nuevo México. 22 años haciéndolo.
-            </p>
-            <p><span class="stat">Per job</span></p>
-            <p class="en">
-              Priced per job. Scope and price agreed before work starts. Discounts for seniors and neighbors on a tight budget — just ask. Trade and barter welcome.
-            </p>
-            <p class="es">
-              Precio por trabajo. Alcance y precio acordados antes de empezar. Descuentos para personas mayores y vecinos con presupuesto ajustado — solo pregunta. Acepto intercambio y trueque.
-            </p>
+            <div class="kicker en">Email</div>
+            <div class="kicker es">Correo</div>
+            <h3><a href="mailto:salvadorsena@senacolectivo.com">salvadorsena@senacolectivo.com</a></h3>
+            <p class="en">Direct inbox for consulting, AI systems, and project inquiries.</p>
+            <p class="es">Correo directo para consultoría, sistemas de IA y consultas de proyectos.</p>
           </article>
-
           <article class="card">
-            <div class="kicker en">For sale · Turnkey</div>
-            <div class="kicker es">En venta · Llave en mano</div>
-            <h3>Merc Mercado</h3>
-            <p class="en">
-              A local handmade marketplace for Santa Fe makers: zero percent platform take, direct buyer-seller payment, and local-first commerce. Offered as a turnkey website asset.
-            </p>
-            <p class="es">
-              Un mercado local de artesanía para creadores de Santa Fe: cero por ciento de comisión, pago directo entre comprador y vendedor, y comercio local primero. Se ofrece como un sitio web llave en mano.
-            </p>
-            <p><span class="stat">$2,500</span></p>
-            <p class="en">asking price. Floor $1,000.</p>
-            <p class="es">precio pedido. Mínimo $1,000.</p>
-            <p><a href="https://merc.senacolectivo.com" rel="noopener">merc.senacolectivo.com</a></p>
+            <div class="kicker en">Phone</div>
+            <div class="kicker es">Teléfono</div>
+            <h3><a href="tel:+15054519341">(505) 451-9341</a></h3>
+            <p class="en">Call or text to scope a job directly.</p>
+            <p class="es">Llama o envía mensaje para acordar un trabajo directamente.</p>
           </article>
-
           <article class="card">
-            <div class="kicker en">Service · Priced per project</div>
-            <div class="kicker es">Servicio · Precio por proyecto</div>
-            <h3 class="en">Grant writing</h3>
-            <h3 class="es">Redacción de subvenciones</h3>
-            <p class="en">
-              Grant writing as a service for community projects and small organizations. One service among others — not the core identity of the practice.
-            </p>
-            <p class="es">
-              Redacción de subvenciones como servicio para proyectos comunitarios y organizaciones pequeñas. Un servicio entre otros — no la identidad central de la práctica.
-            </p>
-            <p class="en">Priced per project. Scope and price agreed before work starts.</p>
-            <p class="es">Precio por proyecto. Alcance y precio acordados antes de empezar el trabajo.</p>
+            <div class="kicker en">Live Marketplace · For sale</div>
+            <div class="kicker es">Mercado en vivo · En venta</div>
+            <h3><a href="https://merc.senacolectivo.com" rel="noopener">merc.senacolectivo.com</a></h3>
+            <p class="en">Merc Mercado remains live on Cloudflare Pages while the main site is rebuilt.</p>
+            <p class="es">Merc Mercado sigue en vivo en Cloudflare Pages mientras reconstruimos el sitio principal.</p>
           </article>
         </div>
-        <p class="note en">
-          To start, write to <a href="mailto:salvadorsena@senacolectivo.com">salvadorsena@senacolectivo.com</a> or call <a href="tel:+15054519341">(505) 451-9341</a>.
-        </p>
-        <p class="note es">
-          Para empezar, escribe a <a href="mailto:salvadorsena@senacolectivo.com">salvadorsena@senacolectivo.com</a> o llama al <a href="tel:+15054519341">(505) 451-9341</a>.
-        </p>
-      </div>
-    </section>
-
-    <section class="section" id="start">
-      <div class="wrap">
-        <div class="eyebrow en">How a project starts</div>
-        <div class="eyebrow es">Cómo empieza un proyecto</div>
-        <h2 class="en">Four steps, agreed up front.</h2>
-        <h2 class="es">Cuatro pasos, acordados por adelantado.</h2>
-        <div class="grid grid--spaced">
-          <article class="card">
-            <div class="kicker en">Step 1</div>
-            <div class="kicker es">Paso 1</div>
-            <h3 class="en">Contact</h3>
-            <h3 class="es">Contacto</h3>
-            <p class="en">Write or call and say what you need built, fixed, or written.</p>
-            <p class="es">Escribe o llama y di qué necesitas construir, arreglar o escribir.</p>
-          </article>
-          <article class="card">
-            <div class="kicker en">Step 2</div>
-            <div class="kicker es">Paso 2</div>
-            <h3 class="en">Scope and price</h3>
-            <h3 class="es">Alcance y precio</h3>
-            <p class="en">We agree the scope and the price before work starts. Priced per job.</p>
-            <p class="es">Acordamos el alcance y el precio antes de empezar el trabajo. Precio por trabajo.</p>
-          </article>
-          <article class="card">
-            <div class="kicker en">Step 3</div>
-            <div class="kicker es">Paso 3</div>
-            <h3 class="en">Build</h3>
-            <h3 class="es">Construcción</h3>
-            <p class="en">The work is built in the open, in small steps you can see.</p>
-            <p class="es">El trabajo se construye de forma abierta, en pasos pequeños que puedes ver.</p>
-          </article>
-          <article class="card">
-            <div class="kicker en">Step 4</div>
-            <div class="kicker es">Paso 4</div>
-            <h3 class="en">Review</h3>
-            <h3 class="es">Revisión</h3>
-            <p class="en">You review the work before anything ships, publishes, or goes live.</p>
-            <p class="es">Revisas el trabajo antes de que nada se entregue, se publique o salga en vivo.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section--featured" id="playground">
-      <img
-        class="section-bg"
-        src="/assets/img/hero-graph-constellation.webp"
-        width="2048"
-        height="1152"
-        loading="lazy"
-        decoding="async"
-        alt="Gold nodes connected by thin lines on a near-black earth background."
-      />
-      <div class="wrap">
-        <div class="eyebrow en">Project playground · Free demos</div>
-        <div class="eyebrow es">Patio de proyectos · Demos gratuitas</div>
-        <h2 class="en">Try the public work.</h2>
-        <h2 class="es">Prueba el trabajo público.</h2>
-        <p class="section-lead en">
-          Free to open and use. Each card is labeled with its real status. The one for-sale item is labeled as for sale.
-        </p>
-        <p class="section-lead es">
-          Gratis para abrir y usar. Cada tarjeta lleva su estado real. El único artículo en venta está marcado como en venta.
-        </p>
-        <div class="grid grid--spaced">
-          <a class="card" href="https://merc.senacolectivo.com" rel="noopener">
-            <div class="kicker en">Marketplace · For sale — asks $2,500</div>
-            <div class="kicker es">Mercado · En venta — pide $2,500</div>
-            <h3>Merc Mercado</h3>
-            <p class="en">
-              A local handmade marketplace for Santa Fe makers: zero percent platform take, direct buyer-seller payment, and local-first commerce. Live now in Santa Fe.
-            </p>
-            <p class="es">
-              Un mercado local de artesanía para creadores de Santa Fe: cero por ciento de comisión, pago directo entre comprador y vendedor, y comercio local primero. En vivo ahora en Santa Fe.
-            </p>
-          </a>
-          <a class="card" href="/publications/ai-data-centers/index.html">
-            <div class="kicker en">Research package · Published</div>
-            <div class="kicker es">Paquete de investigación · Publicado</div>
-            <h3 class="en">AI Data Centers in Arid Regions</h3>
-            <h3 class="es">Centros de datos de IA en regiones áridas</h3>
-            <p class="en">Water, power, compute, and the political economy of infrastructure in New Mexico and the Southwest.</p>
-            <p class="es">Agua, energía, cómputo y la economía política de la infraestructura en Nuevo México y el suroeste.</p>
-          </a>
-          <a class="card" href="https://newmexicosocialists.org" rel="noopener">
-            <div class="kicker en">Civic publishing · Live site</div>
-            <div class="kicker es">Publicación cívica · Sitio en vivo</div>
-            <h3>NewMexicoSocialists.org</h3>
-            <p class="en">Renovated public information architecture for organizing, publishing, and community education.</p>
-            <p class="es">Arquitectura renovada de información pública para organizar, publicar y educar a la comunidad.</p>
-          </a>
-          <a class="card" href="/commons-greenhouse-calculator-secure/index.html">
-            <div class="kicker en">Calculator · Free tool, live</div>
-            <div class="kicker es">Calculadora · Herramienta gratuita, en vivo</div>
-            <h3 class="en">Commons Greenhouse Calculator</h3>
-            <h3 class="es">Calculadora de invernadero Commons</h3>
-            <p class="en">Passive solar, aquaponics, thermal mass, and high-desert resilience planning.</p>
-            <p class="es">Energía solar pasiva, acuaponía, masa térmica y planificación de resiliencia en el desierto alto.</p>
-          </a>
-          <a class="card" href="/SiteAnalysis/index.html">
-            <div class="kicker en">Audit · Free tool, live</div>
-            <div class="kicker es">Auditoría · Herramienta gratuita, en vivo</div>
-            <h3 class="en">Site Analysis Checker</h3>
-            <h3 class="es">Verificador de análisis del sitio</h3>
-            <p class="en">Fast triage for headers, dependency bloat, DOM signals, and site hygiene.</p>
-            <p class="es">Diagnóstico rápido de encabezados, dependencias, señales del DOM y salud del sitio.</p>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" id="proof">
-      <div class="wrap">
-        <div class="eyebrow en">Research and commercial work</div>
-        <div class="eyebrow es">Investigación y trabajo comercial</div>
-        <h2 class="en">Real systems, honest statuses.</h2>
-        <h2 class="es">Sistemas reales, estados honestos.</h2>
-        <p class="section-lead en">
-          Four lines of work from Colectivo Sena de AI LLC: edge research, security software, system utilities, and the consulting practice that pays for it all. Each one labeled with its real status, not its ambition.
-        </p>
-        <p class="section-lead es">
-          Cuatro líneas de trabajo de Colectivo Sena de AI LLC: investigación de borde, software de seguridad, utilidades de sistema y la práctica de consultoría que lo paga todo. Cada una con su estado real, no su ambición.
-        </p>
-        <div class="grid grid--spaced">
-          <article class="card">
-            <div class="kicker en">Edge AI · Simulation</div>
-            <div class="kicker es">IA de borde · Simulación</div>
-            <h3 class="en">AIV-PS-01 low-power edge vision</h3>
-            <h3 class="es">AIV-PS-01 visión de borde de bajo consumo</h3>
-            <p class="en">
-              Dual-loop coordinator that keeps heavy models asleep until a scene actually changes. 73–89% fewer model calls in simulation, 99.6% tracking accuracy. No field-tested hardware data yet; benchtop validation is the next step.
-            </p>
-            <p class="es">
-              Coordinador de doble ciclo que mantiene los modelos pesados dormidos hasta que una escena realmente cambia. 73–89% menos llamadas al modelo en simulación, 99.6% de precisión de seguimiento. Aún no hay datos de hardware probados en campo; la validación de laboratorio es el siguiente paso.
-            </p>
-          </article>
-          <article class="card">
-            <div class="kicker en">Security · Working software</div>
-            <div class="kicker es">Seguridad · Software en funcionamiento</div>
-            <h3>Quetzal Core</h3>
-            <p class="en">
-              Heuristic behavioral defense that audits running memory and unsigned binaries locally. No telemetry leaves the machine.
-            </p>
-            <p class="es">
-              Defensa heurística basada en el comportamiento que audita la memoria en ejecución y los binarios sin firmar localmente. Ninguna telemetría sale de la máquina.
-            </p>
-          </article>
-          <article class="card">
-            <div class="kicker en">Utilities · Production</div>
-            <div class="kicker es">Utilidades · Producción</div>
-            <h3>Limpia-Defensa</h3>
-            <p class="en">
-              System cleaner: cache staging, storage reclamation, permission auditing, backup before cleanup. In production. Android version built and in testing for publish; Apple app works, in local brew, just needs the Apple certificate; Windows version works, Java build being updated.
-            </p>
-            <p class="es">
-              Limpiador de sistema: preparación de caché, recuperación de almacenamiento, auditoría de permisos y respaldo antes de limpiar. En producción. La versión de Android está construida y en pruebas para su publicación; la app de Apple funciona, está en brew local y solo necesita el certificado de Apple; la versión de Windows funciona y se está actualizando su compilación en Java.
-            </p>
-          </article>
-          <article class="card">
-            <div class="kicker en">Consulting · Active since 2003</div>
-            <div class="kicker es">Consultoría · Activa desde 2003</div>
-            <h3 class="en">Sena IT and GIS consulting</h3>
-            <h3 class="es">Consultoría de TI y GIS de Sena</h3>
-            <p class="en">
-              Linux administration, network virtualization, and geospatial engineering for Northern New Mexico institutions, schools, and small businesses. 22 years of continuous delivery.
-            </p>
-            <p class="es">
-              Administración de Linux, virtualización de redes e ingeniería geoespacial para instituciones, escuelas y pequeñas empresas del norte de Nuevo México. 22 años de entrega continua.
-            </p>
-          </article>
-        </div>
-        <p class="note en">
-          Built by Salvador Sena — 22 years of systems engineering in Northern New Mexico: New Mexico Department of Public Safety, New Mexico Highlands University, Santa Fe Community College, and the San Miguel County E911 mapping project.
-        </p>
-        <p class="note es">
-          Construido por Salvador Sena — 22 años de ingeniería de sistemas en el norte de Nuevo México: Departamento de Seguridad Pública de Nuevo México, New Mexico Highlands University, Santa Fe Community College y el proyecto de mapeo E911 del condado de San Miguel.
-        </p>
-      </div>
-    </section>
-
-    <section class="section" id="publications">
-      <div class="wrap">
-        <div class="eyebrow en">Publications and tools</div>
-        <div class="eyebrow es">Publicaciones y herramientas</div>
-        <h2 class="en">Readable, printable, inspectable.</h2>
-        <h2 class="es">Legible, imprimible, inspeccionable.</h2>
-        <div class="grid grid--spaced">
-          <a class="card" href="/publications/index.html">
-            <div class="kicker en">Publications</div>
-            <div class="kicker es">Publicaciones</div>
-            <h3 class="en">Publication archive</h3>
-            <h3 class="es">Archivo de publicaciones</h3>
-            <p class="en">Public research packages, briefs, and calculation spines.</p>
-            <p class="es">Paquetes de investigación pública, informes y ejes de cálculo.</p>
-          </a>
-          <a class="card" href="/biblioteca/index.html">
-            <div class="kicker en">Archive</div>
-            <div class="kicker es">Archivo</div>
-            <h3>La Biblioteca</h3>
-            <p class="en">Long-form civic, land, water, labor, and community research archive.</p>
-            <p class="es">Archivo de investigación larga sobre lo cívico, la tierra, el agua, el trabajo y la comunidad.</p>
-          </a>
-          <a class="card" href="/publications/the-peoples-greenhouse/index.html">
-            <div class="kicker en">Research paper</div>
-            <div class="kicker es">Artículo de investigación</div>
-            <h3>The People's Greenhouse — CCGS-C1</h3>
-            <p class="en">
-              The full system: ancient-tech base, aquaponics, compute heat, and the controller — architecture, heat math, and how to build it. CC-BY.
-            </p>
-            <p class="es">
-              El sistema completo: base de tecnología antigua, acuaponía, calor de cómputo y el controlador — arquitectura, cálculo de calor y cómo construirlo. CC-BY.
-            </p>
-          </a>
-          <a class="card" href="/SiteAnalysis/index.html">
-            <div class="kicker en">Audit</div>
-            <div class="kicker es">Auditoría</div>
-            <h3 class="en">Site Analysis Checker</h3>
-            <h3 class="es">Verificador de análisis del sitio</h3>
-            <p class="en">Fast triage for headers, dependency bloat, DOM signals, and site hygiene.</p>
-            <p class="es">Diagnóstico rápido de encabezados, dependencias, señales del DOM y salud del sitio.</p>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section--featured" id="contact">
-      <img
-        class="section-bg"
-        src="/assets/img/hero-mesa-network.webp"
-        width="1920"
-        height="1080"
-        loading="lazy"
-        decoding="async"
-        alt="Desert mesa silhouette at dusk with a faint gold graph network in the sky."
-      />
-      <div class="wrap">
-        <div class="eyebrow en">Contact</div>
-        <div class="eyebrow es">Contacto</div>
-        <h2 class="en">Start a project.</h2>
-        <h2 class="es">Inicia un proyecto.</h2>
-        <p class="section-lead en">
-          Write or call. Say what you need built, fixed, or written, and we agree scope and price before work starts.
-        </p>
-        <p class="section-lead es">
-          Escribe o llama. Di qué necesitas construir, arreglar o escribir, y acordamos el alcance y el precio antes de empezar el trabajo.
-        </p>
-        <p class="note en">
-          Email <a href="mailto:salvadorsena@senacolectivo.com">salvadorsena@senacolectivo.com</a> · Phone <a href="tel:+15054519341">(505) 451-9341</a>
-        </p>
-        <p class="note es">
-          Correo <a href="mailto:salvadorsena@senacolectivo.com">salvadorsena@senacolectivo.com</a> · Teléfono <a href="tel:+15054519341">(505) 451-9341</a>
-        </p>
       </div>
     </section>
   </main>

@@ -1,16 +1,3 @@
----
-const navItems = [
-  { href: '#services', en: 'Services', es: 'Servicios' },
-  { href: '#start', en: 'How it works', es: 'Cómo funciona' },
-  { href: '#playground', en: 'Playground', es: 'Proyectos' },
-  { href: '#proof', en: 'Proof', es: 'Prueba' },
-  { href: '/publications/index.html', en: 'Publications', es: 'Publicaciones' },
-  { href: '/biblioteca/index.html', en: 'La Biblioteca', es: 'La Biblioteca' },
-  { href: '/SiteAnalysis/index.html', en: 'Site Audit', es: 'Auditoría' },
-  { href: '#contact', en: 'Contact', es: 'Contacto' },
-];
----
-
 <header class="site-masthead">
   <div class="site-masthead__inner">
     <div>
@@ -19,20 +6,9 @@ const navItems = [
     </div>
     <nav aria-label="Main navigation">
       <ul class="nav-list">
-        {navItems.map((item) => (
-          <li>
-            <a href={item.href}>
-              {item.en === item.es ? (
-                item.en
-              ) : (
-                <>
-                  <span class="en">{item.en}</span>
-                  <span class="es">{item.es}</span>
-                </>
-              )}
-            </a>
-          </li>
-        ))}
+        <li><a href="#status"><span class="en">Status</span><span class="es">Estado</span></a></li>
+        <li><a href="#contact"><span class="en">Contact</span><span class="es">Contacto</span></a></li>
+        <li><a href="https://merc.senacolectivo.com" rel="noopener">Merc Mercado</a></li>
       </ul>
     </nav>
     <div class="lang-toggle" role="group" aria-label="Language">
