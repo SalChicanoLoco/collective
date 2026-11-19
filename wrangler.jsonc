@@ -4,12 +4,13 @@
   "main": "worker/index.ts",
   "compatibility_date": "2026-05-20",
   "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
   "observability": {
     "enabled": true
   },
   "routes": [
-    { "pattern": "senacolectivo.com", "custom_domain": true },
-    { "pattern": "www.senacolectivo.com", "custom_domain": true }
+    { "pattern": "senacolectivo.com/*", "zone_name": "senacolectivo.com" },
+    { "pattern": "www.senacolectivo.com/*", "zone_name": "senacolectivo.com" }
   ],
   "assets": {
     "directory": "./dist",
