@@ -15,7 +15,7 @@
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
-    "run_worker_first": ["/api/*"]
+    "run_worker_first": ["/api/*", "/favicon.ico"]
   },
   "vars": {
     "SITE_URL": "https://senacolectivo.com",

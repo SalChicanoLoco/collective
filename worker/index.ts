@@ -42,6 +42,12 @@ export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
 
+    if (url.pathname === '/favicon.ico') {
+      const svgUrl = new URL('/favicon.svg', url.origin);
+      const res = await env.ASSETS.fetch(new Request(svgUrl.toString(), request));
+      return withSecurityHeaders(res);
+    }
+
     if (url.pathname === '/api/health') {
       return withSecurityHeaders(
         Response.json({

@@ -12,6 +12,7 @@
     "build": "astro build",
     "preview": "astro build && wrangler dev",
     "deploy": "astro build && wrangler deploy",
+    "qc": "node scripts/qc-live.mjs",
     "typecheck": "astro check && tsc --noEmit"
   },
   "dependencies": {
