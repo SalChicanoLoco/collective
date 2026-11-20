@@ -470,7 +470,7 @@
     canvas.addEventListener('pointermove', function (e) {
       if (!dragging) return;
       state.yaw += (e.clientX - lastX) * 0.01;
-      state.pitch = Math.max(0.08, Math.min(1.35, state.pitch + (e.clientY - lastY) * 0.01));
+      state.pitch = Math.max(-1.55, Math.min(1.57, state.pitch + (e.clientY - lastY) * 0.01));
       lastX = e.clientX;
       lastY = e.clientY;
       render3D();
@@ -488,12 +488,18 @@
     ctrl.addEventListener('change', updateAll);
   });
 
-  el('resetOrbitBtn')?.addEventListener('click', function () {
-    state.yaw = -0.62;
-    state.pitch = 0.42;
+  function setView(yaw, pitch) {
+    state.yaw = yaw;
+    state.pitch = pitch;
     state.zoom = 1.0;
     render3D();
-  });
+  }
+
+  el('resetOrbitBtn')?.addEventListener('click', function () { setView(-0.62, 0.42); });
+  el('viewIsoBtn')?.addEventListener('click', function () { setView(-0.62, 0.42); });
+  el('viewTopBtn')?.addEventListener('click', function () { setView(0, 1.57); });
+  el('viewFrontBtn')?.addEventListener('click', function () { setView(0, 0.04); });
+  el('viewSideBtn')?.addEventListener('click', function () { setView(Math.PI / 2, 0.04); });
   el('exportStlBtn')?.addEventListener('click', exportStl);
   el('exportDxfBtn')?.addEventListener('click', exportDxf);
   window.addEventListener('resize', render3D);

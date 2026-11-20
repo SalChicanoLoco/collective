@@ -75,6 +75,12 @@ import Footer from '../../components/Footer.astro';
         </aside>
 
         <div class="cad-main">
+          <div class="button-row" style="margin-top:0;">
+            <button type="button" id="viewIsoBtn" class="button">Iso</button>
+            <button type="button" id="viewTopBtn" class="button">Top</button>
+            <button type="button" id="viewFrontBtn" class="button">Front (South)</button>
+            <button type="button" id="viewSideBtn" class="button">Side (East)</button>
+          </div>
           <div class="cad-frame">
             <canvas id="cadCanvas" class="cad-canvas"></canvas>
           </div>
