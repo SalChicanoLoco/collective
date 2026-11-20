@@ -39,22 +39,31 @@ import Footer from '../../components/Footer.astro';
       <div class="wrap cad-studio">
         <aside id="cadControls" class="cad-sidebar">
           <div class="card">
-            <div class="kicker">Dimensions (ft)</div>
-            <label for="lengthFt" class="field-label">Length X (12–96 ft)</label>
+            <div class="kicker">Unit System</div>
+            <label for="unitSystem" class="field-label">Units / Unidades</label>
+            <select id="unitSystem" class="field-select">
+              <option value="imperial" selected>Imperial (ft · sq ft · gal · BTU/°F)</option>
+              <option value="si">SI / Metric (m · m² · L · kJ/K)</option>
+            </select>
+          </div>
+
+          <div class="card">
+            <div id="dimKicker" class="kicker">Dimensions (ft)</div>
+            <label id="lengthLabel" for="lengthFt" class="field-label">Length X (12–96 ft)</label>
             <input id="lengthFt" class="field-input" type="number" min="12" max="96" step="2" value="32" />
-            <label for="widthFt" class="field-label">Width Y (10–32 ft)</label>
+            <label id="widthLabel" for="widthFt" class="field-label">Width Y (10–32 ft)</label>
             <input id="widthFt" class="field-input" type="number" min="10" max="32" step="2" value="16" />
-            <label for="spacingFt" class="field-label">Hoop Spacing (2–8 ft)</label>
+            <label id="spacingLabel" for="spacingFt" class="field-label">Hoop Spacing (2–8 ft)</label>
             <input id="spacingFt" class="field-input" type="number" min="2" max="8" step="0.5" value="4" />
           </div>
 
           <div class="card">
-            <div class="kicker">Earthworks &amp; Aisle (ft)</div>
-            <label for="aisleFt" class="field-label">Central Aisle (1.5–5 ft)</label>
+            <div id="earthKicker" class="kicker">Earthworks &amp; Aisle (ft)</div>
+            <label id="aisleLabel" for="aisleFt" class="field-label">Central Aisle (1.5–5 ft)</label>
             <input id="aisleFt" class="field-input" type="number" min="1.5" max="5" step="0.5" value="2.5" />
-            <label for="bermFt" class="field-label">North Earth Berm (0–6 ft)</label>
+            <label id="bermLabel" for="bermFt" class="field-label">North Earth Berm (0–6 ft)</label>
             <input id="bermFt" class="field-input" type="number" min="0" max="6" step="0.5" value="2.5" />
-            <label for="trenchFt" class="field-label">Sunken Trench Depth (0–4 ft)</label>
+            <label id="trenchLabel" for="trenchFt" class="field-label">Sunken Trench Depth (0–4 ft)</label>
             <input id="trenchFt" class="field-input" type="number" min="0" max="4" step="0.5" value="1.5" />
           </div>
 

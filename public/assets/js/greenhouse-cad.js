@@ -6,7 +6,13 @@
   };
   var NS = 'http://www.w3.org/2000/svg';
 
+  var FT_TO_M = 0.3048;
+  var SQFT_TO_SQM = 0.09290304;
+  var GAL_TO_L = 3.78541;
+  var BTUF_TO_KJK = 1.8991005;
+
   var state = {
+    units: 'imperial',
     lengthFt: 32,
     widthFt: 16,
     spacingFt: 4,
@@ -23,6 +29,29 @@
     zoom: 1.0,
   };
 
+  var FIELD_SPECS = [
+    { id: 'lengthFt', minFt: 12, maxFt: 96, stepFt: 2, stepM: 0.5, fallbackFt: 32, labelId: 'lengthLabel', name: 'Length X' },
+    { id: 'widthFt', minFt: 10, maxFt: 32, stepFt: 2, stepM: 0.5, fallbackFt: 16, labelId: 'widthLabel', name: 'Width Y' },
+    { id: 'spacingFt', minFt: 2, maxFt: 8, stepFt: 0.5, stepM: 0.1, fallbackFt: 4, labelId: 'spacingLabel', name: 'Hoop Spacing' },
+    { id: 'aisleFt', minFt: 1.5, maxFt: 5, stepFt: 0.5, stepM: 0.1, fallbackFt: 2.5, labelId: 'aisleLabel', name: 'Central Aisle' },
+    { id: 'bermFt', minFt: 0, maxFt: 6, stepFt: 0.5, stepM: 0.1, fallbackFt: 2.5, labelId: 'bermLabel', name: 'North Earth Berm' },
+    { id: 'trenchFt', minFt: 0, maxFt: 4, stepFt: 0.5, stepM: 0.1, fallbackFt: 1.5, labelId: 'trenchLabel', name: 'Sunken Trench Depth' },
+  ];
+
+  function isSI() {
+    return state.units === 'si';
+  }
+
+  function fmtLen(ft, decimals) {
+    if (isSI()) return (ft * FT_TO_M).toFixed(decimals == null ? 2 : decimals) + ' m';
+    return (decimals == null ? Number(ft.toFixed(1)) : ft.toFixed(decimals)) + ' ft';
+  }
+
+  function fmtLenShort(ft) {
+    if (isSI()) return (ft * FT_TO_M).toFixed(2) + ' m';
+    return Number(ft.toFixed(1)) + "'";
+  }
+
   var TIERS = {
     salvage: { label: 'Scrappy Salvage', rate: 1.85, desc: 'Reclaimed lumber, salvaged barrels, poly film' },
     balanced: { label: 'Balanced Low-Cost', rate: 4.25, desc: 'EMT/PVC hoops, UV poly, 55-gal barrels, earth berm' },
@@ -35,13 +64,66 @@
     return Math.min(max, Math.max(min, n));
   }
 
+  function syncUnitLabels() {
+    var si = isSI();
+    if (el('dimKicker')) el('dimKicker').textContent = si ? 'Dimensions (m)' : 'Dimensions (ft)';
+    if (el('earthKicker')) el('earthKicker').textContent = si ? 'Earthworks & Aisle (m)' : 'Earthworks & Aisle (ft)';
+    FIELD_SPECS.forEach(function (f) {
+      var input = el(f.id);
+      var lbl = el(f.labelId);
+      if (input) {
+        input.min = si ? (f.minFt * FT_TO_M).toFixed(2) : String(f.minFt);
+        input.max = si ? (f.maxFt * FT_TO_M).toFixed(2) : String(f.maxFt);
+        input.step = si ? String(f.stepM) : String(f.stepFt);
+      }
+      if (lbl) {
+        lbl.textContent = si
+          ? f.name + ' (' + (f.minFt * FT_TO_M).toFixed(1) + '–' + (f.maxFt * FT_TO_M).toFixed(1) + ' m)'
+          : f.name + ' (' + f.minFt + '–' + f.maxFt + ' ft)';
+      }
+    });
+    var tierSel = el('buildTier');
+    if (tierSel) {
+      Array.prototype.forEach.call(tierSel.options, function (opt) {
+        var t = TIERS[opt.value];
+        if (!t) return;
+        opt.textContent = si
+          ? t.label + ' ($' + (t.rate / SQFT_TO_SQM).toFixed(2) + '/m²)'
+          : t.label + ' ($' + t.rate.toFixed(2) + '/sq ft)';
+      });
+    }
+  }
+
+  function applyUnitSystem(nextUnits, convertInputs) {
+    var prevSi = isSI();
+    state.units = nextUnits === 'si' ? 'si' : 'imperial';
+    var nextSi = isSI();
+    if (el('unitSystem') && el('unitSystem').value !== state.units) {
+      el('unitSystem').value = state.units;
+    }
+    if (convertInputs && prevSi !== nextSi) {
+      FIELD_SPECS.forEach(function (f) {
+        var input = el(f.id);
+        if (!input) return;
+        var ftVal = state[f.id];
+        input.value = nextSi ? (ftVal * FT_TO_M).toFixed(2) : String(Number(ftVal.toFixed(1)));
+      });
+    }
+    try {
+      localStorage.setItem('sena_cad_units', state.units);
+    } catch (_e) {}
+    syncUnitLabels();
+  }
+
   function readInputs() {
-    state.lengthFt = clamp(el('lengthFt').value, 12, 96, 32);
-    state.widthFt = clamp(el('widthFt').value, 10, 32, 16);
-    state.spacingFt = clamp(el('spacingFt').value, 2, 8, 4);
-    state.aisleFt = clamp(el('aisleFt').value, 1.5, 5, 2.5);
-    state.bermFt = clamp(el('bermFt').value, 0, 6, 2.5);
-    state.trenchFt = clamp(el('trenchFt').value, 0, 4, 1.5);
+    var si = isSI();
+    var toFt = si ? function (v) { return v / FT_TO_M; } : function (v) { return v; };
+    state.lengthFt = clamp(toFt(Number(el('lengthFt').value)), 12, 96, 32);
+    state.widthFt = clamp(toFt(Number(el('widthFt').value)), 10, 32, 16);
+    state.spacingFt = clamp(toFt(Number(el('spacingFt').value)), 2, 8, 4);
+    state.aisleFt = clamp(toFt(Number(el('aisleFt').value)), 1.5, 5, 2.5);
+    state.bermFt = clamp(toFt(Number(el('bermFt').value)), 0, 6, 2.5);
+    state.trenchFt = clamp(toFt(Number(el('trenchFt').value)), 0, 4, 1.5);
     state.tier = el('buildTier').value || 'balanced';
     state.showBarrels = el('showBarrels').checked;
     state.showAirTube = el('showAirTube').checked;
@@ -238,7 +320,7 @@
     ctx.font = '12px ui-monospace, SFMono-Regular, Menlo, monospace';
     ctx.fillText('NORTH (Thermal Berm + Barrels)', 14, 22);
     ctx.fillStyle = '#e8a825';
-    ctx.fillText(L + ' ft (X) × ' + W + ' ft (Y) · Ridge ' + state.ridgeFt + ' ft · Drag to orbit', 14, h - 14);
+    ctx.fillText(fmtLen(L) + ' (X) × ' + fmtLen(W) + ' (Y) · Ridge ' + fmtLen(state.ridgeFt) + ' · Drag to orbit', 14, h - 14);
   }
 
   // --- 2D CAD Blueprints (Plan + Section SVG) ---
@@ -295,7 +377,7 @@
         x1: x, y1: padT, x2: x, y2: padT + h,
         stroke: T.accent, 'stroke-opacity': majorX ? 0.22 : 0.07, 'stroke-width': majorX ? 0.8 : 0.4,
       }));
-      if (majorX) root.appendChild(svgText(x, padT + h + 14, gx + "'", T.muted, 9, 'middle'));
+      if (majorX) root.appendChild(svgText(x, padT + h + 14, isSI() ? (gx * FT_TO_M).toFixed(1) + 'm' : gx + "'", T.muted, 9, 'middle'));
     }
     for (var gy = 0; gy <= W; gy++) {
       var y = padT + gy * scale;
@@ -304,7 +386,7 @@
         x1: padL, y1: y, x2: padL + w, y2: y,
         stroke: T.accent, 'stroke-opacity': majorY ? 0.22 : 0.07, 'stroke-width': majorY ? 0.8 : 0.4,
       }));
-      if (majorY) root.appendChild(svgText(padL - 8, y + 3, gy + "'", T.muted, 9, 'end'));
+      if (majorY) root.appendChild(svgText(padL - 8, y + 3, isSI() ? (gy * FT_TO_M).toFixed(1) + 'm' : gy + "'", T.muted, 9, 'end'));
     }
 
     // North Earth Berm apron (top)
@@ -313,7 +395,7 @@
         x: padL, y: padT - 14, width: w, height: 14,
         fill: T.accent2, 'fill-opacity': 0.14, stroke: T.accent2, 'stroke-width': 0.8, 'stroke-dasharray': '3 2',
       }));
-      root.appendChild(svgText(padL + 6, padT - 4, 'NORTH EARTH BERM (' + state.bermFt + "')", T.accent2, 8.5));
+      root.appendChild(svgText(padL + 6, padT - 4, 'NORTH EARTH BERM (' + fmtLenShort(state.bermFt) + ')', T.accent2, 8.5));
     }
 
     // Double-line perimeter wall (0.5 ft wall thickness)
@@ -328,7 +410,7 @@
       x: padL + wt, y: aisleY, width: w - wt * 2, height: aislePx,
       fill: T.surface, stroke: T.accent, 'stroke-width': 0.8, 'stroke-dasharray': '5 3',
     }));
-    root.appendChild(svgText(padL + w / 2, aisleY + aislePx / 2 + 3, 'ACCESS AISLE (' + state.aisleFt + "' WIDE)", T.accent, 9, 'middle'));
+    root.appendChild(svgText(padL + w / 2, aisleY + aislePx / 2 + 3, 'ACCESS AISLE (' + fmtLenShort(state.aisleFt) + ' WIDE)', T.accent, 9, 'middle'));
 
     // North & South Growing Beds
     var barrelClearance = state.showBarrels ? 2.1 * scale : wt + 4;
@@ -337,9 +419,9 @@
     var sBedY = aisleY + aislePx + 4;
     var sBedH = Math.max(10, padT + h - wt - 4 - sBedY);
     root.appendChild(makeSvg('rect', { x: padL + wt + 4, y: nBedY, width: w - wt * 2 - 8, height: nBedH, fill: T.accent, 'fill-opacity': 0.08, stroke: T.accent, 'stroke-width': 1 }));
-    root.appendChild(svgText(padL + w / 2, nBedY + nBedH / 2 + 3, 'NORTH GROW BED (' + d.bedWidth.toFixed(1) + "')", T.text, 9, 'middle'));
+    root.appendChild(svgText(padL + w / 2, nBedY + nBedH / 2 + 3, 'NORTH GROW BED (' + fmtLenShort(d.bedWidth) + ')', T.text, 9, 'middle'));
     root.appendChild(makeSvg('rect', { x: padL + wt + 4, y: sBedY, width: w - wt * 2 - 8, height: sBedH, fill: T.accent, 'fill-opacity': 0.08, stroke: T.accent, 'stroke-width': 1 }));
-    root.appendChild(svgText(padL + w / 2, sBedY + sBedH / 2 + 3, 'SOUTH GROW BED (' + d.bedWidth.toFixed(1) + "')", T.text, 9, 'middle'));
+    root.appendChild(svgText(padL + w / 2, sBedY + sBedH / 2 + 3, 'SOUTH GROW BED (' + fmtLenShort(d.bedWidth) + ')', T.text, 9, 'middle'));
 
     // Individual 55-gal circular barrel CAD symbols along North Wall
     if (state.showBarrels) {
@@ -366,20 +448,20 @@
     root.appendChild(makeSvg('line', { x1: padL, y1: dimY, x2: padL + w, y2: dimY, stroke: T.text, 'stroke-width': 1 }));
     root.appendChild(makeSvg('line', { x1: padL, y1: dimY - 5, x2: padL, y2: padT - 4, stroke: T.muted, 'stroke-width': 0.7 }));
     root.appendChild(makeSvg('line', { x1: padL + w, y1: dimY - 5, x2: padL + w, y2: padT - 4, stroke: T.muted, 'stroke-width': 0.7 }));
-    root.appendChild(svgText(padL + w / 2, dimY - 4, L + "'-0\" OVERALL LENGTH (X)", T.text, 9.5, 'middle'));
+    root.appendChild(svgText(padL + w / 2, dimY - 4, (isSI() ? fmtLen(L) : L + "'-0\"") + ' OVERALL LENGTH (X)', T.text, 9.5, 'middle'));
 
     var dimX = padL + w + 26;
     root.appendChild(makeSvg('line', { x1: dimX, y1: padT, x2: dimX, y2: padT + h, stroke: T.text, 'stroke-width': 1 }));
     root.appendChild(makeSvg('line', { x1: padL + w + 4, y1: padT, x2: dimX + 5, y2: padT, stroke: T.muted, 'stroke-width': 0.7 }));
     root.appendChild(makeSvg('line', { x1: padL + w + 4, y1: padT + h, x2: dimX + 5, y2: padT + h, stroke: T.muted, 'stroke-width': 0.7 }));
-    var wLbl = svgText(dimX + 12, padT + h / 2, W + "'-0\" (Y)", T.text, 9.5, 'middle');
+    var wLbl = svgText(dimX + 12, padT + h / 2, (isSI() ? fmtLen(W) : W + "'-0\"") + ' (Y)', T.text, 9.5, 'middle');
     wLbl.setAttribute('transform', 'rotate(-90 ' + (dimX + 12) + ' ' + (padT + h / 2) + ')');
     root.appendChild(wLbl);
 
     // North Arrow & Title Block
     root.appendChild(svgText(18, 22, '▲ N', T.accent, 11, 'start'));
     root.appendChild(makeSvg('rect', { x: vw - 250, y: vh - 28, width: 242, height: 22, fill: T.surface, stroke: T.border }));
-    root.appendChild(svgText(vw - 242, vh - 13, 'SENA COLECTIVO · PLAN VIEW · 1/4"=1\'-0"', T.muted, 9));
+    root.appendChild(svgText(vw - 242, vh - 13, isSI() ? 'SENA COLECTIVO · PLAN VIEW · 1:50 METRIC' : 'SENA COLECTIVO · PLAN VIEW · 1/4"=1\'-0"', T.muted, 9));
   }
 
   function renderSectionSvg() {
@@ -401,7 +483,7 @@
 
     // Grade datum
     root.appendChild(makeSvg('line', { x1: 14, y1: groundY, x2: vw - 14, y2: groundY, stroke: T.muted, 'stroke-dasharray': '6 4', 'stroke-width': 1 }));
-    root.appendChild(svgText(16, groundY - 5, 'GRADE ±0.0\'', T.muted, 8.5));
+    root.appendChild(svgText(16, groundY - 5, isSI() ? 'GRADE ±0.00 m' : "GRADE ±0.0'", T.muted, 8.5));
 
     // North earth berm
     root.appendChild(makeSvg('polygon', {
@@ -412,7 +494,7 @@
     // Excavated sunken trench
     root.appendChild(makeSvg('rect', { x: pad, y: groundY, width: w, height: trenchPx, fill: T.surface, stroke: T.text, 'stroke-width': 1.2 }));
     if (state.trenchFt > 0) {
-      root.appendChild(svgText(pad + w / 2, groundY + trenchPx / 2 + 3, 'SUNKEN TRENCH (-' + state.trenchFt + "')", T.muted, 8.5, 'middle'));
+      root.appendChild(svgText(pad + w / 2, groundY + trenchPx / 2 + 3, 'SUNKEN TRENCH (-' + fmtLenShort(state.trenchFt) + ')', T.muted, 8.5, 'middle'));
     }
 
     // North thermal barrel silhouette
@@ -425,7 +507,7 @@
       d: 'M ' + pad + ' ' + (groundY - bermPx) + ' Q ' + (pad + w * 0.45) + ' ' + (groundY - ridgePx * 1.45) + ' ' + (pad + w) + ' ' + groundY,
       fill: 'none', stroke: T.accent, 'stroke-width': 2.2,
     }));
-    root.appendChild(svgText(pad + w * 0.48, groundY - ridgePx - 6, 'RIDGE ' + state.ridgeFt + "' · 50° SOUTH GLAZING", T.accent, 9, 'middle'));
+    root.appendChild(svgText(pad + w * 0.48, groundY - ridgePx - 6, 'RIDGE ' + fmtLenShort(state.ridgeFt) + ' · 50° SOUTH GLAZING', T.accent, 9, 'middle'));
 
     // Sub-soil geothermal air tube
     if (state.showAirTube) {
@@ -435,7 +517,7 @@
     }
 
     root.appendChild(makeSvg('rect', { x: vw - 246, y: vh - 28, width: 238, height: 22, fill: T.surface, stroke: T.border }));
-    root.appendChild(svgText(vw - 238, vh - 13, 'SECTION (N → S) · BERM ' + state.bermFt + "' · TRENCH " + state.trenchFt + "'", T.muted, 9));
+    root.appendChild(svgText(vw - 238, vh - 13, 'SECTION (N → S) · BERM ' + fmtLenShort(state.bermFt) + ' · TRENCH ' + fmtLenShort(state.trenchFt), T.muted, 9));
   }
 
   // --- Real 3D-Printable .STL Generator (1:50 Scale in mm) ---
@@ -601,21 +683,25 @@
   }
 
   function exportDxf() {
-    var L = state.lengthFt;
-    var W = state.widthFt;
+    var k = isSI() ? FT_TO_M : 1;
+    var L = state.lengthFt * k;
+    var W = state.widthFt * k;
     var mid = W / 2;
-    var halfA = state.aisleFt / 2;
+    var halfA = (state.aisleFt * k) / 2;
     var entities = [
       dxfRect('WALLS', 0, 0, L, W),
-      dxfRect('AISLE', 0.5, mid - halfA, L - 0.5, mid + halfA),
-      dxfRect('GROW_BEDS', 1, 0.8, L - 1, mid - halfA - 0.3),
-      dxfRect('GROW_BEDS', 1, mid + halfA + 0.3, L - 1, W - 2.2),
+      dxfRect('AISLE', 0.5 * k, mid - halfA, L - 0.5 * k, mid + halfA),
+      dxfRect('GROW_BEDS', 1 * k, 0.8 * k, L - 1 * k, mid - halfA - 0.3 * k),
+      dxfRect('GROW_BEDS', 1 * k, mid + halfA + 0.3 * k, L - 1 * k, W - 2.2 * k),
     ];
     if (state.showBarrels) {
-      entities.push(dxfRect('NORTH_BARRELS', 1, W - 1.8, L - 1, W - 0.2));
+      entities.push(dxfRect('NORTH_BARRELS', 1 * k, W - 1.8 * k, L - 1 * k, W - 0.2 * k));
     }
     var dxf = ['0', 'SECTION', '2', 'ENTITIES', entities.join('\n'), '0', 'ENDSEC', '0', 'EOF'].join('\n');
-    downloadFile('greenhouse-' + L + 'x' + W + '-plan.dxf', dxf, 'application/dxf');
+    var fname = isSI()
+      ? 'greenhouse-' + L.toFixed(1) + 'x' + W.toFixed(1) + 'm-plan.dxf'
+      : 'greenhouse-' + state.lengthFt + 'x' + state.widthFt + '-plan.dxf';
+    downloadFile(fname, dxf, 'application/dxf');
   }
 
   // --- Real Plotter .PLT (HPGL, 1016 units/inch, 1:48 scale: 1/4" = 1'-0") ---
@@ -662,19 +748,29 @@
 
   function renderMetrics() {
     var d = derived();
-    el('footprintValue').textContent = Math.round(d.area) + ' sq ft';
+    var si = isSI();
+    var areaM2 = d.area * SQFT_TO_SQM;
+    var glazingM2 = d.glazingSqFt * SQFT_TO_SQM;
+    var waterL = Math.round(d.waterGal * GAL_TO_L);
+    var kjk = Math.round(d.btuPerDegF * BTUF_TO_KJK);
+
+    el('footprintValue').textContent = si ? areaM2.toFixed(1) + ' m²' : Math.round(d.area) + ' sq ft';
     el('hoopsValue').textContent = d.hoops + ' hoops';
-    el('thermalValue').textContent = d.waterGal + ' gal (' + d.btuPerDegF + ' BTU/°F)';
+    el('thermalValue').textContent = si
+      ? waterL.toLocaleString() + ' L (' + kjk.toLocaleString() + ' kJ/K)'
+      : d.waterGal + ' gal (' + d.btuPerDegF + ' BTU/°F)';
     el('costValue').textContent = '$' + d.estCost.toLocaleString() + ' (' + d.tierInfo.label + ')';
 
     var bom = el('bomList');
     bom.textContent = '';
     [
-      'Footprint: ' + state.lengthFt + ' ft × ' + state.widthFt + ' ft (' + d.area + ' sq ft)',
-      'Glazing envelope: ~' + d.glazingSqFt + ' sq ft (50° south slope)',
+      'Footprint: ' + fmtLen(state.lengthFt) + ' × ' + fmtLen(state.widthFt) + ' (' + (si ? areaM2.toFixed(1) + ' m²' : Math.round(d.area) + ' sq ft') + ')',
+      'Glazing envelope: ~' + (si ? glazingM2.toFixed(1) + ' m²' : d.glazingSqFt + ' sq ft') + ' (50° south slope)',
       'Hoops & ground anchors: ' + d.hoops + ' hoops / ' + d.hoops * 2 + ' anchors',
-      'North thermal mass: ' + d.barrelCount + ' × 55-gal barrels (' + d.waterGal + ' gal)',
-      'Grow beds: 2 × ' + d.bedWidth.toFixed(1) + ' ft wide, separated by ' + state.aisleFt + ' ft aisle',
+      si
+        ? 'North thermal mass: ' + d.barrelCount + ' × 208-L barrels (' + waterL.toLocaleString() + ' L)'
+        : 'North thermal mass: ' + d.barrelCount + ' × 55-gal barrels (' + d.waterGal + ' gal)',
+      'Grow beds: 2 × ' + fmtLen(d.bedWidth) + ' wide, separated by ' + fmtLen(state.aisleFt) + ' aisle',
       'Climate loop: ' + (state.showAirTube ? 'Sub-soil geothermal air tube' : 'Passive roll-up ventilation'),
       'Build profile: ' + d.tierInfo.label + ' — ' + d.tierInfo.desc,
     ].forEach(function (line) {
@@ -720,7 +816,12 @@
     }, { passive: false });
   }
 
-  document.querySelectorAll('#cadControls input, #cadControls select').forEach(function (ctrl) {
+  el('unitSystem')?.addEventListener('change', function (e) {
+    applyUnitSystem(e.target.value, true);
+    updateAll();
+  });
+
+  document.querySelectorAll('#cadControls input, #cadControls select:not(#unitSystem)').forEach(function (ctrl) {
     ctrl.addEventListener('input', updateAll);
     ctrl.addEventListener('change', updateAll);
   });
@@ -748,6 +849,14 @@
     renderPlanSvg();
     renderSectionSvg();
   });
+
+  (function initUnits() {
+    var q = new URLSearchParams(window.location.search).get('units');
+    var saved = null;
+    try { saved = localStorage.getItem('sena_cad_units'); } catch (_e) {}
+    var initial = (q === 'si' || q === 'imperial') ? q : (saved === 'si' ? 'si' : 'imperial');
+    applyUnitSystem(initial, initial === 'si');
+  })();
 
   updateAll();
 })();
