@@ -23,47 +23,88 @@ import PageHero from '../../../components/PageHero.astro';
 
     <section class="section">
       <div class="wrap">
-        <div class="card">
-          <div class="kicker">What Quetzal Is &amp; How Data Arrives (Experimental)</div>
-          <p class="note">
-            <strong>Quetzal Planetary Geophysics</strong> is an experimental cyber-physical geophysics platform built around strict epistemic provenance, deterministic constitutive laws, and low-waste edge thermodynamics. Instead of letting language models guess physical numbers, Quetzal separates observational ingestion from mathematical kernels: live seismic events arrive directly from the public <strong>USGS NEIC M2.5+ GeoJSON feed</strong>, geomagnetic secular drift is anchored to <strong>NOAA NCEI WMM2025</strong> and <strong>ESA Swarm</strong> satellite baselines, and subsurface resistivity, Yellowstone thermo-rheology, Brune fault mechanics, and InSAR deformation run on bounded deterministic engines.
-          </p>
-          <p class="note">
-            <strong>Budget &amp; Rate Guardrails:</strong> To protect upstream APIs and prevent runaway Google AI / cloud billing, this public web surface makes <strong>zero paid LLM or Google AI calls</strong>. Live USGS telemetry is cached in Cloudflare <code>OPS_KV</code> for 5 minutes (1 upstream fetch per 5 minutes regardless of visitor count) and rate-limited to <code>15 requests/min/IP</code>. All energy math runs client-side in your browser.
-          </p>
-          <div class="button-row">
-            <a class="button button--primary" href="/publications/quetzal-geophysics/">Read Quetzal Technical Publication</a>
-            <a class="button" href="/tools/">All Tools</a>
+        <div class="hero-split">
+          <div>
+            <p class="eyebrow">Architecture &amp; Data Provenance</p>
+            <h2>Observational ingestion meets deterministic physics.</h2>
+            <p>
+              <strong>Quetzal Planetary Geophysics</strong> separates raw scientific telemetry from deterministic constitutive kernels so language models never fabricate physical numbers. Live earthquakes arrive from the public <strong>USGS NEIC M2.5+ GeoJSON feed</strong>, geomagnetic drift is anchored to <strong>NOAA NCEI WMM2025</strong> and <strong>ESA Swarm</strong> baselines, and subsurface resistivity, Yellowstone thermo-rheology, Brune fault mechanics, and InSAR deformation run on bounded mathematical engines.
+            </p>
+            <p>
+              To protect upstream APIs and prevent runaway billing, this public surface makes <strong>zero paid LLM or Google AI calls</strong>. Live USGS telemetry is cached in Cloudflare <code>OPS_KV</code> for 5 minutes and capped at <code>15 req/min/IP</code>, while all Joules and TNT calculations execute locally in your browser.
+            </p>
+            <div class="button-row">
+              <a class="button button--primary" href="/publications/quetzal-geophysics/">Read Quetzal Whitepaper</a>
+              <a class="button" href="/tools/">All Tools</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="kicker">Live Telemetry &amp; Budget Pipeline</div>
+            <svg viewBox="0 0 420 210" style="width:100%;height:auto;display:block;margin-top:6px;" aria-label="Quetzal data flow from USGS and NOAA through 5-minute OPS_KV edge cache to client browser">
+              <rect x="10" y="16" width="118" height="54" rx="6" fill="var(--surface-2)" stroke="var(--accent)" stroke-width="1.2" />
+              <text x="69" y="38" fill="var(--accent)" font-size="10" font-family="var(--mono)" text-anchor="middle">USGS NEIC</text>
+              <text x="69" y="54" fill="var(--muted)" font-size="9" font-family="var(--mono)" text-anchor="middle">M2.5+ GeoJSON</text>
+
+              <rect x="10" y="84" width="118" height="54" rx="6" fill="var(--surface-2)" stroke="var(--accent-2)" stroke-width="1.2" />
+              <text x="69" y="106" fill="var(--accent-2)" font-size="10" font-family="var(--mono)" text-anchor="middle">NOAA / SWARM</text>
+              <text x="69" y="122" fill="var(--muted)" font-size="9" font-family="var(--mono)" text-anchor="middle">WMM2025 Drift</text>
+
+              <line x1="128" y1="43" x2="158" y2="75" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3" />
+              <line x1="128" y1="111" x2="158" y2="85" stroke="var(--accent-2)" stroke-width="1.5" stroke-dasharray="4 3" />
+
+              <rect x="158" y="42" width="118" height="72" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5" />
+              <text x="217" y="66" fill="var(--text)" font-size="10.5" font-family="var(--mono)" font-weight="700" text-anchor="middle">OPS_KV CACHE</text>
+              <text x="217" y="83" fill="var(--accent)" font-size="9.5" font-family="var(--mono)" text-anchor="middle">5-min TTL</text>
+              <text x="217" y="99" fill="var(--muted)" font-size="9" font-family="var(--mono)" text-anchor="middle">Cap: 15/min/IP</text>
+
+              <line x1="276" y1="78" x2="302" y2="78" stroke="var(--accent)" stroke-width="1.5" />
+
+              <rect x="302" y="42" width="108" height="72" rx="6" fill="var(--surface-2)" stroke="var(--border-strong)" stroke-width="1.2" />
+              <text x="356" y="66" fill="var(--text)" font-size="10" font-family="var(--mono)" font-weight="700" text-anchor="middle">BROWSER</text>
+              <text x="356" y="83" fill="var(--accent-2)" font-size="9.5" font-family="var(--mono)" text-anchor="middle">Joules + TNT</text>
+              <text x="356" y="99" fill="var(--muted)" font-size="9" font-family="var(--mono)" text-anchor="middle">$0 Paid AI</text>
+
+              <rect x="10" y="156" width="400" height="38" rx="6" fill="var(--bg)" stroke="var(--border)" />
+              <text x="210" y="179" fill="var(--muted)" font-size="9.5" font-family="var(--mono)" text-anchor="middle">PROVENANCE: OBSERVED · DERIVED · INVERTED · MODELED</text>
+            </svg>
           </div>
         </div>
 
-        <div class="card grid--spaced">
-          <div class="kicker">Quetzal Architecture &amp; Tool Suite</div>
-          <div class="grid grid--3" style="margin-top:0.75rem;">
-            <div>
-              <strong>Live on Web (Budget-Capped)</strong>
-              <ul>
-                <li><code>/api/quetzal/seismic</code> — Live USGS NEIC M2.5+ feed (5-min KV cache, 15/min IP cap).</li>
-                <li><strong>Gutenberg-Choy Calculator</strong> — Client-side broadband seismic radiance in Joules &amp; TNT eq.</li>
-                <li><strong>WMM2025 / Swarm Reference</strong> — Secular pole drift &amp; cross-modal decoupling invariants.</li>
-              </ul>
-            </div>
-            <div>
-              <strong>Subsurface &amp; Crustal (MCP / Backend)</strong>
-              <ul>
-                <li><strong>4D Resistivity Inversion</strong> — Spatiotemporal <math><mrow><mi>ρ</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>,</mo><mi>t</mi><mo>)</mo></mrow></math> via Koefoed 1D engine.</li>
-                <li><strong>Yellowstone Rheology</strong> — Sibson-Byerlee, Kirby-Kronenberg &amp; 573°C Curie BDT.</li>
-                <li><strong>Brune Fault &amp; InSAR</strong> — Stress drop, slip-rate, and crustal deformation models.</li>
-              </ul>
-            </div>
-            <div>
-              <strong>Provenance &amp; Governance</strong>
-              <ul>
-                <li><strong>Epistemic Tags:</strong> Every output carries <code>OBSERVED</code>, <code>DERIVED</code>, <code>INVERTED</code>, or <code>MODELED</code> + UTC timestamp.</li>
-                <li><strong>Ahimsa &amp; Ital:</strong> Non-lethal, zero-spoofing, &lt;1.8W edge-efficiency design.</li>
-              </ul>
-            </div>
-          </div>
+        <div class="grid grid--4 grid--spaced">
+          <div class="card"><div class="kicker">North Dip-Pole Drift</div><span class="stat">~36.0 km/yr</span></div>
+          <div class="card"><div class="kicker">Outer Core (PREM)</div><span class="stat">3,480 km</span></div>
+          <div class="card"><div class="kicker">Curie Isotherm</div><span class="stat">573 °C</span></div>
+          <div class="card"><div class="kicker">Google AI Cost</div><span class="stat">$0.00 (Capped)</span></div>
+        </div>
+
+        <div class="grid grid--3 grid--spaced">
+          <article class="card">
+            <div class="kicker">Live on Web · Budget-Capped</div>
+            <h3>Seismic &amp; Geodynamo</h3>
+            <ul>
+              <li><code>/api/quetzal/seismic</code> — Live USGS NEIC M2.5+ feed (5-min KV cache, 15/min IP cap).</li>
+              <li><strong>Gutenberg-Choy Engine</strong> — Client-side broadband radiance in Joules &amp; TNT eq.</li>
+              <li><strong>WMM2025 / Swarm</strong> — Secular pole drift &amp; cross-modal decoupling invariants.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <div class="kicker">MCP / Backend Modules</div>
+            <h3>Subsurface &amp; Crustal</h3>
+            <ul>
+              <li><strong>4D Resistivity Inversion</strong> — Spatiotemporal <math><mrow><mi>ρ</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>,</mo><mi>t</mi><mo>)</mo></mrow></math> via Koefoed 1D engine.</li>
+              <li><strong>Yellowstone Rheology</strong> — Sibson-Byerlee, Kirby-Kronenberg &amp; 573°C Curie BDT.</li>
+              <li><strong>Brune Fault &amp; InSAR</strong> — Stress drop, slip-rate, and crustal deformation models.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <div class="kicker">Epistemic &amp; Moral Floor</div>
+            <h3>Provenance &amp; Ahimsa</h3>
+            <ul>
+              <li><strong>Mandatory Tags:</strong> <code>OBSERVED</code>, <code>DERIVED</code>, <code>INVERTED</code>, or <code>MODELED</code> + UTC timestamp.</li>
+              <li><strong>Ahimsa &amp; Ital:</strong> Non-lethal, zero-spoofing, &lt;1.8W edge-efficiency design.</li>
+            </ul>
+          </article>
         </div>
 
         <div class="grid grid--2 grid--spaced">
