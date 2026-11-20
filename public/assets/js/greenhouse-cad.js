@@ -61,9 +61,9 @@
   }
 
   var TIERS = {
-    salvage: { label: 'Scrappy Salvage', labelEs: 'Recuperación austera', rate: 1.85, desc: 'Reclaimed lumber, salvaged barrels, poly film' },
-    balanced: { label: 'Balanced Low-Cost', labelEs: 'Equilibrado económico', rate: 4.25, desc: 'EMT/PVC hoops, UV poly, 55-gal barrels, earth berm' },
-    upgraded: { label: 'Upgraded Kit', labelEs: 'Kit mejorado', rate: 8.5, desc: 'Galvanized steel, twin-wall polycarbonate, geothermal loop' },
+    salvage: { label: 'Scrappy Salvage', labelEs: 'Recuperación austera', rate: 1.85, desc: 'Reclaimed lumber, salvaged barrels, poly film', descEs: 'Madera recuperada, barriles rescatados, película de polietileno' },
+    balanced: { label: 'Balanced Low-Cost', labelEs: 'Equilibrado económico', rate: 4.25, desc: 'EMT/PVC hoops, UV poly, 55-gal barrels, earth berm', descEs: 'Arcos EMT/PVC, polietileno UV, barriles de 55 gal, berma de tierra' },
+    upgraded: { label: 'Upgraded Kit', labelEs: 'Kit mejorado', rate: 8.5, desc: 'Galvanized steel, twin-wall polycarbonate, geothermal loop', descEs: 'Acero galvanizado, policarbonato alveolar, circuito geotérmico' },
   };
 
   function clamp(v, min, max, fallback) {
@@ -961,6 +961,7 @@
   function renderMetrics() {
     var d = derived();
     var si = isSI();
+    var es = isES();
     var areaM2 = d.area * SQFT_TO_SQM;
     var glazingM2 = d.glazingSqFt * SQFT_TO_SQM;
     var waterL = Math.round(d.waterGal * GAL_TO_L);
@@ -979,13 +980,18 @@
       : d.waterGal + ' gal (' + d.btuPerDegF + ' BTU/°F)';
     el('costValue').textContent = '$' + d.estCost.toLocaleString() + ' (' + (isES() ? (d.tierInfo.labelEs || d.tierInfo.label) : d.tierInfo.label) + ')';
 
+    // Written ES, Salvador's voice — no machine translation. Bed rows,
+    // offset lines, and the BOM summary below pick their language from
+    // body.lang-es at render time, same as buildPartsRows above; the
+    // sena:lang-change listener (line 113) re-runs updateAll(), so these
+    // switch live like the rest.
     var bedBody = el('bedDetailsBody');
     if (bedBody) {
       bedBody.textContent = '';
       [
-        ['North Grow Bed', fmtLen(d.bedLenFt) + ' × ' + fmtLen(d.northBedWidthFt) + ' × ' + fmtLen(d.bedDepthFt), fmtArea(d.northBedArea), fmtVol(d.northSoilCuFt)],
-        ['South Grow Bed', fmtLen(d.bedLenFt) + ' × ' + fmtLen(d.southBedWidthFt) + ' × ' + fmtLen(d.bedDepthFt), fmtArea(d.southBedArea), fmtVol(d.southSoilCuFt)],
-        ['Central Aisle', fmtLen(state.lengthFt - d.wallOffsetFt * 2) + ' × ' + fmtLen(state.aisleFt) + ' × —', fmtArea(d.aisleArea), '—'],
+        [(es ? 'Cama de cultivo norte' : 'North Grow Bed'), fmtLen(d.bedLenFt) + ' × ' + fmtLen(d.northBedWidthFt) + ' × ' + fmtLen(d.bedDepthFt), fmtArea(d.northBedArea), fmtVol(d.northSoilCuFt)],
+        [(es ? 'Cama de cultivo sur' : 'South Grow Bed'), fmtLen(d.bedLenFt) + ' × ' + fmtLen(d.southBedWidthFt) + ' × ' + fmtLen(d.bedDepthFt), fmtArea(d.southBedArea), fmtVol(d.southSoilCuFt)],
+        [(es ? 'Pasillo central' : 'Central Aisle'), fmtLen(state.lengthFt - d.wallOffsetFt * 2) + ' × ' + fmtLen(state.aisleFt) + ' × —', fmtArea(d.aisleArea), '—'],
       ].forEach(function (cols) {
         var tr = document.createElement('tr');
         cols.forEach(function (val) {
@@ -1003,12 +1009,12 @@
     if (offsetList) {
       offsetList.textContent = '';
       [
-        'Perimeter wall thickness offset: ' + fmtLen(d.wallOffsetFt) + ' on all 4 sides',
-        'East/West bed end-wall clearance: ' + fmtLen(d.endClearanceFt) + ' each end (door & vent swing)',
-        'North barrel zone offset: ' + fmtLen(d.barrelClearanceFt) + (state.showBarrels ? ' (55-gal/208-L drum row)' : ' (barrels disabled)'),
-        'South glazing sill clearance: ' + fmtLen(d.southClearanceFt),
-        'Glazing overlap & waste factor: +10% over net ' + fmtArea(d.glazingSqFt) + ' → ' + fmtArea(d.glazingCutSqFt) + ' cut sheet',
-        'Earthworks volume: ' + fmtVol(d.trenchCutCuFt) + ' trench cut · ' + fmtVol(d.bermFillCuFt) + ' north berm fill',
+        (es ? 'Desplazamiento por grosor del muro perimetral: ' : 'Perimeter wall thickness offset: ') + fmtLen(d.wallOffsetFt) + (es ? ' en los 4 lados' : ' on all 4 sides'),
+        (es ? 'Despeje de cama en muro extremo este/oeste: ' : 'East/West bed end-wall clearance: ') + fmtLen(d.endClearanceFt) + (es ? ' en cada extremo (giro de puerta y ventilación)' : ' each end (door & vent swing)'),
+        (es ? 'Desplazamiento de la zona de barriles al norte: ' : 'North barrel zone offset: ') + fmtLen(d.barrelClearanceFt) + (state.showBarrels ? (es ? ' (fila de tambores de 55 gal / 208 L)' : ' (55-gal/208-L drum row)') : (es ? ' (barriles desactivados)' : ' (barrels disabled)')),
+        (es ? 'Despeje del alféizar vidriado sur: ' : 'South glazing sill clearance: ') + fmtLen(d.southClearanceFt),
+        (es ? 'Solape de vidriado y factor de desperdicio: +10% sobre ' : 'Glazing overlap & waste factor: +10% over net ') + fmtArea(d.glazingSqFt) + (es ? ' netos → ' : ' → ') + fmtArea(d.glazingCutSqFt) + (es ? ' de lámina cortada' : ' cut sheet'),
+        (es ? 'Volumen de movimiento de tierra: ' : 'Earthworks volume: ') + fmtVol(d.trenchCutCuFt) + (es ? ' de zanja excavada · ' : ' trench cut · ') + fmtVol(d.bermFillCuFt) + (es ? ' de relleno de berma norte' : ' north berm fill'),
       ].forEach(function (line) {
         var li = document.createElement('li');
         li.textContent = line;
@@ -1035,15 +1041,15 @@
     var bom = el('bomList');
     bom.textContent = '';
     [
-      'Footprint: ' + fmtLen(state.lengthFt) + ' × ' + fmtLen(state.widthFt) + ' (' + (si ? areaM2.toFixed(1) + ' m²' : Math.round(d.area) + ' sq ft') + ')',
-      'Glazing envelope: ~' + (si ? glazingM2.toFixed(1) + ' m²' : d.glazingSqFt + ' sq ft') + ' net / ' + fmtArea(d.glazingCutSqFt) + ' cut sheet (50° south slope)',
-      'Hoops & ground anchors: ' + d.hoops + ' hoops / ' + d.hoops * 2 + ' anchors',
+      (es ? 'Huella: ' : 'Footprint: ') + fmtLen(state.lengthFt) + ' × ' + fmtLen(state.widthFt) + ' (' + (si ? areaM2.toFixed(1) + ' m²' : Math.round(d.area) + ' sq ft') + ')',
+      (es ? 'Envolvente vidriada: ~' : 'Glazing envelope: ~') + (si ? glazingM2.toFixed(1) + ' m²' : d.glazingSqFt + ' sq ft') + (es ? ' netos / ' : ' net / ') + fmtArea(d.glazingCutSqFt) + (es ? ' de lámina cortada (pendiente sur de 50°)' : ' cut sheet (50° south slope)'),
+      (es ? 'Arcos y anclajes de tierra: ' : 'Hoops & ground anchors: ') + d.hoops + (es ? ' arcos / ' : ' hoops / ') + d.hoops * 2 + (es ? ' anclajes' : ' anchors'),
       si
-        ? 'North thermal mass: ' + d.barrelCount + ' × 208-L barrels (' + waterL.toLocaleString() + ' L)'
-        : 'North thermal mass: ' + d.barrelCount + ' × 55-gal barrels (' + d.waterGal + ' gal)',
-      'Grow beds: North ' + fmtLen(d.northBedWidthFt) + ' · South ' + fmtLen(d.southBedWidthFt) + ' × ' + fmtLen(d.bedLenFt) + ' long, ' + fmtLen(state.aisleFt) + ' aisle',
-      'Climate loop: ' + (state.showAirTube ? 'Sub-soil geothermal air tube' : 'Passive roll-up ventilation'),
-      'Build profile: ' + d.tierInfo.label + ' — ' + d.tierInfo.desc,
+        ? (es ? 'Masa térmica norte: ' : 'North thermal mass: ') + d.barrelCount + (es ? ' × barriles de 208 L (' : ' × 208-L barrels (') + waterL.toLocaleString() + ' L)'
+        : (es ? 'Masa térmica norte: ' : 'North thermal mass: ') + d.barrelCount + (es ? ' × barriles de 55 gal (' : ' × 55-gal barrels (') + d.waterGal + ' gal)',
+      (es ? 'Camas de cultivo: norte ' : 'Grow beds: North ') + fmtLen(d.northBedWidthFt) + (es ? ' · sur ' : ' · South ') + fmtLen(d.southBedWidthFt) + ' × ' + fmtLen(d.bedLenFt) + (es ? ' de largo, pasillo de ' : ' long, ') + fmtLen(state.aisleFt) + (es ? '' : ' aisle'),
+      (es ? 'Circuito de clima: ' : 'Climate loop: ') + (state.showAirTube ? (es ? 'Tubo geotérmico de aire enterrado' : 'Sub-soil geothermal air tube') : (es ? 'Ventilación pasiva de enrollado' : 'Passive roll-up ventilation')),
+      (es ? 'Perfil de construcción: ' : 'Build profile: ') + (es ? (d.tierInfo.labelEs || d.tierInfo.label) : d.tierInfo.label) + ' — ' + (es ? (d.tierInfo.descEs || d.tierInfo.desc) : d.tierInfo.desc),
     ].forEach(function (line) {
       var li = document.createElement('li');
       li.textContent = line;
