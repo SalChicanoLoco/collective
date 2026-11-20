@@ -510,20 +510,21 @@
     while (root.firstChild) root.removeChild(root.firstChild);
     var T = themeTokens();
     var scale = 18;
-    var pad = 52;
+    var pad = 58;
     var w = state.widthFt * scale;
-    var vw = w + pad * 2, vh = 290;
-    var groundY = 215;
+    var groundY = 205;
     var trenchPx = state.trenchFt * scale;
     var bermPx = state.bermFt * scale;
     var ridgePx = state.ridgeFt * scale;
+    var vw = Math.max(460, w + pad * 2);
+    var vh = Math.max(335, groundY + trenchPx + 82);
     root.setAttribute('viewBox', '0 0 ' + vw + ' ' + vh);
 
     root.appendChild(makeSvg('rect', { x: 0, y: 0, width: vw, height: vh, fill: T.bg, rx: 4 }));
 
     // Grade datum
     root.appendChild(makeSvg('line', { x1: 14, y1: groundY, x2: vw - 14, y2: groundY, stroke: T.muted, 'stroke-dasharray': '6 4', 'stroke-width': 1 }));
-    root.appendChild(svgText(16, groundY - 5, isSI() ? 'GRADE ±0.00 m' : "GRADE ±0.0'", T.muted, 8.5));
+    root.appendChild(svgText(vw - 16, groundY - 6, isSI() ? 'GRADE ±0.00 m' : "GRADE ±0.0'", T.muted, 8.5, 'end'));
 
     // North earth berm
     root.appendChild(makeSvg('polygon', {
