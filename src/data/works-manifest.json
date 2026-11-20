@@ -65,5 +65,15 @@
     "publisher": "Sena Colectivo",
     "ingestedAt": "2026-11-20T20:49:32.243Z",
     "href": "/publications/spine-graph-proof-engine/"
+  },
+  {
+    "slug": "quetzal-geophysics",
+    "title": "Quetzal Planetary Geophysics: Provenance-First Seismic Telemetry, Geodynamo Decoupling & Lithospheric Rheology",
+    "author": "Salvador Sena",
+    "kicker": "Research & Engineering",
+    "mode": "page",
+    "publisher": "Sena Colectivo",
+    "ingestedAt": "2026-11-20T21:04:00.525Z",
+    "href": "/publications/quetzal-geophysics/"
   }
 ]

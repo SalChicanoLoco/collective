@@ -24,10 +24,46 @@ import PageHero from '../../../components/PageHero.astro';
     <section class="section">
       <div class="wrap">
         <div class="card">
-          <div class="kicker">Experimental Notice &amp; Budget Guardrails</div>
+          <div class="kicker">What Quetzal Is &amp; How Data Arrives (Experimental)</div>
           <p class="note">
-            <strong>Status: Experimental.</strong> Live telemetry pulls directly from the public USGS NEIC GeoJSON feed, cached in Cloudflare <code>OPS_KV</code> for 5 minutes and rate-limited to <code>15 requests/min/IP</code>. All energy math runs deterministically in TypeScript/browser — <strong>zero paid LLM or Google AI API calls</strong> are triggered by this page.
+            <strong>Quetzal Planetary Geophysics</strong> is an experimental cyber-physical geophysics platform built around strict epistemic provenance, deterministic constitutive laws, and low-waste edge thermodynamics. Instead of letting language models guess physical numbers, Quetzal separates observational ingestion from mathematical kernels: live seismic events arrive directly from the public <strong>USGS NEIC M2.5+ GeoJSON feed</strong>, geomagnetic secular drift is anchored to <strong>NOAA NCEI WMM2025</strong> and <strong>ESA Swarm</strong> satellite baselines, and subsurface resistivity, Yellowstone thermo-rheology, Brune fault mechanics, and InSAR deformation run on bounded deterministic engines.
           </p>
+          <p class="note">
+            <strong>Budget &amp; Rate Guardrails:</strong> To protect upstream APIs and prevent runaway Google AI / cloud billing, this public web surface makes <strong>zero paid LLM or Google AI calls</strong>. Live USGS telemetry is cached in Cloudflare <code>OPS_KV</code> for 5 minutes (1 upstream fetch per 5 minutes regardless of visitor count) and rate-limited to <code>15 requests/min/IP</code>. All energy math runs client-side in your browser.
+          </p>
+          <div class="button-row">
+            <a class="button button--primary" href="/publications/quetzal-geophysics/">Read Quetzal Technical Publication</a>
+            <a class="button" href="/tools/">All Tools</a>
+          </div>
+        </div>
+
+        <div class="card grid--spaced">
+          <div class="kicker">Quetzal Architecture &amp; Tool Suite</div>
+          <div class="grid grid--3" style="margin-top:0.75rem;">
+            <div>
+              <strong>Live on Web (Budget-Capped)</strong>
+              <ul>
+                <li><code>/api/quetzal/seismic</code> — Live USGS NEIC M2.5+ feed (5-min KV cache, 15/min IP cap).</li>
+                <li><strong>Gutenberg-Choy Calculator</strong> — Client-side broadband seismic radiance in Joules &amp; TNT eq.</li>
+                <li><strong>WMM2025 / Swarm Reference</strong> — Secular pole drift &amp; cross-modal decoupling invariants.</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Subsurface &amp; Crustal (MCP / Backend)</strong>
+              <ul>
+                <li><strong>4D Resistivity Inversion</strong> — Spatiotemporal <math><mrow><mi>ρ</mi><mo>(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>,</mo><mi>t</mi><mo>)</mo></mrow></math> via Koefoed 1D engine.</li>
+                <li><strong>Yellowstone Rheology</strong> — Sibson-Byerlee, Kirby-Kronenberg &amp; 573°C Curie BDT.</li>
+                <li><strong>Brune Fault &amp; InSAR</strong> — Stress drop, slip-rate, and crustal deformation models.</li>
+              </ul>
+            </div>
+            <div>
+              <strong>Provenance &amp; Governance</strong>
+              <ul>
+                <li><strong>Epistemic Tags:</strong> Every output carries <code>OBSERVED</code>, <code>DERIVED</code>, <code>INVERTED</code>, or <code>MODELED</code> + UTC timestamp.</li>
+                <li><strong>Ahimsa &amp; Ital:</strong> Non-lethal, zero-spoofing, &lt;1.8W edge-efficiency design.</li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         <div class="grid grid--2 grid--spaced">

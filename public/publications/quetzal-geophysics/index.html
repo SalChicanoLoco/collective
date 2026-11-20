@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quetzal Planetary Geophysics: Provenance-First Seismic Telemetry, Geodynamo Decoupling &amp; Lithospheric Rheology | Sena Colectivo</title>
+<style>
+:root{--earth:#070a0f;--warm:#0d131c;--panel:#141d2b;--sand:#e8eef5;--muted:#9eb0c4;--faint:#6c8096;--terr:#4cc9f0;--gold:#4cc9f0;--sage:#f4a261;--border:rgba(76,201,240,.2);--serif:Fraunces,Georgia,'Times New Roman',serif;--sans:system-ui,-apple-system,sans-serif;--mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--earth);color:var(--sand);font-family:var(--sans);line-height:1.72}
+a{color:var(--gold)}.mast{border-bottom:2px solid var(--terr);padding:16px 24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--warm)}
+.brand{font-family:var(--serif);font-weight:900;color:var(--gold);font-size:20px;text-decoration:none}
+.wrap{max-width:980px;margin:auto;padding:34px 22px}
+.kicker,.meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.hero{background:var(--warm);border-bottom:1px solid var(--border)}
+h1{font-family:var(--serif);font-size:clamp(28px,4.5vw,44px);line-height:1.12;margin:10px 0 12px}
+h2{font-family:var(--serif);color:var(--gold);font-size:24px;margin-top:32px;border-bottom:1px solid var(--border);padding-bottom:6px}
+h3{font-family:var(--serif);font-size:19px;margin-top:22px}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{border:1px solid var(--border);background:var(--panel);color:var(--sand);padding:7px 12px;text-decoration:none;font-family:var(--mono);font-size:11px;text-transform:uppercase;cursor:pointer;border-radius:4px}
+.btn.sage{background:var(--gold);color:#06090e;border-color:var(--gold);font-weight:700}
+.callout,.eq-box{background:var(--warm);border:1px solid var(--border);border-left:4px solid var(--gold);padding:16px 20px;margin:20px 0;border-radius:6px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin:18px 0;background:var(--warm);font-size:14px}
+th,td{padding:10px 12px;border:1px solid var(--border);text-align:left;vertical-align:top}
+th{color:var(--gold);font-family:var(--mono);font-size:11px;text-transform:uppercase}
+pre{background:var(--panel);border:1px solid var(--border);padding:14px;border-radius:6px;overflow-x:auto;font-family:var(--mono);font-size:12.5px}
+code{font-family:var(--mono);font-size:0.9em}
+footer{border-top:1px solid var(--border);padding:24px;color:var(--faint);font-family:var(--mono);font-size:11px}
+</style>
+<link rel="stylesheet" href="/assets/css/subpage-theme.css">
+<script src="/assets/js/site.js" defer></script>
+
+</head>
+<body>
+<header class="mast">
+  <a class="brand" href="/">Sena's AI Collective</a>
+  <div class="kicker">Research &amp; Engineering</div>
+</header>
+<section class="hero">
+  <div class="wrap">
+    <div class="kicker">Research &amp; Engineering</div>
+    <h1>Quetzal Planetary Geophysics: Provenance-First Seismic Telemetry, Geodynamo Decoupling &amp; Lithospheric Rheology</h1>
+    <div class="meta">Salvador Sena · Sena Colectivo</div>
+    <nav class="nav">
+      <a class="btn" href="/publications/staging/">Staging Hub</a>
+      <a class="btn" href="/publications/">All Publications</a>
+      
+      
+    </nav>
+  </div>
+</section>
+<main class="section">
+  <div class="wrap">
+    
+    <h2>Abstract</h2>
+<p>Quetzal is an experimental planetary geophysics and low-power cyber-physical telemetry platform designed around strict epistemic provenance, deterministic constitutive physics, and zero-waste thermodynamics (&lt; 1.8 W edge operation, scale-to-zero cloud). Rather than letting generative models fabricate geophysical metrics, Quetzal separates raw observational ingestion (USGS NEIC, NOAA NCEI / ESA Swarm) from deterministic mathematical kernels (Gutenberg-Choy broadband radiance, Koefoed 1D resistivity inversion, Sibson-Byerlee brittle failure, and Kirby-Kronenberg dislocation creep) and enforces mandatory uncertainty and decoupling invariants.</p>
+<h2>1. Data Ingestion &amp; Provenance Pipeline</h2>
+<p>Every telemetry response in Quetzal is tagged with four non-negotiable provenance fields: <strong>Datasource</strong>, <strong>Retrieval UTC Timestamp</strong>, <strong>Epistemic Classification</strong> (<code>OBSERVED</code>, <code>DERIVED</code>, <code>INVERTED</code>, or <code>MODELED</code>), and <strong>Uncertainty Bounds</strong> (e.g. ±0.15 magnitude units).</p>
+<ul>
+<li><strong>Live Seismic Ingestion (<code>getLiveSeismicTelemetry</code>):</strong> Queries official USGS NEIC GeoJSON feeds (<code>hour</code>, <code>day</code>, <code>week</code>, <code>m25</code>). Public web traffic on <code>senacolectivo.com</code> is fronted by a 5-minute Cloudflare <code>OPS_KV</code> edge cache and capped at <code>15 req/min/IP</code> with zero paid LLM/AI API calls.</li>
+<li><strong>Geodynamo Baselines (<code>getGeodynamoTelemetry</code>):</strong> Tracks NOAA NCEI WMM2025 and ESA Swarm satellite magnetometer secular drift (~36.0 km/yr north dip-pole drift, decelerating from ~45.0 km/yr historical peak; ~9.0 km/yr south dip-pole drift).</li>
+<li><strong>Subsurface &amp; Crustal Modules (MCP / Backend):</strong> Continuous 4D resistivity inversion, Yellowstone thermo-rheology, Brune fault mechanics, and InSAR crustal deformation run on bounded deterministic or systolic virtual-TPU kernels behind authenticated MCP endpoints.</li>
+</ul>
+<h2>2. Seismic Radiated Energy (Gutenberg-Choy)</h2>
+<p>Instead of linearizing earthquake magnitude, Quetzal computes broadband radiated seismic energy <math aria-label="E_s"><mrow><msub><mi>E</mi><mi>s</mi></msub></mrow></math> in Joules directly via the canonical Gutenberg-Choy relation:</p>
+<div class="eq-box"><math display="block" aria-label="\log_{10}(E_s) = 4.8 + 1.5 M"><mrow>\<msub><mi>log</mi><mi>10</mi></msub>(<msub><mi>E</mi><mi>s</mi></msub>) = 4.8 + 1.5 M</mrow></math><details style="margin-top:0.75rem"><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary><pre style="margin:0.5rem 0 0;overflow-x:auto"><code>\log_{10}(E_s) = 4.8 + 1.5 M</code></pre></details></div>
+<div class="eq-box"><math display="block" aria-label="E_s = 10^{4.8 + 1.5 M}"><mrow><msub><mi>E</mi><mi>s</mi></msub> = <msup><mi>10</mi><mn>4.8 + 1.5 M</mn></msup></mrow></math><details style="margin-top:0.75rem"><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary><pre style="margin:0.5rem 0 0;overflow-x:auto"><code>E_s = 10^{4.8 + 1.5 M}</code></pre></details></div>
+<p>A +0.1 step in magnitude scales radiated energy by <math aria-label="10^{0.15} \approx 1.41\times"><mrow><msup><mi>10</mi><mn>0.15</mn></msup> <mo>&#x2248;</mo>1.41<mo>&#x00D7;</mo></mrow></math>. For example, an M 3.5 event radiates <math aria-label="E_s \approx 1.12 \times 10^{10}"><mrow><msub><mi>E</mi><mi>s</mi></msub> <mo>&#x2248;</mo>1.12 <mo>&#x00D7;</mo><msup><mi>10</mi><mn>10</mn></msup></mrow></math> J (11.2 GJ, ~2.7 tons TNT equivalent), whereas M 3.6 radiates ~15.8 GJ.</p>
+<h2>3. Geodynamo Decoupling &amp; Resistivity Boundaries</h2>
+<ul>
+<li><strong>Cross-Modal Decoupling Invariant:</strong> Earth's dipole magnetic moment (<math aria-label="7.78 \times 10^{22}"><mrow>7.78 <mo>&#x00D7;</mo><msup><mi>10</mi><mn>22</mn></msup></mrow></math> A·m², outer core radius <math aria-label="r \le 3480"><mrow>r <mo>&#x2264;</mo>3480</mrow></math> km, magnetic Reynolds number <math aria-label="Re_m = 350"><mrow><msub><mi>Re</mi><mi>m</mi></msub> = 350</mrow></math>) evolves on multi-decadal convective timescales. Temporal coincidence between secular magnetic drift and crustal seismicity never establishes physical causation.</li>
+<li><strong>Continuous Resistivity Inversion <math aria-label="\rho(x, y, z, t)"><mrow>&#x03C1;(x, y, z, t)</mrow></math>:</strong> Low subsurface resistivity indicates conductive pore fluids, salinity, hydrothermal alteration, clay fault gouge, or partial melt — never standalone proof of imminent rupture without pre-, co-, and post-seismic monitoring.</li>
+</ul>
+<h2>4. Yellowstone Lithospheric Rheology Ground Truth</h2>
+<p>For volcanic-hydrothermal systems such as Yellowstone, Quetzal anchors brittle-ductile transition (BDT) modeling to magnetite Curie isotherm depths (<math aria-label="573^\circ\text{C}"><mrow>573^\circ<mtext>C</mtext></mrow></math>, spanning 2.90 km at Mallard Lake to 3.80 km at the Caldera Center) and Sibson-Byerlee extensional frictional failure:</p>
+<div class="eq-box"><math display="block" aria-label="\sigma_b(z) = \beta \cdot \rho(z) \cdot g \cdot z \cdot (1 - \lambda)"><mrow>\<msub><mi>sigma</mi><mi>b</mi></msub>(z) = &#x03B2;<mo>&#x22C5;</mo>&#x03C1;(z) <mo>&#x22C5;</mo>g <mo>&#x22C5;</mo>z <mo>&#x22C5;</mo>(1 - \lambda)</mrow></math><details style="margin-top:0.75rem"><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary><pre style="margin:0.5rem 0 0;overflow-x:auto"><code>\sigma_b(z) = \beta \cdot \rho(z) \cdot g \cdot z \cdot (1 - \lambda)</code></pre></details></div>
+<p>where <math aria-label="\beta = 0.75"><mrow>&#x03B2;= 0.75</mrow></math> (Ranalli 1995), transitioning into Kirby-Kronenberg dislocation creep resolved by single-root Bolzano bisection.</p>
+<h2>5. Ital Engineering &amp; Sacred Directive Ahimsa</h2>
+<p>Quetzal enforces four operational pillars: Covenant of Friendship (I-and-I), Universal Preservation Without Elimination (Ahimsa — prohibiting kinetic/eliminationist outputs and mandating restorative shielding), Ital low-waste thermodynamics (&lt; 1.8 W edge), and Epistemic Integrity (zero fabricated telemetry).</p>
+<h2>References &amp; BibTeX</h2>
+<ul>
+<li><strong>Gutenberg, B., &amp; Richter, C. F. / Choy, G. L. &amp; Boatwright, J. L. (1995).</strong> Global patterns of radiated seismic energy and apparent stress. <em>Journal of Geophysical Research</em>, 100(B9), 18205–18228.</li>
+<li><strong>Perrini, M., et al. (2026).</strong> 3D thermo-rheological model of the Yellowstone lithosphere: Brittle-ductile transition, Curie depths, and seismicity. <em>Geoscience Frontiers</em>, 17, 102326.</li>
+<li><strong>Sibson, R. H. (1974).</strong> Frictional constraints on faulting in the brittle crust. <em>Nature</em>, 249, 542–544.</li>
+<li><strong>Kirby, S. H., &amp; Kronenberg, A. K. (1987).</strong> Rheology of the lithosphere: Selected topics. <em>Reviews of Geophysics</em>, 25, 1219–1244.</li>
+<li><strong>Ranalli, G. (1995).</strong> <em>Rheology of the Earth</em> (2nd ed.). Chapman &amp; Hall.</li>
+<li><strong>Farrell, J., et al. (2014).</strong> Tomography of the Yellowstone magmatic system. <em>J. Geophys. Res. Solid Earth</em>, 119, 3198–3214.</li>
+</ul>
+<pre><code class="language-bibtex">@techreport{Sena2026_QuetzalGeophysics,
+  author      = {Sena, Salvador},
+  title       = {Quetzal Planetary Geophysics: Provenance-First Seismic Telemetry, Geodynamo Decoupling, and Lithospheric Rheology},
+  institution = {Sena Colectivo},
+  year        = {2026},
+  url         = {https://senacolectivo.com/publications/quetzal-geophysics/}
+}</code></pre>
+  </div>
+</main>
+<footer><div class="wrap">Sena Colectivo · Pre-processed static artifact</div></footer>
+</body>
+</html>
