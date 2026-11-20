@@ -25,6 +25,7 @@
     events: [],
     rotLon: -105.9,
     rotLat: 35.0,
+    zoom: 1.0,
     dragging: false,
     lastX: 0,
     lastY: 0,
@@ -108,11 +109,19 @@
   function drawGlobe() {
     if (!globe) return;
     var ctx = globe.getContext('2d');
-    var w = globe.width;
-    var h = globe.height;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var rect = globe.getBoundingClientRect();
+    var w = Math.max(300, Math.round(rect.width));
+    var h = Math.max(300, Math.round(rect.height));
+    if (globe.width !== w * dpr || globe.height !== h * dpr) {
+      globe.width = w * dpr;
+      globe.height = h * dpr;
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
     var cx = w / 2;
     var cy = h / 2;
-    var R = Math.min(w, h) * 0.43;
+    var R = Math.min(w, h) * 0.42 * state.zoom;
 
     var cs = getComputedStyle(document.documentElement);
     var bg = cs.getPropertyValue('--bg').trim() || '#070a0f';
@@ -348,6 +357,12 @@
       drawGlobe();
     });
     globe.addEventListener('pointerup', function () { state.dragging = false; });
+    globe.addEventListener('wheel', function (e) {
+      e.preventDefault();
+      state.zoom = Math.max(0.75, Math.min(2.6, state.zoom - e.deltaY * 0.001));
+      drawGlobe();
+    }, { passive: false });
+    window.addEventListener('resize', drawGlobe);
   }
 
   function downloadFile(name, content, mime) {
