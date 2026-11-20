@@ -36,39 +36,39 @@ import Footer from '../../components/Footer.astro';
         <div id="cadControls" class="grid grid--spaced">
           <div class="card">
             <div class="kicker">Dimensions (ft)</div>
-            <label for="lengthFt">Length X (12–96 ft)</label>
-            <input id="lengthFt" type="number" min="12" max="96" step="2" value="32" style="width:100%;padding:8px;margin:6px 0 12px;background:#171008;color:#f6ead7;border:1px solid rgba(246,234,215,0.25);" />
-            <label for="widthFt">Width Y (10–32 ft)</label>
-            <input id="widthFt" type="number" min="10" max="32" step="2" value="16" style="width:100%;padding:8px;margin:6px 0 12px;background:#171008;color:#f6ead7;border:1px solid rgba(246,234,215,0.25);" />
-            <label for="spacingFt">Hoop Spacing (2–8 ft)</label>
-            <input id="spacingFt" type="number" min="2" max="8" step="0.5" value="4" style="width:100%;padding:8px;margin:6px 0 0;background:#171008;color:#f6ead7;border:1px solid rgba(246,234,215,0.25);" />
+            <label for="lengthFt" class="field-label">Length X (12–96 ft)</label>
+            <input id="lengthFt" class="field-input" type="number" min="12" max="96" step="2" value="32" />
+            <label for="widthFt" class="field-label">Width Y (10–32 ft)</label>
+            <input id="widthFt" class="field-input" type="number" min="10" max="32" step="2" value="16" />
+            <label for="spacingFt" class="field-label">Hoop Spacing (2–8 ft)</label>
+            <input id="spacingFt" class="field-input" type="number" min="2" max="8" step="0.5" value="4" />
           </div>
 
           <div class="card">
             <div class="kicker">Earthworks &amp; Aisle (ft)</div>
-            <label for="aisleFt">Central Aisle (1.5–5 ft)</label>
-            <input id="aisleFt" type="number" min="1.5" max="5" step="0.5" value="2.5" style="width:100%;padding:8px;margin:6px 0 12px;background:#171008;color:#f6ead7;border:1px solid rgba(246,234,215,0.25);" />
-            <label for="bermFt">North Earth Berm (0–6 ft)</label>
-            <input id="bermFt" type="number" min="0" max="6" step="0.5" value="2.5" style="width:100%;padding:8px;margin:6px 0 12px;background:#171008;color:#f6ead7;border:1px solid rgba(246,234,215,0.25);" />
-            <label for="trenchFt">Sunken Trench Depth (0–4 ft)</label>
-            <input id="trenchFt" type="number" min="0" max="4" step="0.5" value="1.5" style="width:100%;padding:8px;margin:6px 0 0;background:#171008;color:#f6ead7;border:1px solid rgba(246,234,215,0.25);" />
+            <label for="aisleFt" class="field-label">Central Aisle (1.5–5 ft)</label>
+            <input id="aisleFt" class="field-input" type="number" min="1.5" max="5" step="0.5" value="2.5" />
+            <label for="bermFt" class="field-label">North Earth Berm (0–6 ft)</label>
+            <input id="bermFt" class="field-input" type="number" min="0" max="6" step="0.5" value="2.5" />
+            <label for="trenchFt" class="field-label">Sunken Trench Depth (0–4 ft)</label>
+            <input id="trenchFt" class="field-input" type="number" min="0" max="4" step="0.5" value="1.5" />
           </div>
 
           <div class="card">
             <div class="kicker">Profile &amp; Systems</div>
-            <label for="buildTier">Build Tier</label>
-            <select id="buildTier" style="width:100%;padding:8px;margin:6px 0 14px;background:#171008;color:#f6ead7;border:1px solid rgba(246,234,215,0.25);">
+            <label for="buildTier" class="field-label">Build Tier</label>
+            <select id="buildTier" class="field-select">
               <option value="salvage">Scrappy Salvage ($1.85/sq ft)</option>
               <option value="balanced" selected>Balanced Low-Cost ($4.25/sq ft)</option>
               <option value="upgraded">Upgraded Kit ($8.50/sq ft)</option>
             </select>
-            <label style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+            <label class="field-check">
               <input id="showBarrels" type="checkbox" checked /> North Thermal Barrels
             </label>
-            <label style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+            <label class="field-check">
               <input id="showAirTube" type="checkbox" checked /> Sub-Soil Geothermal Air Tube
             </label>
-            <label style="display:flex;gap:8px;align-items:center;">
+            <label class="field-check">
               <input id="wireframeMode" type="checkbox" /> Wireframe CAD Mode
             </label>
           </div>
@@ -87,8 +87,8 @@ import Footer from '../../components/Footer.astro';
       <div class="wrap">
         <div class="eyebrow">Interactive 3D CAD Viewport</div>
         <h2>3D Structural Model (Drag to Orbit · Scroll to Zoom)</h2>
-        <div class="card" style="padding:12px;">
-          <canvas id="cadCanvas" style="width:100%;height:440px;display:block;cursor:grab;border-radius:4px;"></canvas>
+        <div class="card cad-frame">
+          <canvas id="cadCanvas" class="cad-canvas"></canvas>
         </div>
       </div>
     </section>
@@ -97,14 +97,14 @@ import Footer from '../../components/Footer.astro';
       <div class="wrap">
         <div class="eyebrow">2D CAD Blueprints</div>
         <h2>Plan &amp; Cross-Section</h2>
-        <div class="grid grid--spaced">
+        <div class="grid grid--2 grid--spaced">
           <div class="card">
             <div class="kicker">Plan View (Length = X, Width = Y)</div>
-            <svg id="planSvg" style="width:100%;height:auto;display:block;"></svg>
+            <svg id="planSvg" class="cad-svg"></svg>
           </div>
           <div class="card">
             <div class="kicker">Cross-Section (North Berm → South Glazing)</div>
-            <svg id="sectionSvg" style="width:100%;height:auto;display:block;"></svg>
+            <svg id="sectionSvg" class="cad-svg"></svg>
           </div>
         </div>
       </div>
