@@ -12,6 +12,7 @@
     "build": "astro build",
     "preview": "astro build && wrangler dev",
     "deploy": "astro build && wrangler deploy",
+    "ingest": "node scripts/ingest-work.mjs",
     "qc": "node scripts/qc-live.mjs",
     "typecheck": "astro check && tsc --noEmit"
   },

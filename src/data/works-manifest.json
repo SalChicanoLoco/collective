@@ -1,0 +1,29 @@
+[
+  {
+    "slug": "future-weather-epw",
+    "title": "Future Weather EPW Morphing",
+    "author": "Reolon, Marengo, & Picco (Ingested)",
+    "kicker": "Green Tech · Peer-reviewed archival brief",
+    "mode": "page",
+    "publisher": "Sena Colectivo",
+    "href": "/publications/future-weather-epw/"
+  },
+  {
+    "slug": "ai-data-centers",
+    "title": "AI Data Centers in Arid Regions",
+    "author": "Salvador Sena",
+    "kicker": "Infrastructure · 6-part package",
+    "mode": "page",
+    "publisher": "Sena Colectivo",
+    "href": "/publications/ai-data-centers/"
+  },
+  {
+    "slug": "the-peoples-greenhouse",
+    "title": "The People's Greenhouse — CCGS-C1",
+    "author": "Salvador Sena",
+    "kicker": "Community Systems · CC-BY",
+    "mode": "page",
+    "publisher": "Sena Colectivo",
+    "href": "/publications/the-peoples-greenhouse/index.html"
+  }
+]
