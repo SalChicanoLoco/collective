@@ -75,13 +75,6 @@ export default {
       return withSecurityHeaders(res);
     }
 
-    if (url.pathname === '/cgs-community-suite/article.html') {
-      return Response.redirect(
-        new URL('/publications/the-peoples-greenhouse/index.html', url.origin).toString(),
-        302,
-      );
-    }
-
     if (url.pathname === '/api/health') {
       return withSecurityHeaders(
         Response.json({

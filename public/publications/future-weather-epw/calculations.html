@@ -49,19 +49,88 @@ th{color:var(--gold);font-family:var(--mono);font-size:11px;text-transform:upper
     <p>To preserve diurnal and seasonal weather patterns while injecting long-term Global Climate Model (GCM) warming trends, a <em>combined shift and stretch</em> operation is applied:</p>
 
     <div class="eq-box">
-      <strong>Monthly Anomaly:</strong><br>
-      ΔT_m = T_m(GCM, future) - T_m(GCM, baseline)<br><br>
-      <strong>Variability Scaling Factor:</strong><br>
-      α_m = (ΔT_MAX,m - ΔT_MIN,m) / (&lang;T_max&rang;_m,a - &lang;T_min&rang;_m,a)<br><br>
-      <strong>Future Hourly Dry-Bulb Temperature:</strong><br>
-      T_f = T_a + ΔT_m + α_m · (T_a - &lang;T_m,a&rang;)
+      <strong>Monthly Anomaly:</strong>
+      <math display="block" aria-label="Delta T sub m equals T sub m of GCM future minus T sub m of GCM baseline">
+        <mrow>
+          <msub><mi>&#x0394;T</mi><mi>m</mi></msub>
+          <mo>=</mo>
+          <msub><mi>T</mi><mi>m</mi></msub><mo>(</mo><mtext>GCM, future</mtext><mo>)</mo>
+          <mo>&#x2212;</mo>
+          <msub><mi>T</mi><mi>m</mi></msub><mo>(</mo><mtext>GCM, baseline</mtext><mo>)</mo>
+        </mrow>
+      </math>
+      <strong>Variability Scaling Factor:</strong>
+      <math display="block" aria-label="alpha sub m equals (Delta T MAX,m minus Delta T MIN,m) divided by (angle bracket T max angle bracket m,a minus angle bracket T min angle bracket m,a)">
+        <mrow>
+          <msub><mi>&#x03B1;</mi><mi>m</mi></msub>
+          <mo>=</mo>
+          <mfrac>
+            <mrow>
+              <msub><mi>&#x0394;T</mi><mrow><mtext>MAX</mtext><mo>,</mo><mi>m</mi></mrow></msub>
+              <mo>&#x2212;</mo>
+              <msub><mi>&#x0394;T</mi><mrow><mtext>MIN</mtext><mo>,</mo><mi>m</mi></mrow></msub>
+            </mrow>
+            <mrow>
+              <msub><mrow><mo>&#x27E8;</mo><msub><mi>T</mi><mtext>max</mtext></msub><mo>&#x27E9;</mo></mrow><mrow><mi>m</mi><mo>,</mo><mi>a</mi></mrow></msub>
+              <mo>&#x2212;</mo>
+              <msub><mrow><mo>&#x27E8;</mo><msub><mi>T</mi><mtext>min</mtext></msub><mo>&#x27E9;</mo></mrow><mrow><mi>m</mi><mo>,</mo><mi>a</mi></mrow></msub>
+            </mrow>
+          </mfrac>
+        </mrow>
+      </math>
+      <strong>Future Hourly Dry-Bulb Temperature:</strong>
+      <math display="block" aria-label="T sub f equals T sub a plus Delta T sub m plus alpha sub m times (T sub a minus angle bracket T m,a angle bracket)">
+        <mrow>
+          <msub><mi>T</mi><mi>f</mi></msub>
+          <mo>=</mo>
+          <msub><mi>T</mi><mi>a</mi></msub>
+          <mo>+</mo>
+          <msub><mi>&#x0394;T</mi><mi>m</mi></msub>
+          <mo>+</mo>
+          <msub><mi>&#x03B1;</mi><mi>m</mi></msub>
+          <mo>&#x22C5;</mo>
+          <mrow>
+            <mo>(</mo>
+            <msub><mi>T</mi><mi>a</mi></msub>
+            <mo>&#x2212;</mo>
+            <mrow><mo>&#x27E8;</mo><msub><mi>T</mi><mrow><mi>m</mi><mo>,</mo><mi>a</mi></mrow></msub><mo>&#x27E9;</mo></mrow>
+            <mo>)</mo>
+          </mrow>
+        </mrow>
+      </math>
+      <details style="margin-top:0.75rem">
+        <summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary>
+        <pre style="margin:0.5rem 0 0;overflow-x:auto"><code>\Delta T_m = T_m(\text{GCM, future}) - T_m(\text{GCM, baseline})
+\alpha_m = \frac{\Delta T_{\text{MAX}, m} - \Delta T_{\text{MIN}, m}}{\langle T_{\text{max}} \rangle_{m, a} - \langle T_{\text{min}} \rangle_{m, a}}
+T_f = T_a + \Delta T_m + \alpha_m \cdot \left(T_a - \langle T_{m, a} \rangle\right)</code></pre>
+      </details>
     </div>
 
     <h2>2. Spatial Interpolation (Inverse Distance Weighting)</h2>
     <p>Because GCM grids are coarse (~300 km for HadCM3, ~100 km for CMIP6), anomalies at site location <em>(x, y)</em> are weighted inversely by distance squared from the 4 surrounding nodes:</p>
     <div class="eq-box">
-      w_i = 1 / (d_i)^2<br>
-      Anomaly(site) = Σ (w_i · Anomaly_i) / Σ w_i
+      <math display="block" aria-label="w sub i equals 1 over d sub i squared">
+        <mrow>
+          <msub><mi>w</mi><mi>i</mi></msub>
+          <mo>=</mo>
+          <mfrac><mn>1</mn><msubsup><mi>d</mi><mi>i</mi><mn>2</mn></msubsup></mfrac>
+        </mrow>
+      </math>
+      <math display="block" aria-label="Anomaly of site equals sum of w sub i times Anomaly sub i divided by sum of w sub i">
+        <mrow>
+          <mtext>Anomaly</mtext><mo>(</mo><mtext>site</mtext><mo>)</mo>
+          <mo>=</mo>
+          <mfrac>
+            <mrow><mo>&#x2211;</mo><mrow><msub><mi>w</mi><mi>i</mi></msub><mo>&#x22C5;</mo><msub><mtext>Anomaly</mtext><mi>i</mi></msub></mrow></mrow>
+            <mrow><mo>&#x2211;</mo><msub><mi>w</mi><mi>i</mi></msub></mrow>
+          </mfrac>
+        </mrow>
+      </math>
+      <details style="margin-top:0.75rem">
+        <summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary>
+        <pre style="margin:0.5rem 0 0;overflow-x:auto"><code>w_i = \frac{1}{d_i^2}
+\text{Anomaly}(\text{site}) = \frac{\sum w_i \cdot \text{Anomaly}_i}{\sum w_i}</code></pre>
+      </details>
     </div>
 
     <h2>3. Statistical Benchmarking Results (Centred on 2080s)</h2>
