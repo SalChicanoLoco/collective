@@ -30,6 +30,12 @@ const editions = [
     desc: 'Transparent calculations for electricity growth, water intensity, power draw, WUE/PUE interpretation, and community-scale comparisons.',
     href: '/publications/ai-data-centers/calculations.html',
   },
+  {
+    kicker: 'Evidence & BibTeX',
+    title: 'Sources & Citations',
+    desc: 'Primary DOE/LBNL and IEA references with copyable BibTeX citations for the arid-region data-center dossier.',
+    href: '/publications/ai-data-centers/sources.html',
+  },
 ];
 
 const metrics = [
@@ -69,8 +75,11 @@ const metrics = [
   <main id="main">
     <PageHero
       eyebrowEn="Publication Hub · La Biblioteca / Publications"
+      eyebrowEs="Centro de Publicación · La Biblioteca / Publicaciones"
       titleEn="AI Data Centers in Arid Regions"
+      titleEs="Centros de datos de IA en regiones áridas"
       dekEn="Water, power, compute, and the political economy of infrastructure in New Mexico and the Southwest."
+      dekEs="Agua, energía, cómputo y economía política de la infraestructura en Nuevo México y el suroeste."
     >
       <p class="note">Salvador Sena · Sena Colectivo · New Mexico · 2026 research draft</p>
       <div class="button-row">
@@ -85,9 +94,9 @@ const metrics = [
 
     <section class="section">
       <div class="wrap">
-        <p class="eyebrow">4-Part Publication Package</p>
+        <p class="eyebrow">6-Part Publication Package (Hub + 5 Briefs)</p>
         <h2>AI data centers are not weightless.</h2>
-        <div class="grid grid--4 grid--spaced">
+        <div class="grid grid--3 grid--spaced">
           {editions.map((ed) => (
             <Card href={ed.href} kickerEn={ed.kicker} titleEn={ed.title} descEn={ed.desc} />
           ))}

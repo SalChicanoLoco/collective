@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PageHero from '../../components/PageHero.astro';
+---
+
+<BaseLayout
+  title="Privacy, Accessibility & Colophon | Sena's AI Collective"
+  description="Privacy posture, accessibility standards, and technical colophon for Sena Colectivo."
+  canonical="https://senacolectivo.com/colophon/"
+>
+  <Header />
+  <main id="main">
+    <PageHero
+      eyebrowEn="Governance · Standards · Stack"
+      eyebrowEs="Gobernanza · Estándares · Arquitectura"
+      titleEn="Privacy, Accessibility & Colophon"
+      titleEs="Privacidad, Accesibilidad y Colofón"
+      dekEn="Zero tracking, strict Content Security Policy, semantic HTML5/MathML, and edge-native delivery."
+      dekEs="Cero rastreo, Política de Seguridad de Contenido estricta, HTML5/MathML semántico y entrega en el borde."
+    />
+
+    <section id="privacy" class="section">
+      <div class="wrap">
+        <p class="eyebrow en">Privacy</p>
+        <p class="eyebrow es">Privacidad</p>
+        <h2 class="en">No cookies, no third-party trackers.</h2>
+        <h2 class="es">Sin cookies ni rastreadores de terceros.</h2>
+        <p class="en">
+          This site sets no tracking cookies and loads zero third-party analytics, ad scripts, or external CDNs. Theme, language, and CAD unit preferences are stored locally in your browser via <code>localStorage</code>. Questions sent to the Edge AI concierge are processed statelessly via Cloudflare Workers AI and are not sold or shared.
+        </p>
+        <p class="es">
+          Este sitio no instala cookies de rastreo ni carga analíticas de terceros, scripts publicitarios o CDN externos. Las preferencias de tema, idioma y unidades CAD se guardan localmente en tu navegador mediante <code>localStorage</code>. Las preguntas enviadas a la IA en el borde se procesan sin estado mediante Cloudflare Workers AI.
+        </p>
+      </div>
+    </section>
+
+    <section id="accessibility" class="section">
+      <div class="wrap">
+        <p class="eyebrow en">Accessibility</p>
+        <p class="eyebrow es">Accesibilidad</p>
+        <h2 class="en">Semantic structure &amp; keyboard navigation.</h2>
+        <h2 class="es">Estructura semántica y navegación por teclado.</h2>
+        <p class="en">
+          Pages use landmark regions, skip links, high-contrast HUD/Earth/CAD palettes, and native HTML5 MathML with <code>aria-label</code> descriptions for equations. If any page or blueprint blocks your assistive technology, email <a href="mailto:salvadorsena@senacolectivo.com">salvadorsena@senacolectivo.com</a> or call <a href="tel:+15054519341">(505) 451-9341</a>.
+        </p>
+        <p class="es">
+          Las páginas usan regiones semánticas, enlaces de salto, paletas de alto contraste HUD/Earth/CAD y MathML nativo con etiquetas <code>aria-label</code> para ecuaciones. Si alguna página bloquea tu tecnología de asistencia, escribe a <a href="mailto:salvadorsena@senacolectivo.com">salvadorsena@senacolectivo.com</a> o llama al <a href="tel:+15054519341">(505) 451-9341</a>.
+        </p>
+      </div>
+    </section>
+
+    <section id="colophon" class="section">
+      <div class="wrap">
+        <p class="eyebrow en">Colophon</p>
+        <p class="eyebrow es">Colofón</p>
+        <h2 class="en">Built for durability and zero-cost printability.</h2>
+        <h2 class="es">Construido para durabilidad e impresión sin costo.</h2>
+        <p class="en">
+          Static pages built with Astro 5, served via Cloudflare Workers &amp; Assets with strict CSP headers (<code>script-src 'self'; font-src 'self'</code>), native MathML + LaTeX/BibTeX source blocks, and client-side CAD/STL/DXF/HPGL generation.
+        </p>
+        <p class="es">
+          Páginas estáticas construidas con Astro 5, servidas mediante Cloudflare Workers y Assets con encabezados CSP estrictos (<code>script-src 'self'; font-src 'self'</code>), bloques MathML + LaTeX/BibTeX nativos y generación CAD/STL/DXF/HPGL del lado del cliente.
+        </p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

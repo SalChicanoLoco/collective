@@ -220,8 +220,11 @@ const isMaintenance = import.meta.env.PUBLIC_MAINTENANCE === 'true';
               <p id="ask-status" class="note" role="status" aria-live="polite"></p>
             </form>
             <article id="ask-answer" class="card grid--spaced" hidden>
-              <div id="ask-answer-mode" class="kicker"></div>
-              <p id="ask-answer-text"></p>
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+                <div id="ask-answer-mode" class="kicker"></div>
+                <button type="button" id="ask-clear" class="button" style="padding:4px 10px;font-size:11px;">Clear</button>
+              </div>
+              <div id="ask-thread"></div>
             </article>
           </div>
         </div>
