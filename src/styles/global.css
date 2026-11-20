@@ -240,7 +240,8 @@ h3 {
   transition: border-color 0.15s, transform 0.15s;
 }
 a.card:hover { border-color: var(--accent); transform: translateY(-1px); }
-a.card h2, a.card h3 { color: var(--accent); }
+.card h2, .card h3 { color: var(--text); }
+a.card:hover h2, a.card:hover h3 { color: var(--accent); }
 .card p { color: var(--muted); font-size: 14px; line-height: 1.55; margin: 0; }
 .card p + p { margin-top: 8px; }
 .card ul { margin: 8px 0 0; padding-left: 18px; color: var(--muted); font-size: 14px; }
@@ -265,7 +266,7 @@ a.card h2, a.card h3 { color: var(--accent); }
 }
 .cad-sidebar { display: flex; flex-direction: column; gap: 14px; }
 .cad-main { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
-.cad-frame { padding: 10px; background: #0b0906; border-radius: var(--radius); border: 1px solid var(--border); }
+.cad-frame { padding: 12px; background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); }
 .cad-canvas { width: 100%; height: 480px; display: block; cursor: grab; border-radius: var(--radius-sm); }
 .cad-svg { width: 100%; height: auto; display: block; margin-top: 8px; }
 

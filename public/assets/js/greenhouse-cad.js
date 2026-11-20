@@ -122,8 +122,8 @@
     }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    // CAD dark drafting background
-    ctx.fillStyle = '#120c06';
+    // CAD dark drafting background matching --surface
+    ctx.fillStyle = '#17130d';
     ctx.fillRect(0, 0, w, h);
 
     var L = state.lengthFt;
@@ -254,7 +254,7 @@
     var h = state.widthFt * scale;
     root.setAttribute('viewBox', '0 0 ' + (w + pad * 2) + ' ' + (h + pad * 2));
 
-    root.appendChild(makeSvg('rect', { x: pad, y: pad, width: w, height: h, fill: '#1f160c', stroke: '#e8a825', 'stroke-width': 2 }));
+    root.appendChild(makeSvg('rect', { x: pad, y: pad, width: w, height: h, fill: '#0f0c08', stroke: '#e8a825', 'stroke-width': 2 }));
     // North barrel spine
     if (state.showBarrels) {
       root.appendChild(makeSvg('rect', { x: pad + 6, y: pad + 4, width: w - 12, height: 18, fill: '#356085', stroke: '#7ab4e8', 'stroke-width': 1 }));
@@ -303,7 +303,7 @@
       fill: 'rgba(130,90,45,0.75)', stroke: '#e8a825',
     }));
     // Sunken trench floor
-    root.appendChild(makeSvg('rect', { x: pad, y: groundY, width: w, height: trenchPx, fill: '#1f160c', stroke: '#f6ead7' }));
+    root.appendChild(makeSvg('rect', { x: pad, y: groundY, width: w, height: trenchPx, fill: '#0f0c08', stroke: '#f5efe6' }));
     // South glazing arch / slope
     root.appendChild(makeSvg('path', {
       d: 'M ' + pad + ' ' + (groundY - bermPx) + ' Q ' + (pad + w * 0.45) + ' ' + (groundY - ridgePx * 1.45) + ' ' + (pad + w) + ' ' + groundY,
