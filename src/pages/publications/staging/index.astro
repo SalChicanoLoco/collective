@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import PageHero from '../../../components/PageHero.astro';
+import Card from '../../../components/Card.astro';
+
+const candidates = [
+  {
+    kickerEn: 'Candidate 1 · Physics & Sensors · Flag: Needs BibTeX/Citations',
+    kickerEs: 'Candidato 1 · Física y Sensores · Falta BibTeX/Citas',
+    titleEn: 'Magneto-Acoustic Aeolian String Anemometry',
+    titleEs: 'Anemometría Eólica Magneto-Acústica de Cuerdas',
+    descEn: '3-page complete paper (9 eqs, 8 sections, 1 table): tensioned ferromagnetic strings, Strouhal vortex shedding, Faraday EMF, and 3D tri-axial wind reconstruction.',
+    descEs: 'Artículo completo de 3 páginas (9 ecuaciones, 8 secciones): cuerdas ferromagnéticas, desprendimiento de vórtices de Strouhal y reconstrucción 3D del viento.',
+    href: '/publications/aeolian-string-anemometry/',
+    pdfHref: '/publications/aeolian-string-anemometry/aeolian_wind_harp_paper.pdf',
+  },
+  {
+    kickerEn: 'Candidate 2 · Atmospheric Tomography · Canonical Winner (Supersedes 2 drafts)',
+    kickerEs: 'Candidato 2 · Tomografía Atmosférica · Versión Canónica',
+    titleEn: 'RAIS: Distributed Aperture Array for Atmospheric IGWs',
+    titleEs: 'RAIS: Arreglo Distribuido para Ondas Gravitacionales Internas',
+    descEn: '5-page canonical preprint (9 eqs, 8 sections, 4 tables). Supersedes rais_igw_research_paper.tex and atmospheric_gravity_waves_paper.tex. Flag: needs formal BibTeX.',
+    descEs: 'Preimpresión canónica de 5 páginas (9 ecuaciones, 8 secciones, 4 tablas). Reemplaza 2 borradores previos. Falta BibTeX formal.',
+    href: '/publications/rais-igw-aperture-array/',
+    pdfHref: '/publications/rais-igw-aperture-array/rais_and_gravity_waves_paper.pdf',
+  },
+  {
+    kickerEn: 'Candidate 3 · Systems Engineering · Tabbed 2-Dossier Package',
+    kickerEs: 'Candidato 3 · Ingeniería de Sistemas · Paquete de 2 Dossiers',
+    titleEn: 'Redox OS: Microkernel Gazette & Bare-Metal Hardware Dossier',
+    titleEs: 'Redox OS: Gaceta Microkernel y Dossier de Hardware',
+    descEn: 'Redox OS Gazette (4 pages, supersedes redox_os_periodical.tex) paired with the Bare-Metal Hardware Report (4 pages: NVMe, GOP, PCIe MCFG, MSI-X DMA, Rust driver skeleton).',
+    descEs: 'Gaceta Redox OS (4 páginas, reemplaza periodical) junto con el Reporte de Hardware Bare-Metal (4 páginas: NVMe, PCIe, DMA y esqueleto Rust).',
+    href: '/publications/redox-os-microkernel-dossier/',
+    pdfHref: '/publications/redox-os-microkernel-dossier/redox_os_gazette.pdf',
+    pdf2Href: '/publications/redox-os-microkernel-dossier/redox_os_hardware_report.pdf',
+  },
+  {
+    kickerEn: 'Candidate 4 · Geometric Computation · Flag: Needs Formal BibTeX',
+    kickerEs: 'Candidato 4 · Computación Geométrica · Falta BibTeX Formal',
+    titleEn: 'The Spine Graph & Field Proof Engine',
+    titleEs: 'El Grafo Spine y Motor de Pruebas de Campo',
+    descEn: '4-page paper (15 eqs, 5 sections, 1 table): geometric operator lifts (i → J), discrete graph-field holonomy, and Landauer thermodynamic profiling.',
+    descEs: 'Artículo de 4 páginas (15 ecuaciones, 5 secciones): operadores geométricos, holonomía discreta y perfilado termodinámico de Landauer.',
+    href: '/publications/spine-graph-proof-engine/',
+    pdfHref: '/publications/spine-graph-proof-engine/spine_proof_paper.pdf',
+  },
+];
+---
+
+<BaseLayout
+  title="Staging Publication Screening Hub | Sena's AI Collective"
+  description="Candidate publications deduplicated from collectivo/science/docs for live screening and approval on test.senacolectivo.com."
+  canonical="https://test.senacolectivo.com/publications/staging/"
+>
+  <Header />
+  <main id="main">
+    <PageHero
+      eyebrowEn="Staging Screening Hub · Deduplicated Candidates"
+      eyebrowEs="Centro de Revisión Staging · Candidatos Deduplicados"
+      titleEn="Publication Candidates & Tools Audit"
+      titleEs="Publicaciones Candidatas y Auditoría de Herramientas"
+      dekEn="Screened from collectivo/science/docs (8 .tex/.pdf files deduplicated to 4 canonical packages). Review live on staging before promoting to /publications/."
+      dekEs="Revisados desde collectivo/science/docs (8 archivos .tex/.pdf deduplicados a 4 paquetes canónicos). Revisa en staging antes de promover."
+    />
+
+    <section class="section">
+      <div class="wrap">
+        <p class="eyebrow en">4 Canonical Packages · Ready for Screening</p>
+        <p class="eyebrow es">4 Paquetes Canónicos · Listos para Revisión</p>
+        <h2 class="en">Candidate Publications</h2>
+        <h2 class="es">Publicaciones Candidatas</h2>
+        <div class="grid grid--2 grid--spaced">
+          {candidates.map((c) => (
+            <Card
+              kickerEn={c.kickerEn}
+              kickerEs={c.kickerEs}
+              titleEn={c.titleEn}
+              titleEs={c.titleEs}
+              descEn={c.descEn}
+              descEs={c.descEs}
+            >
+              <div slot="footer" class="button-row">
+                <a class="button button--primary en" href={c.href}>Open HTML</a>
+                <a class="button button--primary es" href={c.href}>Abrir HTML</a>
+                <a class="button" href={c.pdfHref} target="_blank" rel="noopener">PDF</a>
+                {c.pdf2Href && (
+                  <a class="button" href={c.pdf2Href} target="_blank" rel="noopener">Hardware PDF</a>
+                )}
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <p class="eyebrow en">Deduplication &amp; Tools Refactor Plan</p>
+        <p class="eyebrow es">Plan de Deduplicación y Refactorización</p>
+        <h2 class="en">Superseded Drafts &amp; Tool Audit Summary</h2>
+        <h2 class="es">Borradores Reemplazados y Auditoría</h2>
+        <div class="grid grid--2 grid--spaced">
+          <div class="card">
+            <div class="kicker">Superseded / Deduplicated Papers</div>
+            <ul>
+              <li><code>rais_igw_research_paper.tex</code> (2p) &amp; <code>atmospheric_gravity_waves_paper.tex</code> (2p) → superseded by canonical 5-page <code>rais_and_gravity_waves_paper.tex</code>.</li>
+              <li><code>redox_os_periodical.tex</code> (3p) → superseded by more complete 4-page <code>redox_os_gazette.tex</code> + companion <code>redox_os_hardware_report.tex</code>.</li>
+              <li><strong>Next polish:</strong> Add formal BibTeX blocks to Candidates 1, 2, and 4 before promoting to production.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <div class="kicker">Interactive Tools Refactor Queue (from Audit)</div>
+            <ul>
+              <li><strong>webgl_flow_engine.html:</strong> Extract Three.js/OrbitControls/KaTeX CDNs &amp; Tailwind to local <code>/assets/</code>, fix 15-PointLight mobile GPU hazard, wire dead sliders (<code>#rng-terrain</code>, <code>#rng-tension</code>, <code>#chk-gravity</code>), fix <code>setViewMode</code> Y-offset reset.</li>
+              <li><strong>saturn_rings_engine.html:</strong> Extract CDNs &amp; inline JS, fix <code>animate()</code> lerp fighting OrbitControls, clamp negative <code>gl_PointSize</code>, update view button active states.</li>
+              <li><strong>flow_visualizer.html:</strong> Re-audit once file read permission is granted.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
