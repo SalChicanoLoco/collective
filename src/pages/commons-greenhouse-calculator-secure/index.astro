@@ -1,0 +1,125 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Commons Greenhouse CAD & 3D Print Configurator | Sena Colectivo"
+  description="Interactive 3D orbitable CAD preview, 2D plan and cross-section blueprints, 3D-printable .STL export, and .DXF CAD export for passive-solar greenhouses."
+  canonical="https://senacolectivo.com/commons-greenhouse-calculator-secure/"
+>
+  <Header />
+  <main id="main">
+    <section class="hero">
+      <div class="wrap">
+        <p class="eyebrow en">CAD · 3D Printable .STL · 2D .DXF · Thermal Mass</p>
+        <p class="eyebrow es">CAD · .STL Imprimible 3D · .DXF 2D · Masa Térmica</p>
+        <h1 class="en">Commons Greenhouse CAD Studio.</h1>
+        <h1 class="es">Estudio CAD de Invernadero Commons.</h1>
+        <p class="dek en">
+          Configure length, width, berm, trench, and thermal mass. Orbit the 3D model, inspect 2D plan and section blueprints, or export a 1:50 3D-printable .STL and 2D .DXF.
+        </p>
+        <p class="dek es">
+          Configura largo, ancho, berma, trinchera y masa térmica. Orbita el modelo 3D, inspecciona planos 2D o exporta un .STL imprimible en 3D (1:50) y un .DXF 2D.
+        </p>
+        <div class="button-row">
+          <button type="button" id="exportStlBtn" class="button button--primary">Export 3D Printable .STL (1:50)</button>
+          <button type="button" id="exportDxfBtn" class="button button--ghost">Export 2D CAD .DXF</button>
+          <button type="button" id="resetOrbitBtn" class="button button--ghost">Reset 3D View</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div id="cadControls" class="grid grid--spaced">
+          <div class="card">
+            <div class="kicker">Dimensions (ft)</div>
+            <label for="lengthFt">Length X (12–96 ft)</label>
+            <input id="lengthFt" type="number" min="12" max="96" step="2" value="32" style="width:100%;padding:8px;margin:6px 0 12px;background:#171008;color:#f6ead7;border:1px solid rgba(246,234,215,0.25);" />
+            <label for="widthFt">Width Y (10–32 ft)</label>
+            <input id="widthFt" type="number" min="10" max="32" step="2" value="16" style="width:100%;padding:8px;margin:6px 0 12px;background:#171008;color:#f6ead7;border:1px solid rgba(246,234,215,0.25);" />
+            <label for="spacingFt">Hoop Spacing (2–8 ft)</label>
+            <input id="spacingFt" type="number" min="2" max="8" step="0.5" value="4" style="width:100%;padding:8px;margin:6px 0 0;background:#171008;color:#f6ead7;border:1px solid rgba(246,234,215,0.25);" />
+          </div>
+
+          <div class="card">
+            <div class="kicker">Earthworks &amp; Aisle (ft)</div>
+            <label for="aisleFt">Central Aisle (1.5–5 ft)</label>
+            <input id="aisleFt" type="number" min="1.5" max="5" step="0.5" value="2.5" style="width:100%;padding:8px;margin:6px 0 12px;background:#171008;color:#f6ead7;border:1px solid rgba(246,234,215,0.25);" />
+            <label for="bermFt">North Earth Berm (0–6 ft)</label>
+            <input id="bermFt" type="number" min="0" max="6" step="0.5" value="2.5" style="width:100%;padding:8px;margin:6px 0 12px;background:#171008;color:#f6ead7;border:1px solid rgba(246,234,215,0.25);" />
+            <label for="trenchFt">Sunken Trench Depth (0–4 ft)</label>
+            <input id="trenchFt" type="number" min="0" max="4" step="0.5" value="1.5" style="width:100%;padding:8px;margin:6px 0 0;background:#171008;color:#f6ead7;border:1px solid rgba(246,234,215,0.25);" />
+          </div>
+
+          <div class="card">
+            <div class="kicker">Profile &amp; Systems</div>
+            <label for="buildTier">Build Tier</label>
+            <select id="buildTier" style="width:100%;padding:8px;margin:6px 0 14px;background:#171008;color:#f6ead7;border:1px solid rgba(246,234,215,0.25);">
+              <option value="salvage">Scrappy Salvage ($1.85/sq ft)</option>
+              <option value="balanced" selected>Balanced Low-Cost ($4.25/sq ft)</option>
+              <option value="upgraded">Upgraded Kit ($8.50/sq ft)</option>
+            </select>
+            <label style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+              <input id="showBarrels" type="checkbox" checked /> North Thermal Barrels
+            </label>
+            <label style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+              <input id="showAirTube" type="checkbox" checked /> Sub-Soil Geothermal Air Tube
+            </label>
+            <label style="display:flex;gap:8px;align-items:center;">
+              <input id="wireframeMode" type="checkbox" /> Wireframe CAD Mode
+            </label>
+          </div>
+        </div>
+
+        <div class="grid grid--spaced">
+          <div class="card"><div class="kicker">Footprint</div><div id="footprintValue" class="stat">—</div></div>
+          <div class="card"><div class="kicker">Structure</div><div id="hoopsValue" class="stat">—</div></div>
+          <div class="card"><div class="kicker">Thermal Mass</div><div id="thermalValue" class="stat">—</div></div>
+          <div class="card"><div class="kicker">Estimated Cost</div><div id="costValue" class="stat">—</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="eyebrow">Interactive 3D CAD Viewport</div>
+        <h2>3D Structural Model (Drag to Orbit · Scroll to Zoom)</h2>
+        <div class="card" style="padding:12px;">
+          <canvas id="cadCanvas" style="width:100%;height:440px;display:block;cursor:grab;border-radius:4px;"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="eyebrow">2D CAD Blueprints</div>
+        <h2>Plan &amp; Cross-Section</h2>
+        <div class="grid grid--spaced">
+          <div class="card">
+            <div class="kicker">Plan View (Length = X, Width = Y)</div>
+            <svg id="planSvg" style="width:100%;height:auto;display:block;"></svg>
+          </div>
+          <div class="card">
+            <div class="kicker">Cross-Section (North Berm → South Glazing)</div>
+            <svg id="sectionSvg" style="width:100%;height:auto;display:block;"></svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="eyebrow">Bill of Materials</div>
+        <h2>Derived Specifications</h2>
+        <div class="card">
+          <ul id="bomList"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <script src="/assets/js/greenhouse-cad.js" defer></script>
+</BaseLayout>
