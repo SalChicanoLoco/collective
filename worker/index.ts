@@ -1,8 +1,17 @@
 import { auditSite } from './audit';
+import {
+  computeGreenhouseSubstrate,
+  handleSubstrateInfer,
+  hasInjectionSignal,
+  substrateStatus,
+} from './substrate';
 
 export interface Env {
   ASSETS: Fetcher;
   AI?: Ai;
+  CUSTOM_LM_URL?: string;
+  CUSTOM_LM_TOKEN?: string;
+  SUBSTRATE_TOKEN?: string;
   SITE_URL?: string;
   CONTACT_EMAIL?: string;
   CONTACT_PHONE?: string;
@@ -118,6 +127,15 @@ export default {
         );
       }
 
+      if (hasInjectionSignal(question)) {
+        return withSecurityHeaders(
+          Response.json(
+            { ok: false, error: 'Question blocked by Shaman input gate.' },
+            { status: 403 },
+          ),
+        );
+      }
+
       if (!env.AI) {
         return withSecurityHeaders(
           Response.json({
@@ -156,6 +174,35 @@ export default {
           }),
         );
       }
+    }
+
+    if (url.pathname === '/api/substrate/status' || url.pathname === '/api/delta/status') {
+      return withSecurityHeaders(Response.json(substrateStatus(env)));
+    }
+
+    if (url.pathname === '/api/substrate/greenhouse' || url.pathname === '/api/delta/greenhouse') {
+      if (request.method !== 'POST') {
+        return withSecurityHeaders(
+          Response.json({ ok: false, error: 'Use POST with JSON greenhouse parameters.' }, { status: 405 }),
+        );
+      }
+      let raw: Record<string, unknown>;
+      try {
+        raw = (await request.json()) as Record<string, unknown>;
+      } catch {
+        return withSecurityHeaders(Response.json({ ok: false, error: 'Invalid JSON body.' }, { status: 400 }));
+      }
+      const res = computeGreenhouseSubstrate(raw);
+      return withSecurityHeaders(Response.json(res, { status: res.status }));
+    }
+
+    if (url.pathname === '/api/substrate/infer' || url.pathname === '/api/delta/infer') {
+      if (request.method !== 'POST') {
+        return withSecurityHeaders(
+          Response.json({ ok: false, error: 'Use POST with JSON { prompt }.' }, { status: 405 }),
+        );
+      }
+      return withSecurityHeaders(await handleSubstrateInfer(request, env));
     }
 
     if (url.pathname.startsWith('/api/')) {
