@@ -64,6 +64,36 @@ pre{background:#110a05;border:1px solid rgba(246,234,215,.15);padding:16px;color
   <h2>4. Benchmarking Outcomes & Limitations</h2>
   <p>The workflow was evaluated against PROMETHEUS (UKCP09 probabilistic data), Meteonorm (commercial multi-source), and the Future Weather Generator (FWG). Pearson correlation coefficients for hourly dry-bulb temperature across 2080 projections in Exeter ranged from <strong>0.748 to 0.799 (p &lt; 0.05)</strong>, confirming high statistical consistency with existing generators while exposing all mathematical transformations.</p>
   <p>The authors note that because morphing preserves the baseline temporal sequence, extreme heat events absent from the historical record are not synthesized. Morphing is therefore ideal for early-stage design sensitivity and long-term energy modeling, but should be supplemented with synthetic extreme reference years (e.g., CIBSE DSYs) for catastrophic heat dome survival analysis.</p>
+
+  <h2>5. Sources, References &amp; BibTeX</h2>
+  <p>For the complete equation derivations and interactive MathML/LaTeX spine, see <a href="calculations.html">Calculations</a>. For the full archive ledger, see <a href="sources.html">Sources &amp; BibTeX Ledger</a>.</p>
+  <ol>
+    <li><strong>Reolon, M., Marengo, M., &amp; Picco, M. (2026).</strong> A transparent workflow for future EnergyPlus Weather (EPW) files for building energy simulation. <em>Academia Green Energy</em>, 3, 1–16. DOI: <a href="https://doi.org/10.20935/AcadEnergy8325" target="_blank" rel="noopener">10.20935/AcadEnergy8325</a></li>
+    <li><strong>Belcher, S. E., Hacker, J. N., &amp; Powell, D. S. (2005).</strong> Constructing design weather data for future climates. <em>Building Services Engineering Research and Technology</em>, 26(1), 49–61.</li>
+    <li><strong>Jentsch, M. F., Bahaj, A. S., &amp; James, P. A. B. (2008, 2013).</strong> Climate change future proofing of buildings (<em>CCWorldWeatherGen</em> toolchain). <em>Energy and Buildings</em>.</li>
+    <li><strong>Eames, M., Kershaw, T., &amp; Coley, D. (2011, 2012).</strong> On the creation of future probabilistic design weather years from UKCP09 (PROMETHEUS). <em>Building Services Engineering Research and Technology</em>.</li>
+    <li><strong>Rodrigues, E., Fernandes, M. S., &amp; Carvalho, D. (2023).</strong> Future weather generator for building performance research: an open-source morphing tool (FWG). <em>Building and Environment</em>.</li>
+    <li><strong>Jia, Y., et al. (2023).</strong> Epwshiftr: incorporating open data of climate change prediction into building performance simulation (CMIP6 / Python).</li>
+    <li><strong>CIBSE (2017).</strong> <em>TM59: Design methodology for the assessment of overheating risk in homes</em>. Chartered Institution of Building Services Engineers.</li>
+    <li><strong>ASHRAE.</strong> <em>Handbook of Fundamentals</em> — Psychrometrics &amp; Atmospheric Radiation Formulations; <strong>Perez, R., et al.</strong> (1990) solar irradiance decomposition.</li>
+    <li><strong>IPCC (2021).</strong> <em>Climate Change 2021: The Physical Science Basis (AR6 Working Group I)</em>.</li>
+  </ol>
+
+  <h3>BibTeX Citation</h3>
+  <pre><code>@article{Reolon2026_EnergyPlusWeather,
+  author       = {Reolon, Mattia and Marengo, Marco and Picco, Marco},
+  title        = {A transparent workflow for future {EnergyPlus} Weather ({EPW}) files for building energy simulation},
+  journal      = {Academia Green Energy},
+  volume       = {3},
+  pages        = {1--16},
+  year         = {2026},
+  month        = may,
+  publisher    = {Academia.edu Journals},
+  doi          = {10.20935/AcadEnergy8325},
+  issn         = {2998-3665},
+  url          = {https://doi.org/10.20935/AcadEnergy8325},
+  keywords     = {future weather files, EPW, morphing, climate projections, building energy modelling, climate adaptation}
+}</code></pre>
 </div>
 </body>
 </html>
