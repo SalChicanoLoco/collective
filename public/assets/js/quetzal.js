@@ -87,6 +87,24 @@
     return { x: cx + x, y: cy - y, visible: cosC >= 0 };
   }
 
+  // Simplified natural-earth continent polygons [lon, lat] for zero-dependency 3D globe rendering
+  var CONTINENTS = [
+    // North & Central America
+    [[-168,66],[-162,70],[-136,69],[-122,71],[-95,70],[-82,63],[-66,60],[-56,52],[-67,45],[-75,35],[-81,25],[-83,30],[-90,29],[-97,26],[-96,19],[-88,21],[-84,11],[-78,8],[-83,9],[-92,15],[-105,20],[-112,28],[-117,32],[-124,40],[-124,48],[-135,57],[-152,60],[-162,55],[-166,60]],
+    // South America
+    [[-78,9],[-72,12],[-62,10],[-50,1],[-35,-6],[-38,-14],[-41,-22],[-48,-28],[-54,-34],[-64,-41],[-68,-54],[-74,-50],[-72,-36],[-71,-20],[-77,-12],[-81,-5],[-79,2]],
+    // Greenland
+    [[-52,60],[-42,60],[-34,68],[-20,76],[-28,82],[-55,81],[-68,76],[-54,68]],
+    // Africa
+    [[-17,15],[-6,36],[10,37],[25,32],[33,31],[43,12],[51,12],[45,2],[40,-10],[35,-24],[28,-33],[18,-35],[15,-24],[12,-6],[9,4],[2,6],[-8,5],[-15,11]],
+    // Eurasia
+    [[-9,37],[-9,43],[-2,48],[4,53],[10,58],[5,61],[18,70],[40,68],[68,70],[105,76],[140,72],[175,66],[162,55],[142,54],[130,43],[122,38],[121,30],[110,20],[104,2],[98,16],[88,22],[78,8],[68,24],[57,26],[48,30],[36,36],[28,41],[16,40],[12,44],[5,43]],
+    // Australia
+    [[114,-22],[122,-17],[132,-12],[136,-15],[142,-11],[146,-18],[153,-28],[150,-37],[140,-38],[130,-32],[115,-34],[113,-26]],
+    // Antarctica (ring)
+    [[-180,-72],[-120,-74],[-60,-65],[0,-70],[60,-68],[120,-67],[180,-72],[180,-89],[-180,-89]],
+  ];
+
   function drawGlobe() {
     if (!globe) return;
     var ctx = globe.getContext('2d');
@@ -94,7 +112,7 @@
     var h = globe.height;
     var cx = w / 2;
     var cy = h / 2;
-    var R = Math.min(w, h) * 0.41;
+    var R = Math.min(w, h) * 0.43;
 
     var cs = getComputedStyle(document.documentElement);
     var bg = cs.getPropertyValue('--bg').trim() || '#070a0f';
@@ -105,18 +123,28 @@
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, w, h);
 
-    // Outer limb
+    // Shaded ocean sphere
+    var oceanGrad = ctx.createRadialGradient(cx - R * 0.3, cy - R * 0.3, R * 0.1, cx, cy, R);
+    oceanGrad.addColorStop(0, '#13243b');
+    oceanGrad.addColorStop(0.7, '#0b1524');
+    oceanGrad.addColorStop(1, '#050a12');
     ctx.beginPath();
     ctx.arc(cx, cy, R, 0, Math.PI * 2);
-    ctx.fillStyle = 'rgba(13, 19, 28, 0.72)';
+    ctx.fillStyle = oceanGrad;
     ctx.fill();
     ctx.strokeStyle = border;
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth = 1.6;
     ctx.stroke();
 
+    // Clip to globe limb for graticule + continents
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, R - 1, 0, Math.PI * 2);
+    ctx.clip();
+
     // Graticule (lat/lon grid)
-    ctx.strokeStyle = 'rgba(158, 176, 196, 0.16)';
-    ctx.lineWidth = 0.8;
+    ctx.strokeStyle = 'rgba(158, 176, 196, 0.14)';
+    ctx.lineWidth = 0.7;
     for (var lat = -60; lat <= 60; lat += 30) {
       ctx.beginPath();
       var started = false;
@@ -141,6 +169,39 @@
       }
       ctx.stroke();
     }
+
+    // Real Earth Continents
+    CONTINENTS.forEach(function (poly) {
+      ctx.beginPath();
+      var anyVis = false;
+      poly.forEach(function (ptLL, idx) {
+        var phi = (ptLL[1] * Math.PI) / 180;
+        var lam = ((ptLL[0] - state.rotLon) * Math.PI) / 180;
+        var phi0 = (state.rotLat * Math.PI) / 180;
+        var cosC = Math.sin(phi0) * Math.sin(phi) + Math.cos(phi0) * Math.cos(phi) * Math.cos(lam);
+        var px = R * Math.cos(phi) * Math.sin(lam);
+        var py = R * (Math.cos(phi0) * Math.sin(phi) - Math.sin(phi0) * Math.cos(phi) * Math.cos(lam));
+        // Clamp back-hemisphere points onto limb so polygons stay closed cleanly
+        if (cosC < 0) {
+          var norm = Math.hypot(px, py) || 1;
+          px = (px / norm) * R;
+          py = (py / norm) * R;
+        } else {
+          anyVis = true;
+        }
+        if (idx === 0) ctx.moveTo(cx + px, cy - py);
+        else ctx.lineTo(cx + px, cy - py);
+      });
+      ctx.closePath();
+      if (anyVis) {
+        ctx.fillStyle = 'rgba(76, 201, 240, 0.14)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(76, 201, 240, 0.48)';
+        ctx.lineWidth = 1.0;
+        ctx.stroke();
+      }
+    });
+    ctx.restore();
 
     // AOI ring + center target
     var aoi = getAoi();
@@ -194,6 +255,18 @@
 
   function updateAoiAndForecast() {
     var aoi = getAoi();
+    var earthLink = el('qzEarthLink');
+    if (earthLink) {
+      var rangeM = Math.round(aoi.radiusKm * 2200);
+      earthLink.href =
+        'https://earth.google.com/web/@' +
+        aoi.lat.toFixed(4) +
+        ',' +
+        aoi.lon.toFixed(4) +
+        ',1800a,' +
+        rangeM +
+        'd,35y,0h,45t,0r';
+    }
     var inAoi = 0;
     var sumJ = 0;
     var sumM3 = 0;
