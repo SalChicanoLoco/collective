@@ -35,6 +35,8 @@ const isMaintenance = import.meta.env.PUBLIC_MAINTENANCE === 'true';
               <a class="button button--primary es" href="mailto:salvadorsena@senacolectivo.com">Escribe a salvadorsena@senacolectivo.com</a>
               <a class="button en" href="tel:+15054519341">Call (505) 451-9341</a>
               <a class="button es" href="tel:+15054519341">Llama al (505) 451-9341</a>
+              <a class="button en" href="https://test.senacolectivo.com" rel="noopener">Preview Staging Build</a>
+              <a class="button es" href="https://test.senacolectivo.com" rel="noopener">Ver Versión Staging</a>
             </div>
           </div>
           <figure class="hero-media">
@@ -46,7 +48,61 @@ const isMaintenance = import.meta.env.PUBLIC_MAINTENANCE === 'true';
               decoding="async"
               alt="A gold network of connected nodes and lines over a dark desert mesa at dusk."
             />
+            <svg class="hero-fx" viewBox="0 0 800 450" aria-hidden="true">
+              <line class="hero-fx__sweep" x1="0" y1="0" x2="800" y2="0" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6 6" />
+              <g class="hero-fx__ring" opacity="0.45">
+                <circle cx="400" cy="225" r="145" fill="none" stroke="var(--accent)" stroke-width="1" stroke-dasharray="10 8" />
+                <circle cx="545" cy="225" r="4" fill="var(--accent)" />
+              </g>
+              <g class="hero-fx__ring--rev" opacity="0.35">
+                <circle cx="400" cy="225" r="102" fill="none" stroke="var(--accent-2)" stroke-width="1" stroke-dasharray="4 10" />
+                <circle cx="298" cy="225" r="3.5" fill="var(--accent-2)" />
+              </g>
+              <g>
+                <circle class="hero-fx__pulse" cx="400" cy="225" r="6" fill="var(--accent)" />
+                <circle class="hero-fx__pulse" cx="220" cy="145" r="4" fill="var(--accent-2)" />
+                <circle class="hero-fx__pulse" cx="590" cy="300" r="4.5" fill="var(--accent)" />
+              </g>
+            </svg>
           </figure>
+        </div>
+      </section>
+
+      <section class="section" id="contact">
+        <div class="wrap">
+          <p class="eyebrow en">Practice Open · Scope &amp; Price Agreed Up Front</p>
+          <p class="eyebrow es">Práctica Abierta · Alcance y Precio Acordados</p>
+          <h2 class="en">Available while we finish the rebuild</h2>
+          <h2 class="es">Disponible mientras terminamos la reconstrucción</h2>
+          <div class="grid grid--3 grid--spaced">
+            <Card
+              kickerEn="Consulting · Since 2003"
+              kickerEs="Consultoría · Desde 2003"
+              titleEn="Sena IT & AI Consulting"
+              titleEs="Consultoría IT e IA"
+              descEn="Software, AI workflows, Linux, networking, and security. Priced per job with neighbor/senior discounts and trade welcome."
+              descEs="Software, flujos de IA, Linux, redes y seguridad. Precio por proyecto con descuentos locales y opción de trueque."
+              href="mailto:salvadorsena@senacolectivo.com"
+            />
+            <Card
+              kickerEn="Grants · Per project"
+              kickerEs="Subvenciones · Por proyecto"
+              titleEn="Grant Writing & Audits"
+              titleEs="Redacción de Subvenciones"
+              descEn="Research-backed grant writing and technical scoping for civic, agricultural, and community infrastructure."
+              descEs="Redacción técnica basada en investigación para infraestructura cívica, agrícola y comunitaria."
+              href="mailto:salvadorsena@senacolectivo.com"
+            />
+            <Card
+              kickerEn="Marketplace · Live"
+              kickerEs="Mercado · En vivo"
+              titleEn="Merc Mercado"
+              descEn="Santa Fe handmade marketplace on Cloudflare Pages. 0% platform take, direct buyer-seller payment ($2,500 turnkey / $1,000 floor)."
+              descEs="Mercado local de artesanía en Santa Fe. 0% comisión, pago directo ($2,500 llave en mano / $1,000 piso)."
+              href="https://merc.senacolectivo.com"
+              external={true}
+            />
+          </div>
         </div>
       </section>
     </main>
@@ -83,6 +139,22 @@ const isMaintenance = import.meta.env.PUBLIC_MAINTENANCE === 'true';
               decoding="async"
               alt="A gold network of connected nodes and lines over a dark desert mesa at dusk."
             />
+            <svg class="hero-fx" viewBox="0 0 800 450" aria-hidden="true">
+              <line class="hero-fx__sweep" x1="0" y1="0" x2="800" y2="0" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="6 6" />
+              <g class="hero-fx__ring" opacity="0.45">
+                <circle cx="400" cy="225" r="145" fill="none" stroke="var(--accent)" stroke-width="1" stroke-dasharray="10 8" />
+                <circle cx="545" cy="225" r="4" fill="var(--accent)" />
+              </g>
+              <g class="hero-fx__ring--rev" opacity="0.35">
+                <circle cx="400" cy="225" r="102" fill="none" stroke="var(--accent-2)" stroke-width="1" stroke-dasharray="4 10" />
+                <circle cx="298" cy="225" r="3.5" fill="var(--accent-2)" />
+              </g>
+              <g>
+                <circle class="hero-fx__pulse" cx="400" cy="225" r="6" fill="var(--accent)" />
+                <circle class="hero-fx__pulse" cx="220" cy="145" r="4" fill="var(--accent-2)" />
+                <circle class="hero-fx__pulse" cx="590" cy="300" r="4.5" fill="var(--accent)" />
+              </g>
+            </svg>
           </figure>
         </div>
       </section>
