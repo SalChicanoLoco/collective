@@ -406,6 +406,43 @@ const isMaintenance = import.meta.env.PUBLIC_MAINTENANCE === 'true';
         </div>
       </section>
 
+      <section class="section" id="ask">
+        <div class="wrap">
+          <div class="eyebrow en">Edge AI · Cloudflare Workers AI</div>
+          <div class="eyebrow es">IA de borde · Cloudflare Workers AI</div>
+          <h2 class="en">Ask the practice.</h2>
+          <h2 class="es">Pregunta a la práctica.</h2>
+          <p class="section-lead en">
+            Ask a quick question about services, pricing, Merc Mercado, or public tools — answered directly from the edge Worker.
+          </p>
+          <p class="section-lead es">
+            Haz una pregunta rápida sobre servicios, precios, Merc Mercado o herramientas públicas — respondida desde el Worker en el borde.
+          </p>
+          <form id="ask-form" class="card">
+            <label for="ask-input" class="en">Your question (max 300 characters)</label>
+            <label for="ask-input" class="es">Tu pregunta (máximo 300 caracteres)</label>
+            <div class="button-row">
+              <input
+                id="ask-input"
+                name="question"
+                type="text"
+                maxlength="300"
+                required
+                placeholder="How does pricing work for IT or AI consulting?"
+                style="flex: 1; min-width: 240px; padding: 12px; background: #1f160c; color: #f6ead7; border: 1px solid rgba(246, 234, 215, 0.25); font: inherit;"
+              />
+              <button type="submit" class="button button--primary en">Ask edge AI</button>
+              <button type="submit" class="button button--primary es">Preguntar a la IA</button>
+            </div>
+            <p id="ask-status" class="note" role="status" aria-live="polite"></p>
+          </form>
+          <article id="ask-answer" class="card" hidden>
+            <div id="ask-answer-mode" class="kicker"></div>
+            <p id="ask-answer-text"></p>
+          </article>
+        </div>
+      </section>
+
       <section class="section section--featured" id="contact">
         <img
           class="section-bg"
@@ -438,4 +475,5 @@ const isMaintenance = import.meta.env.PUBLIC_MAINTENANCE === 'true';
     </main>
   )}
   <Footer />
+  {!isMaintenance && <script src="/assets/js/ask.js" defer></script>}
 </BaseLayout>

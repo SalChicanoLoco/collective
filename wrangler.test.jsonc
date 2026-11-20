@@ -16,6 +16,9 @@
     "binding": "ASSETS",
     "run_worker_first": ["/api/*", "/favicon.ico"]
   },
+  "ai": {
+    "binding": "AI"
+  },
   "vars": {
     "SITE_URL": "https://test.senacolectivo.com",
     "CONTACT_EMAIL": "salvadorsena@senacolectivo.com",

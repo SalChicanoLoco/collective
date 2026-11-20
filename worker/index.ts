@@ -2,10 +2,22 @@ import { auditSite } from './audit';
 
 export interface Env {
   ASSETS: Fetcher;
+  AI?: Ai;
   SITE_URL?: string;
   CONTACT_EMAIL?: string;
   CONTACT_PHONE?: string;
 }
+
+const COLLECTIVE_SYSTEM_PROMPT = [
+  "You are the concise, bilingual (English/Spanish) edge concierge for Sena's AI Collective (Sena Colectivo) in Northern New Mexico, founded by Salvador Sena.",
+  'Reply in the same language as the visitor (English or Spanish). Keep answers under 4 short sentences, plain words, no hype or filler.',
+  'Only state verified facts:',
+  '- Contact: salvadorsena@senacolectivo.com or (505) 451-9341.',
+  '- Services: Sena IT & AI consulting (since 2003, priced per job, discounts for seniors/neighbors, trade/barter welcome) and Grant Writing (priced per project). Scope and price are always agreed before work starts.',
+  '- Merc Mercado (https://merc.senacolectivo.com): live Santa Fe handmade marketplace, 0% platform take, offered as a turnkey asset ($2,500 asking, $1,000 floor).',
+  '- Public tools & archive: Site Audit (/site-audit/), Publications (/publications/), La Biblioteca (/biblioteca/), Projects (/projects/), Tools (/tools/).',
+  'If asked something outside these facts, direct them to salvadorsena@senacolectivo.com or (505) 451-9341.',
+].join('\n');
 
 const SECURITY_HEADERS: Record<string, string> = {
   'X-Content-Type-Options': 'nosniff',
@@ -67,6 +79,72 @@ export default {
       return withSecurityHeaders(
         Response.json(result, { status: result.ok ? 200 : result.status }),
       );
+    }
+
+    if (url.pathname === '/api/ask') {
+      if (request.method !== 'POST') {
+        return withSecurityHeaders(
+          Response.json({ ok: false, error: 'Use POST with JSON { question }.' }, { status: 405 }),
+        );
+      }
+
+      let question = '';
+      try {
+        const body = (await request.json()) as { question?: unknown };
+        question = typeof body?.question === 'string' ? body.question.trim() : '';
+      } catch {
+        return withSecurityHeaders(
+          Response.json({ ok: false, error: 'Invalid JSON body.' }, { status: 400 }),
+        );
+      }
+
+      if (!question || question.length > 300) {
+        return withSecurityHeaders(
+          Response.json(
+            { ok: false, error: 'Enter a question between 1 and 300 characters.' },
+            { status: 400 },
+          ),
+        );
+      }
+
+      if (!env.AI) {
+        return withSecurityHeaders(
+          Response.json({
+            ok: true,
+            mode: 'fallback',
+            answer:
+              'Edge AI is not bound in this environment. Reach Salvador Sena directly at salvadorsena@senacolectivo.com or (505) 451-9341.',
+          }),
+        );
+      }
+
+      try {
+        const aiResult = (await env.AI.run('@cf/meta/llama-3.2-3b-instruct', {
+          messages: [
+            { role: 'system', content: COLLECTIVE_SYSTEM_PROMPT },
+            { role: 'user', content: question },
+          ],
+          max_tokens: 180,
+          temperature: 0.2,
+        })) as { response?: string };
+
+        const answer = (aiResult?.response ?? '').trim();
+        if (!answer) {
+          throw new Error('Empty AI response');
+        }
+        return withSecurityHeaders(
+          Response.json({ ok: true, mode: 'workers-ai', answer }),
+        );
+      } catch {
+        return withSecurityHeaders(
+          Response.json({
+            ok: true,
+            mode: 'fallback',
+            answer:
+              'The edge model could not answer right now. Write to salvadorsena@senacolectivo.com or call (505) 451-9341.',
+          }),
+        );
+      }
     }
 
     if (url.pathname.startsWith('/api/')) {
