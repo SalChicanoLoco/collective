@@ -94,6 +94,16 @@ export default {
     }
 
     if (url.pathname === '/api/audit') {
+      if (!env.SUBSTRATE_TOKEN) {
+        return withSecurityHeaders(
+          Response.json({ ok: false, error: 'Fail-closed: SUBSTRATE_TOKEN not configured.' }, { status: 503 }),
+        );
+      }
+      if (request.headers.get('Authorization') !== `Bearer ${env.SUBSTRATE_TOKEN}`) {
+        return withSecurityHeaders(
+          Response.json({ ok: false, error: 'Unauthorized: Bearer token required.' }, { status: 401 }),
+        );
+      }
       const target = url.searchParams.get('url') ?? '';
       const result = await auditSite(target);
       return withSecurityHeaders(
