@@ -354,7 +354,7 @@
     addTri(out, x1, y0, z0, x1, y1, z0, x1, y1, z1);
   }
 
-  function exportStl() {
+  function buildStlText() {
     var scaleMm = 304.8 / 50; // 1:50 architectural scale in mm (1 ft -> 6.096 mm)
     var L = state.lengthFt * scaleMm;
     var W = state.widthFt * scaleMm;
@@ -379,7 +379,94 @@
     }
 
     out.push('endsolid sena_commons_greenhouse_1_50');
-    downloadFile('greenhouse-' + state.lengthFt + 'x' + state.widthFt + '-scale1to50.stl', out.join('\n'), 'model/stl');
+    return out.join('\n');
+  }
+
+  function validateStlText(stlText) {
+    var lines = stlText.split('\n');
+    var verts = [];
+    var minX = Infinity, minY = Infinity, minZ = Infinity;
+    var maxX = -Infinity, maxY = -Infinity, maxZ = -Infinity;
+    var degenerate = 0;
+    var edges = new Map();
+
+    function vKey(v) {
+      return v[0].toFixed(3) + ',' + v[1].toFixed(3) + ',' + v[2].toFixed(3);
+    }
+    function addEdge(a, b) {
+      var ka = vKey(a);
+      var kb = vKey(b);
+      var key = ka < kb ? ka + '|' + kb : kb + '|' + ka;
+      edges.set(key, (edges.get(key) || 0) + 1);
+    }
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      if (line.indexOf('vertex ') === 0) {
+        var parts = line.split(/\s+/);
+        var x = Number(parts[1]), y = Number(parts[2]), z = Number(parts[3]);
+        if (!Number.isFinite(x) || !Number.isFinite(y) || !Number.isFinite(z)) {
+          return { valid: false, reason: 'Non-finite vertex coordinate' };
+        }
+        minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+        minY = Math.min(minY, y); maxY = Math.max(maxY, y);
+        minZ = Math.min(minZ, z); maxZ = Math.max(maxZ, z);
+        verts.push([x, y, z]);
+        if (verts.length === 3) {
+          var a = verts[0], b = verts[1], c = verts[2];
+          var ux = b[0] - a[0], uy = b[1] - a[1], uz = b[2] - a[2];
+          var vx = c[0] - a[0], vy = c[1] - a[1], vz = c[2] - a[2];
+          var area2 = Math.hypot(uy * vz - uz * vy, uz * vx - ux * vz, ux * vy - uy * vx);
+          if (area2 < 1e-6) degenerate++;
+          addEdge(a, b);
+          addEdge(b, c);
+          addEdge(c, a);
+          verts = [];
+        }
+      }
+    }
+
+    var openEdges = 0;
+    var nonManifold = 0;
+    edges.forEach(function (count) {
+      if (count === 1) openEdges++;
+      else if (count !== 2) nonManifold++;
+    });
+
+    var triCount = Math.round((edges.size * 2) / 3);
+    var sizeX = +(maxX - minX).toFixed(1);
+    var sizeY = +(maxY - minY).toFixed(1);
+    var sizeZ = +(maxZ - minZ).toFixed(1);
+    var fits220 = sizeX <= 220 && sizeY <= 220 && sizeZ <= 250;
+    var valid = triCount > 0 && degenerate === 0 && openEdges === 0 && nonManifold === 0;
+
+    return {
+      valid: valid,
+      triangles: triCount,
+      degenerate: degenerate,
+      openEdges: openEdges,
+      nonManifold: nonManifold,
+      bboxMm: [sizeX, sizeY, sizeZ],
+      fits220: fits220,
+    };
+  }
+
+  function exportStl() {
+    var stl = buildStlText();
+    downloadFile('greenhouse-' + state.lengthFt + 'x' + state.widthFt + '-scale1to50.stl', stl, 'model/stl');
+  }
+
+  function runStlValidation() {
+    var statusEl = el('stlValidationStatus');
+    if (!statusEl) return;
+    var res = validateStlText(buildStlText());
+    statusEl.textContent =
+      (res.valid ? 'PASS (Watertight 2-manifold)' : 'FAIL') +
+      ' · ' + res.triangles + ' triangles' +
+      ' · ' + res.openEdges + ' open edges' +
+      ' · ' + res.degenerate + ' degenerate' +
+      ' · BBox: ' + res.bboxMm.join(' × ') + ' mm' +
+      (res.fits220 ? ' (Fits 220×220×250 mm bed)' : ' (Exceeds 220 mm bed — scale down)');
   }
 
   // --- Real 2D CAD .DXF Generator (Feet) ---
@@ -501,6 +588,7 @@
   el('viewFrontBtn')?.addEventListener('click', function () { setView(0, 0.04); });
   el('viewSideBtn')?.addEventListener('click', function () { setView(Math.PI / 2, 0.04); });
   el('exportStlBtn')?.addEventListener('click', exportStl);
+  el('validateStlBtn')?.addEventListener('click', runStlValidation);
   el('exportDxfBtn')?.addEventListener('click', exportDxf);
   window.addEventListener('resize', render3D);
 
