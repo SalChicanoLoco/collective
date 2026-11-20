@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const editions = [
+  {
+    kicker: 'Audience: Public & Architects',
+    title: 'The Newspaper Edition',
+    desc: 'Short, accessible overview: why designing buildings with 1990s weather data creates dangerous overheating risks, and how morphing brings climate reality to architecture.',
+    href: '/publications/future-weather-epw/newspaper.html',
+  },
+  {
+    kicker: 'Audience: Engineers & Modelers',
+    title: 'The Periodical Edition',
+    desc: 'Complete technical breakdown of the 5-step workflow: GCM anomalies, inverse-distance spatial weighting, shift and stretch transformations, and psychrometric derivation.',
+    href: '/publications/future-weather-epw/periodical.html',
+  },
+  {
+    kicker: 'Audience: Civic Leaders & Planners',
+    title: 'Public Leverage & Policy Brief',
+    desc: 'Building codes, heatwave vulnerability in social housing, UN Sustainable Development Goals (SDG 7 & 13), and the civic mandate for open-source climate files.',
+    href: '/publications/future-weather-epw/political-economics.html',
+  },
+  {
+    kicker: 'Audience: Analysts & Researchers',
+    title: 'Calculations & Equations',
+    desc: 'Mathematical spine: shift, stretch, and variability scaling formulations, psychrometric conversions, and statistical validation against Meteonorm, FWG, and PROMETHEUS.',
+    href: '/publications/future-weather-epw/calculations.html',
+  },
+];
+---
+
+<BaseLayout
+  title="Future Weather EPW Morphing for Building Simulation | Sena Colectivo"
+  description="A transparent, location-agnostic workflow to generate future EnergyPlus Weather (EPW) files using Global Climate Model anomalies."
+  canonical="https://senacolectivo.com/publications/future-weather-epw/"
+>
+  <Header />
+  <main id="main">
+    <section class="hero">
+      <div class="wrap">
+        <p class="eyebrow">Peer-Reviewed Paper Ingest · Academia Green Energy (2026)</p>
+        <h1>Future Weather EPW Morphing for Building Energy Simulation</h1>
+        <p class="dek">
+          A transparent, location-agnostic workflow to generate future EnergyPlus Weather files by morphing baseline TMY datasets with Global Climate Model anomalies.
+        </p>
+        <p class="note">
+          Authors: Mattia Reolon, Marco Marengo, Marco Picco · DOI: 10.20935/AcadEnergy8325 · Archived by Salvador Sena
+        </p>
+        <div class="button-row">
+          <a class="button button--primary" href="/publications/future-weather-epw/future_weather_epw_brief.pdf" target="_blank" rel="noopener">Download LaTeX PDF</a>
+          <a class="button button--ghost" href="/publications/future-weather-epw/sources.html">Sources &amp; BibTeX</a>
+          <a class="button button--ghost" href="/publications/">All Publications</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="eyebrow">6-Part Publication Package</div>
+        <h2>Why static weather files compromise building design</h2>
+        <div class="grid grid--spaced">
+          {editions.map((ed) => (
+            <a class="card" href={ed.href}>
+              <div class="kicker">{ed.kicker}</div>
+              <h3>{ed.title}</h3>
+              <p>{ed.desc}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
