@@ -30,12 +30,12 @@
   };
 
   var FIELD_SPECS = [
-    { id: 'lengthFt', minFt: 12, maxFt: 96, stepFt: 2, stepM: 0.5, fallbackFt: 32, labelId: 'lengthLabel', name: 'Length X' },
-    { id: 'widthFt', minFt: 10, maxFt: 32, stepFt: 2, stepM: 0.5, fallbackFt: 16, labelId: 'widthLabel', name: 'Width Y' },
-    { id: 'spacingFt', minFt: 2, maxFt: 8, stepFt: 0.5, stepM: 0.1, fallbackFt: 4, labelId: 'spacingLabel', name: 'Hoop Spacing' },
-    { id: 'aisleFt', minFt: 1.5, maxFt: 5, stepFt: 0.5, stepM: 0.1, fallbackFt: 2.5, labelId: 'aisleLabel', name: 'Central Aisle' },
-    { id: 'bermFt', minFt: 0, maxFt: 6, stepFt: 0.5, stepM: 0.1, fallbackFt: 2.5, labelId: 'bermLabel', name: 'North Earth Berm' },
-    { id: 'trenchFt', minFt: 0, maxFt: 4, stepFt: 0.5, stepM: 0.1, fallbackFt: 1.5, labelId: 'trenchLabel', name: 'Sunken Trench Depth' },
+    { id: 'lengthFt', minFt: 12, maxFt: 96, stepFt: 2, stepM: 0.5, fallbackFt: 32, labelId: 'lengthLabel', name: 'Length X', nameEs: 'Largo X' },
+    { id: 'widthFt', minFt: 10, maxFt: 32, stepFt: 2, stepM: 0.5, fallbackFt: 16, labelId: 'widthLabel', name: 'Width Y', nameEs: 'Ancho Y' },
+    { id: 'spacingFt', minFt: 2, maxFt: 8, stepFt: 0.5, stepM: 0.1, fallbackFt: 4, labelId: 'spacingLabel', name: 'Hoop Spacing', nameEs: 'Separación de arcos' },
+    { id: 'aisleFt', minFt: 1.5, maxFt: 5, stepFt: 0.5, stepM: 0.1, fallbackFt: 2.5, labelId: 'aisleLabel', name: 'Central Aisle', nameEs: 'Pasillo central' },
+    { id: 'bermFt', minFt: 0, maxFt: 6, stepFt: 0.5, stepM: 0.1, fallbackFt: 2.5, labelId: 'bermLabel', name: 'North Earth Berm', nameEs: 'Berma de tierra norte' },
+    { id: 'trenchFt', minFt: 0, maxFt: 4, stepFt: 0.5, stepM: 0.1, fallbackFt: 1.5, labelId: 'trenchLabel', name: 'Sunken Trench Depth', nameEs: 'Profundidad de trinchera' },
   ];
 
   function isSI() {
@@ -52,10 +52,18 @@
     return Number(ft.toFixed(1)) + "'";
   }
 
+  // Bilingual labels for the strings this script rewrites (unit toggle).
+  // Written ES, Salvador's voice — no machine translation. The static
+  // markup carries paired .en/.es spans; these JS-managed labels pick
+  // their language from the body class instead.
+  function isES() {
+    return document.body && document.body.classList.contains('lang-es');
+  }
+
   var TIERS = {
-    salvage: { label: 'Scrappy Salvage', rate: 1.85, desc: 'Reclaimed lumber, salvaged barrels, poly film' },
-    balanced: { label: 'Balanced Low-Cost', rate: 4.25, desc: 'EMT/PVC hoops, UV poly, 55-gal barrels, earth berm' },
-    upgraded: { label: 'Upgraded Kit', rate: 8.5, desc: 'Galvanized steel, twin-wall polycarbonate, geothermal loop' },
+    salvage: { label: 'Scrappy Salvage', labelEs: 'Recuperación austera', rate: 1.85, desc: 'Reclaimed lumber, salvaged barrels, poly film' },
+    balanced: { label: 'Balanced Low-Cost', labelEs: 'Equilibrado económico', rate: 4.25, desc: 'EMT/PVC hoops, UV poly, 55-gal barrels, earth berm' },
+    upgraded: { label: 'Upgraded Kit', labelEs: 'Kit mejorado', rate: 8.5, desc: 'Galvanized steel, twin-wall polycarbonate, geothermal loop' },
   };
 
   function clamp(v, min, max, fallback) {
@@ -66,8 +74,13 @@
 
   function syncUnitLabels() {
     var si = isSI();
-    if (el('dimKicker')) el('dimKicker').textContent = si ? 'Dimensions (m)' : 'Dimensions (ft)';
-    if (el('earthKicker')) el('earthKicker').textContent = si ? 'Earthworks & Aisle (m)' : 'Earthworks & Aisle (ft)';
+    var es = isES();
+    if (el('dimKicker')) el('dimKicker').textContent = si
+      ? (es ? 'Dimensiones (m)' : 'Dimensions (m)')
+      : (es ? 'Dimensiones (ft)' : 'Dimensions (ft)');
+    if (el('earthKicker')) el('earthKicker').textContent = si
+      ? (es ? 'Movimiento de tierra y pasillo (m)' : 'Earthworks & Aisle (m)')
+      : (es ? 'Movimiento de tierra y pasillo (ft)' : 'Earthworks & Aisle (ft)');
     FIELD_SPECS.forEach(function (f) {
       var input = el(f.id);
       var lbl = el(f.labelId);
@@ -77,9 +90,10 @@
         input.step = si ? String(f.stepM) : String(f.stepFt);
       }
       if (lbl) {
+        var name = es ? (f.nameEs || f.name) : f.name;
         lbl.textContent = si
-          ? f.name + ' (' + (f.minFt * FT_TO_M).toFixed(1) + '–' + (f.maxFt * FT_TO_M).toFixed(1) + ' m)'
-          : f.name + ' (' + f.minFt + '–' + f.maxFt + ' ft)';
+          ? name + ' (' + (f.minFt * FT_TO_M).toFixed(1) + '–' + (f.maxFt * FT_TO_M).toFixed(1) + ' m)'
+          : name + ' (' + f.minFt + '–' + f.maxFt + ' ft)';
       }
     });
     var tierSel = el('buildTier');
@@ -87,12 +101,16 @@
       Array.prototype.forEach.call(tierSel.options, function (opt) {
         var t = TIERS[opt.value];
         if (!t) return;
+        var label = es ? (t.labelEs || t.label) : t.label;
         opt.textContent = si
-          ? t.label + ' ($' + (t.rate / SQFT_TO_SQM).toFixed(2) + '/m²)'
-          : t.label + ' ($' + t.rate.toFixed(2) + '/sq ft)';
+          ? label + ' ($' + (t.rate / SQFT_TO_SQM).toFixed(2) + '/m²)'
+          : label + ' ($' + t.rate.toFixed(2) + '/sq ft)';
       });
     }
   }
+
+  // Re-sync labels when the visitor switches language mid-session.
+  window.addEventListener('sena:lang-change', function () { syncUnitLabels(); });
 
   function applyUnitSystem(nextUnits, convertInputs) {
     var prevSi = isSI();
@@ -899,11 +917,11 @@
     };
 
     el('footprintValue').textContent = si ? areaM2.toFixed(1) + ' m²' : Math.round(d.area) + ' sq ft';
-    el('hoopsValue').textContent = d.hoops + ' hoops';
+    el('hoopsValue').textContent = d.hoops + (isES() ? ' arcos' : ' hoops');
     el('thermalValue').textContent = si
       ? waterL.toLocaleString() + ' L (' + kjk.toLocaleString() + ' kJ/K)'
       : d.waterGal + ' gal (' + d.btuPerDegF + ' BTU/°F)';
-    el('costValue').textContent = '$' + d.estCost.toLocaleString() + ' (' + d.tierInfo.label + ')';
+    el('costValue').textContent = '$' + d.estCost.toLocaleString() + ' (' + (isES() ? (d.tierInfo.labelEs || d.tierInfo.label) : d.tierInfo.label) + ')';
 
     var bedBody = el('bedDetailsBody');
     if (bedBody) {

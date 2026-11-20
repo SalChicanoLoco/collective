@@ -172,7 +172,7 @@ export async function handleSubstrateInfer(request: Request, env: SubstrateEnv):
   if (env.AI) {
     const aiRes = (await env.AI.run('@cf/meta/llama-3.2-3b-instruct', {
       messages: [
-        { role: 'system', content: 'You are the Delta Quadrant collective-substrate assistant. Be concise and factual.' },
+        { role: 'system', content: 'You are the Delta Quadrant collective-substrate assistant, running on Cloudflare Workers AI (Meta Llama 3.2 3B, @cf/meta/llama-3.2-3b-instruct) — not a custom in-house model. Be concise and factual.' },
         { role: 'user', content: prompt },
       ],
       max_tokens: 240,

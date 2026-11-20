@@ -49,6 +49,8 @@ const projects = [
     descEs: 'Inferencia MLX en Apple Silicon con control HITL, adaptación LoRA y pipelines de verificación estricta.',
     href: 'https://github.com/SalChicanoLoco/collective',
     external: true,
+    footerEn: 'View repository ↗',
+    footerEs: 'Ver repositorio ↗',
   },
   {
     kickerEn: 'Resilience · CAD Studio',
@@ -75,6 +77,8 @@ const projects = [
       titleEs="Proyectos que muestran la capa operativa."
       dekEn="Marketplaces, civic sites, custom AI workflows, research infrastructure, and community technology systems."
       dekEs="Mercados locales, sitios cívicos, flujos de IA personalizados, infraestructura de investigación y sistemas comunitarios."
+      image="/assets/img/hero-mesa-network.webp"
+      imageAlt="Golden survey lines and elevation ticks over Northern New Mexico arroyos and mesas at twilight."
     />
 
     <section class="section">
@@ -94,7 +98,14 @@ const projects = [
               titleEs={p.titleEs}
               descEn={p.descEn}
               descEs={p.descEs}
-            />
+            >
+              {p.footerEn && (
+                <span slot="footer" class="card-link-note">
+                  <span class="en">{p.footerEn}</span>
+                  <span class="es">{p.footerEs}</span>
+                </span>
+              )}
+            </Card>
           ))}
         </div>
       </div>

@@ -24,14 +24,24 @@ import Footer from '../../components/Footer.astro';
           Configura dimensiones, berma de tierra, trinchera y masa térmica. Orbita el modelo 3D, inspecciona planos 2D o exporta .STL (1:50) y .DXF 2D.
         </p>
         <div class="button-row">
-          <button type="button" id="exportStlBtn" class="button button--primary">Export 3D Printable .STL (1:50)</button>
-          <button type="button" id="validateStlBtn" class="button">Validate .STL Mesh</button>
-          <button type="button" id="exportDxfBtn" class="button">Export 2D CAD .DXF</button>
-          <button type="button" id="exportPltBtn" class="button">Export Plotter .PLT (HPGL)</button>
-          <button type="button" id="printPlotBtn" class="button">Print Blueprint (Arch-D)</button>
-          <button type="button" id="resetOrbitBtn" class="button">Reset 3D View</button>
+          <button type="button" id="exportStlBtn" class="button button--primary"><span class="en">Export 3D Printable .STL (1:50)</span><span class="es">Exportar .STL imprimible en 3D (1:50)</span></button>
+          <button type="button" id="validateStlBtn" class="button"><span class="en">Validate .STL Mesh</span><span class="es">Validar malla .STL</span></button>
+          <button type="button" id="exportDxfBtn" class="button"><span class="en">Export 2D CAD .DXF</span><span class="es">Exportar .DXF CAD 2D</span></button>
+          <button type="button" id="exportPltBtn" class="button"><span class="en">Export Plotter .PLT (HPGL)</span><span class="es">Exportar .PLT para plotter (HPGL)</span></button>
+          <button type="button" id="printPlotBtn" class="button"><span class="en">Print Blueprint (Arch-D)</span><span class="es">Imprimir plano (Arch-D)</span></button>
+          <button type="button" id="resetOrbitBtn" class="button"><span class="en">Reset 3D View</span><span class="es">Restablecer vista 3D</span></button>
         </div>
         <p id="stlValidationStatus" class="note" role="status" aria-live="polite"></p>
+        <figure class="hero-media page-hero-media">
+          <img
+            src="/assets/img/greenhouse-cad-hero.webp"
+            width="1920"
+            height="1080"
+            loading="lazy"
+            decoding="async"
+            alt="Passive-solar sunken pit greenhouse with earth berm and angled south glazing, half photorealistic and half CAD wireframe."
+          />
+        </figure>
       </div>
     </section>
 
@@ -39,7 +49,7 @@ import Footer from '../../components/Footer.astro';
       <div class="wrap cad-studio">
         <aside id="cadControls" class="cad-sidebar">
           <div class="card">
-            <div class="kicker">Unit System</div>
+            <div class="kicker"><span class="en">Unit System</span><span class="es">Sistema de unidades</span></div>
             <label for="unitSystem" class="field-label">Units / Unidades</label>
             <select id="unitSystem" class="field-select">
               <option value="imperial" selected>Imperial (ft · sq ft · gal · BTU/°F)</option>
@@ -68,21 +78,21 @@ import Footer from '../../components/Footer.astro';
           </div>
 
           <div class="card">
-            <div class="kicker">Profile &amp; Systems</div>
-            <label for="buildTier" class="field-label">Build Tier</label>
+            <div class="kicker"><span class="en">Profile &amp; Systems</span><span class="es">Perfil y sistemas</span></div>
+            <label for="buildTier" class="field-label"><span class="en">Build Tier</span><span class="es">Nivel de construcción</span></label>
             <select id="buildTier" class="field-select">
               <option value="salvage">Scrappy Salvage ($1.85/sq ft)</option>
               <option value="balanced" selected>Balanced Low-Cost ($4.25/sq ft)</option>
               <option value="upgraded">Upgraded Kit ($8.50/sq ft)</option>
             </select>
             <label class="field-check">
-              <input id="showBarrels" type="checkbox" checked /> North Thermal Barrels
+              <input id="showBarrels" type="checkbox" checked /> <span class="en">North Thermal Barrels</span><span class="es">Tambos térmicos del norte</span>
             </label>
             <label class="field-check">
-              <input id="showAirTube" type="checkbox" checked /> Sub-Soil Geothermal Air Tube
+              <input id="showAirTube" type="checkbox" checked /> <span class="en">Sub-Soil Geothermal Air Tube</span><span class="es">Tubo geotérmico subterráneo</span>
             </label>
             <label class="field-check">
-              <input id="wireframeMode" type="checkbox" /> Wireframe CAD Mode
+              <input id="wireframeMode" type="checkbox" /> <span class="en">Wireframe CAD Mode</span><span class="es">Modo CAD de alambre</span>
             </label>
           </div>
         </aside>
@@ -90,19 +100,25 @@ import Footer from '../../components/Footer.astro';
         <div class="cad-main">
           <div class="button-row" style="margin-top:0;">
             <button type="button" id="viewIsoBtn" class="button">Iso</button>
-            <button type="button" id="viewTopBtn" class="button">Top</button>
-            <button type="button" id="viewFrontBtn" class="button">Front (South)</button>
-            <button type="button" id="viewSideBtn" class="button">Side (East)</button>
+            <button type="button" id="viewTopBtn" class="button"><span class="en">Top</span><span class="es">Arriba</span></button>
+            <button type="button" id="viewFrontBtn" class="button"><span class="en">Front (South)</span><span class="es">Frente (sur)</span></button>
+            <button type="button" id="viewSideBtn" class="button"><span class="en">Side (East)</span><span class="es">Lado (este)</span></button>
           </div>
           <div class="cad-frame">
+            <div class="cad-legend" aria-label="Legend / Leyenda">
+              <span class="cad-legend__item"><span class="cad-legend__swatch"></span><span class="en">Structure</span><span class="es">Estructura</span></span>
+              <span class="cad-legend__item"><span class="cad-legend__swatch cad-legend__swatch--2"></span><span class="en">Thermal mass</span><span class="es">Masa térmica</span></span>
+              <span class="cad-legend__item"><span class="cad-legend__swatch"></span><span class="en">Glazing</span><span class="es">Vidrio</span></span>
+              <span class="cad-legend__item"><span class="cad-legend__swatch cad-legend__swatch--2"></span><span class="en">Earthworks</span><span class="es">Tierra</span></span>
+            </div>
             <canvas id="cadCanvas" class="cad-canvas"></canvas>
           </div>
 
           <div class="grid grid--4">
-            <div class="card"><div class="kicker">Footprint</div><span id="footprintValue" class="stat">—</span></div>
-            <div class="card"><div class="kicker">Structure</div><span id="hoopsValue" class="stat">—</span></div>
-            <div class="card"><div class="kicker">Thermal Mass</div><span id="thermalValue" class="stat">—</span></div>
-            <div class="card"><div class="kicker">Estimated Cost</div><span id="costValue" class="stat">—</span></div>
+            <div class="card"><div class="kicker"><span class="en">Footprint</span><span class="es">Huella</span></div><span id="footprintValue" class="stat">—</span></div>
+            <div class="card"><div class="kicker"><span class="en">Structure</span><span class="es">Estructura</span></div><span id="hoopsValue" class="stat">—</span></div>
+            <div class="card"><div class="kicker"><span class="en">Thermal Mass</span><span class="es">Masa térmica</span></div><span id="thermalValue" class="stat">—</span></div>
+            <div class="card"><div class="kicker"><span class="en">Estimated Cost</span><span class="es">Costo estimado</span></div><span id="costValue" class="stat">—</span></div>
           </div>
         </div>
       </div>
@@ -145,29 +161,31 @@ import Footer from '../../components/Footer.astro';
 
     <section class="section">
       <div class="wrap">
-        <div class="eyebrow">2D CAD Blueprints &amp; Specifications</div>
-        <h2>Plan, Cross-Section &amp; Bill of Materials</h2>
+        <div class="eyebrow en">2D CAD Blueprints &amp; Specifications</div>
+        <div class="eyebrow es">Planos CAD 2D y especificaciones</div>
+        <h2 class="en">Plan, Cross-Section &amp; Bill of Materials</h2>
+        <h2 class="es">Planta, corte y lista de materiales</h2>
         <div class="grid grid--2 grid--spaced">
           <div class="card">
-            <div class="kicker">Plan View (Length = X, Width = Y)</div>
+            <div class="kicker"><span class="en">Plan View (Length = X, Width = Y)</span><span class="es">Vista en planta (largo = X, ancho = Y)</span></div>
             <svg id="planSvg" class="cad-svg"></svg>
           </div>
           <div class="card">
-            <div class="kicker">Cross-Section (North Berm → South Glazing)</div>
+            <div class="kicker"><span class="en">Cross-Section (North Berm → South Glazing)</span><span class="es">Corte (berma norte → vidrio sur)</span></div>
             <svg id="sectionSvg" class="cad-svg"></svg>
           </div>
         </div>
         <div class="grid grid--2 grid--spaced">
           <div class="card">
-            <div class="kicker">Growing Bed Dimensions &amp; Soil Volume</div>
+            <div class="kicker"><span class="en">Growing Bed Dimensions &amp; Soil Volume</span><span class="es">Dimensiones de camas y volumen de suelo</span></div>
             <div style="overflow-x:auto;margin-top:0.75rem;">
               <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
                 <thead>
                   <tr>
-                    <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Zone</th>
-                    <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Length × Width × Depth</th>
-                    <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Area</th>
-                    <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Soil Volume</th>
+                    <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);"><span class="en">Zone</span><span class="es">Zona</span></th>
+                    <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);"><span class="en">Length × Width × Depth</span><span class="es">Largo × ancho × profundidad</span></th>
+                    <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);"><span class="en">Area</span><span class="es">Área</span></th>
+                    <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);"><span class="en">Soil Volume</span><span class="es">Volumen de suelo</span></th>
                   </tr>
                 </thead>
                 <tbody id="bedDetailsBody"></tbody>
@@ -176,24 +194,24 @@ import Footer from '../../components/Footer.astro';
           </div>
 
           <div class="card">
-            <div class="kicker">Materials Offsets, Clearances &amp; Earthworks</div>
+            <div class="kicker"><span class="en">Materials Offsets, Clearances &amp; Earthworks</span><span class="es">Desplazamientos, holguras y movimiento de tierra</span></div>
             <ul id="offsetDetailsList" style="margin-top:0.75rem;"></ul>
           </div>
         </div>
 
         <div class="card grid--spaced">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
-            <div class="kicker">Builder's Itemized Parts List &amp; Cut Schedule</div>
-            <button type="button" id="exportPartsCsvBtn" class="button" style="padding:5px 12px;font-size:11px;">Export Parts .CSV</button>
+            <div class="kicker"><span class="en">Builder's Itemized Parts List &amp; Cut Schedule</span><span class="es">Lista de piezas y plan de cortes</span></div>
+            <button type="button" id="exportPartsCsvBtn" class="button" style="padding:5px 12px;font-size:11px;"><span class="en">Export Parts .CSV</span><span class="es">Exportar piezas .CSV</span></button>
           </div>
           <div style="overflow-x:auto;margin-top:0.75rem;">
             <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
               <thead>
                 <tr>
-                  <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Item</th>
-                  <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Qty</th>
-                  <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Cut / Spec</th>
-                  <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Offset / Notes</th>
+                  <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);"><span class="en">Item</span><span class="es">Pieza</span></th>
+                  <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);"><span class="en">Qty</span><span class="es">Cant.</span></th>
+                  <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);"><span class="en">Cut / Spec</span><span class="es">Corte / espec.</span></th>
+                  <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);"><span class="en">Offset / Notes</span><span class="es">Desplazamiento / notas</span></th>
                 </tr>
               </thead>
               <tbody id="partsTableBody"></tbody>
@@ -202,7 +220,7 @@ import Footer from '../../components/Footer.astro';
         </div>
 
         <div class="card grid--spaced">
-          <div class="kicker">Derived Bill of Materials Summary</div>
+          <div class="kicker"><span class="en">Derived Bill of Materials Summary</span><span class="es">Resumen de lista de materiales</span></div>
           <ul id="bomList"></ul>
         </div>
       </div>

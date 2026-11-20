@@ -7,27 +7,39 @@ import Card from '../../../components/Card.astro';
 
 const editions = [
   {
-    kicker: 'Audience: Public & Architects',
-    title: 'The Newspaper Edition',
-    desc: 'Short, accessible overview: why designing buildings with 1990s weather data creates dangerous overheating risks, and how morphing brings climate reality to architecture.',
+    kickerEn: 'Audience: Public & Architects',
+    kickerEs: 'Público: público general y arquitectos',
+    titleEn: 'The Newspaper Edition',
+    titleEs: 'La Edición de Periódico',
+    descEn: 'Short, accessible overview: why designing buildings with 1990s weather data creates dangerous overheating risks, and how morphing brings climate reality to architecture.',
+    descEs: 'Resumen corto y claro: por qué diseñar edificios con datos climáticos de los noventa crea riesgos peligrosos de sobrecalentamiento, y cómo la transformación trae la realidad climática a la arquitectura.',
     href: '/publications/future-weather-epw/newspaper.html',
   },
   {
-    kicker: 'Audience: Engineers & Modelers',
-    title: 'The Periodical Edition',
-    desc: 'Complete technical breakdown of the 5-step workflow: GCM anomalies, inverse-distance spatial weighting, shift and stretch transformations, and psychrometric derivation.',
+    kickerEn: 'Audience: Engineers & Modelers',
+    kickerEs: 'Público: ingenieros y modeladores',
+    titleEn: 'The Periodical Edition',
+    titleEs: 'La Edición de Revista',
+    descEn: 'Complete technical breakdown of the 5-step workflow: GCM anomalies, inverse-distance spatial weighting, shift and stretch transformations, and psychrometric derivation.',
+    descEs: 'Desglose técnico completo del flujo de 5 pasos: anomalías de los modelos climáticos globales, ponderación espacial por distancia inversa, transformaciones de desplazamiento y estiramiento, y derivación psicrométrica.',
     href: '/publications/future-weather-epw/periodical.html',
   },
   {
-    kicker: 'Audience: Civic Leaders & Planners',
-    title: 'Public Leverage & Policy Brief',
-    desc: 'Building codes, heatwave vulnerability in social housing, UN Sustainable Development Goals (SDG 7 & 13), and the civic mandate for open-source climate files.',
+    kickerEn: 'Audience: Civic Leaders & Planners',
+    kickerEs: 'Público: líderes cívicos y planificadores',
+    titleEn: 'Public Leverage & Policy Brief',
+    titleEs: 'Resumen de Política y Palanca Pública',
+    descEn: 'Building codes, heatwave vulnerability in social housing, UN Sustainable Development Goals (SDG 7 & 13), and the civic mandate for open-source climate files.',
+    descEs: 'Códigos de construcción, vulnerabilidad a olas de calor en vivienda social, Objetivos de Desarrollo Sostenible de la ONU (ODS 7 y 13) y el mandato cívico de archivos climáticos abiertos.',
     href: '/publications/future-weather-epw/political-economics.html',
   },
   {
-    kicker: 'Audience: Analysts & Researchers',
-    title: 'Calculations & Equations',
-    desc: 'Mathematical spine: shift, stretch, and variability scaling formulations, psychrometric conversions, and statistical validation against Meteonorm, FWG, and PROMETHEUS.',
+    kickerEn: 'Audience: Analysts & Researchers',
+    kickerEs: 'Público: analistas e investigadores',
+    titleEn: 'Calculations & Equations',
+    titleEs: 'Cálculos y Ecuaciones',
+    descEn: 'Mathematical spine: shift, stretch, and variability scaling formulations, psychrometric conversions, and statistical validation against Meteonorm, FWG, and PROMETHEUS.',
+    descEs: 'Eje matemático: fórmulas de desplazamiento, estiramiento y escala de variabilidad, conversiones psicrométricas y validación estadística con Meteonorm, FWG y PROMETHEUS.',
     href: '/publications/future-weather-epw/calculations.html',
   },
 ];
@@ -42,26 +54,47 @@ const editions = [
   <main id="main">
     <PageHero
       eyebrowEn="Peer-Reviewed Paper Ingest · Academia Green Energy (2026)"
+      eyebrowEs="Artículo revisado por pares · Academia Green Energy (2026)"
       titleEn="Future Weather EPW Morphing for Building Energy Simulation"
+      titleEs="Transformación EPW de clima futuro para la simulación energética de edificios"
       dekEn="A transparent, location-agnostic workflow to generate future EnergyPlus Weather files by morphing baseline TMY datasets with Global Climate Model anomalies."
+      dekEs="Un flujo transparente, válido para cualquier lugar, que genera archivos futuros de clima EnergyPlus (EPW) transformando datos base TMY con anomalías de los modelos climáticos globales."
+      image="/assets/img/arid-datacenter-hero.webp"
+      imageAlt="Desert horizon at dusk with solar arrays, transmission silhouettes, and faint topographic contour lines."
     >
-      <p class="note">
+      <p class="note en">
         Authors: Mattia Reolon, Marco Marengo, Marco Picco · DOI: 10.20935/AcadEnergy8325 · Archived by Salvador Sena
       </p>
+      <p class="note es">
+        Autores: Mattia Reolon, Marco Marengo, Marco Picco · DOI: 10.20935/AcadEnergy8325 · Archivado por Salvador Sena
+      </p>
       <div class="button-row">
-        <a class="button button--primary" href="/publications/future-weather-epw/future_weather_epw_brief.pdf" target="_blank" rel="noopener">Download LaTeX PDF</a>
-        <a class="button" href="/publications/future-weather-epw/sources.html">Sources &amp; BibTeX</a>
-        <a class="button" href="/publications/">All Publications</a>
+        <a class="button button--primary en" href="/publications/future-weather-epw/future_weather_epw_brief.pdf" target="_blank" rel="noopener">Download LaTeX PDF</a>
+        <a class="button button--primary es" href="/publications/future-weather-epw/future_weather_epw_brief.pdf" target="_blank" rel="noopener">Descargar PDF LaTeX</a>
+        <a class="button en" href="/publications/future-weather-epw/sources.html">Sources &amp; BibTeX</a>
+        <a class="button es" href="/publications/future-weather-epw/sources.html">Fuentes y BibTeX</a>
+        <a class="button en" href="/publications/">All Publications</a>
+        <a class="button es" href="/publications/">Todas las publicaciones</a>
       </div>
     </PageHero>
 
     <section class="section">
       <div class="wrap">
-        <p class="eyebrow">6-Part Publication Package</p>
-        <h2>Why static weather files compromise building design</h2>
+        <p class="eyebrow en">6-Part Publication Package</p>
+        <p class="eyebrow es">Paquete de publicación de 6 partes</p>
+        <h2 class="en">Why static weather files compromise building design</h2>
+        <h2 class="es">Por qué los archivos climáticos estáticos ponen en riesgo el diseño de edificios</h2>
         <div class="grid grid--2 grid--spaced">
           {editions.map((ed) => (
-            <Card href={ed.href} kickerEn={ed.kicker} titleEn={ed.title} descEn={ed.desc} />
+            <Card
+              href={ed.href}
+              kickerEn={ed.kickerEn}
+              kickerEs={ed.kickerEs}
+              titleEn={ed.titleEn}
+              titleEs={ed.titleEs}
+              descEn={ed.descEn}
+              descEs={ed.descEs}
+            />
           ))}
         </div>
       </div>

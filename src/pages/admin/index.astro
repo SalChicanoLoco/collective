@@ -24,7 +24,7 @@ import PageHero from '../../components/PageHero.astro';
     <section class="section">
       <div class="wrap">
         <div class="card">
-          <div class="kicker">Auth Gate · sessionStorage only</div>
+          <div class="kicker"><span class="en">Auth Gate · sessionStorage only</span><span class="es">Acceso · solo sessionStorage</span></div>
           <form id="adminAuthForm" class="button-row" style="margin-top:0.75rem;">
             <input
               id="adminTokenInput"
@@ -34,9 +34,9 @@ import PageHero from '../../components/PageHero.astro';
               placeholder="Paste SUBSTRATE_TOKEN (Bearer)"
               required
             />
-            <button type="submit" class="button button--primary">Connect</button>
-            <button type="button" id="adminLockBtn" class="button">Lock / Clear</button>
-            <button type="button" id="adminRefreshBtn" class="button">Refresh Status</button>
+            <button type="submit" class="button button--primary"><span class="en">Connect</span><span class="es">Conectar</span></button>
+            <button type="button" id="adminLockBtn" class="button"><span class="en">Lock / Clear</span><span class="es">Bloquear / Limpiar</span></button>
+            <button type="button" id="adminRefreshBtn" class="button"><span class="en">Refresh Status</span><span class="es">Actualizar estado</span></button>
           </form>
           <p id="adminAuthStatus" class="note" role="status" aria-live="polite"></p>
         </div>
@@ -50,14 +50,15 @@ import PageHero from '../../components/PageHero.astro';
 
         <div class="grid grid--2 grid--spaced">
           <div class="card">
-            <div class="kicker">Route Health Check</div>
-            <p class="note">Verifies live HTTP status across core pages and API endpoints.</p>
-            <button type="button" id="runHealthBtn" class="button button--primary">Run Route Health Check</button>
+            <div class="kicker"><span class="en">Route Health Check</span><span class="es">Verificación de rutas</span></div>
+            <p class="note en">Verifies live HTTP status across core pages and API endpoints.</p>
+            <p class="note es">Verifica el estado HTTP en vivo de las páginas principales y los endpoints de la API.</p>
+            <button type="button" id="runHealthBtn" class="button button--primary"><span class="en">Run Route Health Check</span><span class="es">Verificar rutas</span></button>
             <pre id="healthOutput" class="note" style="margin-top:0.75rem;overflow-x:auto;">Not run yet.</pre>
           </div>
 
           <div class="card">
-            <div class="kicker">Private Edge Tool Audit (/api/audit)</div>
+            <div class="kicker"><span class="en">Private Edge Tool Audit (/api/audit)</span><span class="es">Auditoría privada de herramienta edge (/api/audit)</span></div>
             <form id="auditForm" class="button-row" style="margin-top:0.75rem;">
               <input
                 id="auditUrlInput"
@@ -66,14 +67,14 @@ import PageHero from '../../components/PageHero.astro';
                 value="https://test.senacolectivo.com"
                 required
               />
-              <button type="submit" class="button button--primary">Audit URL</button>
+              <button type="submit" class="button button--primary"><span class="en">Audit URL</span><span class="es">Auditar URL</span></button>
             </form>
             <pre id="auditOutput" class="note" style="margin-top:0.75rem;overflow-x:auto;">Requires SUBSTRATE_TOKEN.</pre>
           </div>
         </div>
 
         <div class="card grid--spaced">
-          <div class="kicker">Tier 3 Substrate Inference Test (/api/substrate/infer)</div>
+          <div class="kicker"><span class="en">Tier 3 Substrate Inference Test (/api/substrate/infer)</span><span class="es">Prueba de inferencia del sustrato Tier 3 (/api/substrate/infer)</span></div>
           <form id="inferForm" class="button-row" style="margin-top:0.75rem;">
             <input
               id="inferPromptInput"
@@ -82,7 +83,7 @@ import PageHero from '../../components/PageHero.astro';
               value="Summarize the 3-tier substrate status in two sentences."
               required
             />
-            <button type="submit" class="button button--primary">Run Tier 3 / Fallback</button>
+            <button type="submit" class="button button--primary"><span class="en">Run Tier 3 / Fallback</span><span class="es">Probar Tier 3 / Respaldo</span></button>
           </form>
           <pre id="inferOutput" class="note" style="margin-top:0.75rem;overflow-x:auto;">Requires SUBSTRATE_TOKEN.</pre>
         </div>

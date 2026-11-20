@@ -7,33 +7,48 @@ import Card from '../../../components/Card.astro';
 
 const editions = [
   {
-    kicker: 'Public version',
-    title: 'Newspaper Edition',
-    desc: 'Short, readable, public-facing version: water, electricity, jobs, tax incentives, and why New Mexico communities should ask for disclosure before approving compute campuses.',
+    kickerEn: 'Public version',
+    kickerEs: 'Versión pública',
+    titleEn: 'Newspaper Edition',
+    titleEs: 'Edición de Periódico',
+    descEn: 'Short, readable, public-facing version: water, electricity, jobs, tax incentives, and why New Mexico communities should ask for disclosure before approving compute campuses.',
+    descEs: 'Versión corta y clara para el público: agua, electricidad, empleos, incentivos fiscales y por qué las comunidades de Nuevo México deben exigir transparencia antes de aprobar campus de cómputo.',
     href: '/publications/ai-data-centers/newspaper.html',
   },
   {
-    kicker: 'Long version',
-    title: 'Periodical Edition',
-    desc: 'Longer magazine-style treatment with technical context, regional framing, cooling tradeoffs, utility impacts, and governance questions.',
+    kickerEn: 'Long version',
+    kickerEs: 'Versión extensa',
+    titleEn: 'Periodical Edition',
+    titleEs: 'Edición de Revista',
+    descEn: 'Longer magazine-style treatment with technical context, regional framing, cooling tradeoffs, utility impacts, and governance questions.',
+    descEs: 'Tratamiento más extenso estilo revista, con contexto técnico, marco regional, costos de enfriamiento, impacto en servicios públicos y preguntas de gobernanza.',
     href: '/publications/ai-data-centers/periodical.html',
   },
   {
-    kicker: 'Resource economics',
-    title: 'Natural Resource Economics Brief',
-    desc: 'Less technical political version focused on water rights, public utility risk, land, tax incentives, ratepayers, and who captures the value of compute.',
+    kickerEn: 'Resource economics',
+    kickerEs: 'Economía de recursos',
+    titleEn: 'Natural Resource Economics Brief',
+    titleEs: 'Resumen de Economía de Recursos Naturales',
+    descEn: 'Less technical political version focused on water rights, public utility risk, land, tax incentives, ratepayers, and who captures the value of compute.',
+    descEs: 'Versión política y menos técnica sobre derechos de agua, riesgo para servicios públicos, tierra, incentivos fiscales, usuarios que pagan la cuenta y quién se queda con el valor del cómputo.',
     href: '/publications/ai-data-centers/political-economics.html',
   },
   {
-    kicker: 'Calculation spine',
-    title: 'Figures and Assumptions',
-    desc: 'Transparent calculations for electricity growth, water intensity, power draw, WUE/PUE interpretation, and community-scale comparisons.',
+    kickerEn: 'Calculation spine',
+    kickerEs: 'Eje de cálculo',
+    titleEn: 'Figures and Assumptions',
+    titleEs: 'Cifras y Supuestos',
+    descEn: 'Transparent calculations for electricity growth, water intensity, power draw, WUE/PUE interpretation, and community-scale comparisons.',
+    descEs: 'Cálculos transparentes sobre crecimiento eléctrico, intensidad de agua, consumo de energía, interpretación de WUE/PUE y comparaciones a escala comunitaria.',
     href: '/publications/ai-data-centers/calculations.html',
   },
   {
-    kicker: 'Evidence & BibTeX',
-    title: 'Sources & Citations',
-    desc: 'Primary DOE/LBNL and IEA references with copyable BibTeX citations for the arid-region data-center dossier.',
+    kickerEn: 'Evidence & BibTeX',
+    kickerEs: 'Evidencia y BibTeX',
+    titleEn: 'Sources & Citations',
+    titleEs: 'Fuentes y Citas',
+    descEn: 'Primary DOE/LBNL and IEA references with copyable BibTeX citations for the arid-region data-center dossier.',
+    descEs: 'Referencias primarias del DOE/LBNL y la IEA, con citas BibTeX copiables para el expediente de centros de datos en regiones áridas.',
     href: '/publications/ai-data-centers/sources.html',
   },
 ];
@@ -41,26 +56,35 @@ const editions = [
 const metrics = [
   {
     kicker: 'DOE / LBNL · 2023',
-    title: 'U.S. Baseline',
-    desc: 'Estimated U.S. data-center electricity use in 2023, according to DOE/LBNL reporting.',
+    titleEn: 'U.S. Baseline',
+    titleEs: 'Línea base de EE. UU.',
+    descEn: 'Estimated U.S. data-center electricity use in 2023, according to DOE/LBNL reporting.',
+    descEs: 'Consumo eléctrico estimado de los centros de datos de EE. UU. en 2023, según reportes del DOE/LBNL.',
     stat: '176 TWh',
   },
   {
     kicker: 'DOE / LBNL · 2028',
-    title: 'U.S. Projected Range',
-    desc: 'DOE/LBNL estimate range for U.S. data-center electricity demand by 2028.',
+    titleEn: 'U.S. Projected Range',
+    titleEs: 'Rango proyectado de EE. UU.',
+    descEn: 'DOE/LBNL estimate range for U.S. data-center electricity demand by 2028.',
+    descEs: 'Rango estimado del DOE/LBNL para la demanda eléctrica de centros de datos en EE. UU. hacia 2028.',
     stat: '325–580 TWh',
   },
   {
     kicker: 'IEA · 2030',
-    title: 'Global Projection',
-    desc: 'IEA global data-center electricity demand projection around 2030.',
+    titleEn: 'Global Projection',
+    titleEs: 'Proyección global',
+    descEn: 'IEA global data-center electricity demand projection around 2030.',
+    descEs: 'Proyección global de la IEA para la demanda eléctrica de centros de datos hacia 2030.',
     stat: '945 TWh',
   },
   {
     kicker: 'Governance Floor',
-    title: 'Disclosure Pair',
-    desc: 'Water Usage Effectiveness and Power Usage Effectiveness are the minimum disclosure pair for serious governance.',
+    kickerEs: 'Piso de gobernanza',
+    titleEn: 'Disclosure Pair',
+    titleEs: 'Par de transparencia',
+    descEn: 'Water Usage Effectiveness and Power Usage Effectiveness are the minimum disclosure pair for serious governance.',
+    descEs: 'La efectividad en el uso de agua (WUE) y de energía (PUE) son el par mínimo de transparencia para una gobernanza seria.',
     stat: 'WUE + PUE',
   },
 ];
@@ -80,25 +104,44 @@ const metrics = [
       titleEs="Centros de datos de IA en regiones áridas"
       dekEn="Water, power, compute, and the political economy of infrastructure in New Mexico and the Southwest."
       dekEs="Agua, energía, cómputo y economía política de la infraestructura en Nuevo México y el suroeste."
+      image="/assets/img/arid-datacenter-hero.webp"
+      imageAlt="Desert horizon at dusk with solar arrays, transmission silhouettes, and faint topographic contour lines."
     >
-      <p class="note">Salvador Sena · Sena Colectivo · New Mexico · 2026 research draft</p>
+      <p class="note en">Salvador Sena · Sena Colectivo · New Mexico · 2026 research draft</p>
+      <p class="note es">Salvador Sena · Sena Colectivo · Nuevo México · Borrador de investigación 2026</p>
       <div class="button-row">
-        <a class="button button--primary" href="/publications/ai-data-centers/newspaper.html">Newspaper</a>
-        <a class="button" href="/publications/ai-data-centers/periodical.html">Periodical</a>
-        <a class="button" href="/publications/ai-data-centers/political-economics.html">Political brief</a>
-        <a class="button" href="/publications/ai-data-centers/calculations.html">Calculations</a>
-        <a class="button" href="/publications/ai-data-centers/sources.html">Sources</a>
-        <a class="button" href="/publications/">All Publications</a>
+        <a class="button button--primary en" href="/publications/ai-data-centers/newspaper.html">Newspaper</a>
+        <a class="button button--primary es" href="/publications/ai-data-centers/newspaper.html">Periódico</a>
+        <a class="button en" href="/publications/ai-data-centers/periodical.html">Periodical</a>
+        <a class="button es" href="/publications/ai-data-centers/periodical.html">Revista</a>
+        <a class="button en" href="/publications/ai-data-centers/political-economics.html">Political brief</a>
+        <a class="button es" href="/publications/ai-data-centers/political-economics.html">Resumen político</a>
+        <a class="button en" href="/publications/ai-data-centers/calculations.html">Calculations</a>
+        <a class="button es" href="/publications/ai-data-centers/calculations.html">Cálculos</a>
+        <a class="button en" href="/publications/ai-data-centers/sources.html">Sources</a>
+        <a class="button es" href="/publications/ai-data-centers/sources.html">Fuentes</a>
+        <a class="button en" href="/publications/">All Publications</a>
+        <a class="button es" href="/publications/">Todas las publicaciones</a>
       </div>
     </PageHero>
 
     <section class="section">
       <div class="wrap">
-        <p class="eyebrow">6-Part Publication Package (Hub + 5 Briefs)</p>
-        <h2>AI data centers are not weightless.</h2>
+        <p class="eyebrow en">6-Part Publication Package (Hub + 5 Briefs)</p>
+        <p class="eyebrow es">Paquete de 6 partes (centro + 5 resúmenes)</p>
+        <h2 class="en">AI data centers are not weightless.</h2>
+        <h2 class="es">Los centros de datos de IA no son ingrávidos.</h2>
         <div class="grid grid--3 grid--spaced">
           {editions.map((ed) => (
-            <Card href={ed.href} kickerEn={ed.kicker} titleEn={ed.title} descEn={ed.desc} />
+            <Card
+              href={ed.href}
+              kickerEn={ed.kickerEn}
+              kickerEs={ed.kickerEs}
+              titleEn={ed.titleEn}
+              titleEs={ed.titleEs}
+              descEn={ed.descEn}
+              descEs={ed.descEs}
+            />
           ))}
         </div>
       </div>
@@ -106,11 +149,21 @@ const metrics = [
 
     <section class="section">
       <div class="wrap">
-        <p class="eyebrow">Quantitative Frame</p>
-        <h2>Core metrics &amp; disclosure pair</h2>
+        <p class="eyebrow en">Quantitative Frame</p>
+        <p class="eyebrow es">Marco cuantitativo</p>
+        <h2 class="en">Core metrics &amp; disclosure pair</h2>
+        <h2 class="es">Métricas clave y par de transparencia</h2>
         <div class="grid grid--4 grid--spaced">
           {metrics.map((m) => (
-            <Card kickerEn={m.kicker} titleEn={m.title} descEn={m.desc} stat={m.stat} />
+            <Card
+              kickerEn={m.kicker}
+              kickerEs={m.kickerEs}
+              titleEn={m.titleEn}
+              titleEs={m.titleEs}
+              descEn={m.descEn}
+              descEs={m.descEs}
+              stat={m.stat}
+            />
           ))}
         </div>
       </div>
@@ -119,14 +172,17 @@ const metrics = [
     <section class="section">
       <div class="wrap">
         <div class="card">
-          <div class="kicker">Primary Sources</div>
-          <h3>References used for this public draft</h3>
+          <div class="kicker en">Primary Sources</div>
+          <div class="kicker es">Fuentes primarias</div>
+          <h3 class="en">References used for this public draft</h3>
+          <h3 class="es">Referencias de este borrador público</h3>
           <ul>
             <li>DOE/LBNL, 2024 United States Data Center Energy Usage Report.</li>
             <li>International Energy Agency, Energy and AI analysis.</li>
             <li>DOE FEMP, cooling water efficiency and PUE/WUE definitions.</li>
             <li>NREL, high-performance computing data-center water efficiency materials.</li>
-            <li>New Mexico legislative and regional reporting on AI/data-center resource use.</li>
+            <li class="en">New Mexico legislative and regional reporting on AI/data-center resource use.</li>
+            <li class="es">Reportes legislativos y regionales de Nuevo México sobre el uso de recursos de IA y centros de datos.</li>
           </ul>
         </div>
       </div>

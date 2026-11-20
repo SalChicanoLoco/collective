@@ -28,9 +28,9 @@ import PageHero from '../../components/PageHero.astro';
           <p class="note en">Select a provider to sign in and sync your lightweight profile across sessions.</p>
           <p class="note es">Elige un proveedor para iniciar sesión y sincronizar tu perfil ligero.</p>
           <div class="button-row" style="margin-top:1rem;">
-            <a id="loginGoogleBtn" class="button button--primary" href="/api/auth/login/google">Continue with Google</a>
-            <a id="loginMicrosoftBtn" class="button" href="/api/auth/login/microsoft">Continue with Microsoft</a>
-            <a id="loginMetaBtn" class="button" href="/api/auth/login/meta">Continue with Meta</a>
+            <a id="loginGoogleBtn" class="button button--primary" href="/api/auth/login/google"><span class="en">Continue with Google</span><span class="es">Continuar con Google</span></a>
+            <a id="loginMicrosoftBtn" class="button" href="/api/auth/login/microsoft"><span class="en">Continue with Microsoft</span><span class="es">Continuar con Microsoft</span></a>
+            <a id="loginMetaBtn" class="button" href="/api/auth/login/meta"><span class="en">Continue with Meta</span><span class="es">Continuar con Meta</span></a>
           </div>
           <p id="providerStatus" class="note" style="margin-top:0.75rem;"></p>
         </div>
@@ -38,31 +38,31 @@ import PageHero from '../../components/PageHero.astro';
         <div id="profilePanel" class="card grid--spaced" hidden>
           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
             <div>
-              <div id="profileIdentityKicker" class="kicker">Signed In</div>
-              <h2 id="profileHeading" style="margin:0.25rem 0 0;">Member Profile</h2>
+              <div id="profileIdentityKicker" class="kicker"><span class="en">Signed In</span><span class="es">Sesión iniciada</span></div>
+              <h2 id="profileHeading" style="margin:0.25rem 0 0;"><span class="en">Member Profile</span><span class="es">Perfil de Miembro</span></h2>
             </div>
             <div class="button-row" style="margin:0;">
-              <a id="adminLinkBtn" class="button button--primary" href="/admin/" hidden>Open Ops Hub (/admin/)</a>
-              <button type="button" id="logoutBtn" class="button">Sign Out</button>
+              <a id="adminLinkBtn" class="button button--primary" href="/admin/" hidden><span class="en">Open Ops Hub (/admin/)</span><span class="es">Abrir Centro de Operaciones (/admin/)</span></a>
+              <button type="button" id="logoutBtn" class="button"><span class="en">Sign Out</span><span class="es">Cerrar sesión</span></button>
             </div>
           </div>
 
           <form id="profileForm" style="margin-top:1.25rem;">
             <div class="grid grid--2">
               <div>
-                <label for="profDisplayName" class="field-label">Display Name</label>
+                <label for="profDisplayName" class="field-label"><span class="en">Display Name</span><span class="es">Nombre visible</span></label>
                 <input id="profDisplayName" class="field-input" type="text" maxlength="60" required />
               </div>
               <div>
-                <label for="profHandle" class="field-label">Handle (a-z, 0-9, -, _)</label>
+                <label for="profHandle" class="field-label"><span class="en">Handle (a-z, 0-9, -, _)</span><span class="es">Usuario (a-z, 0-9, -, _)</span></label>
                 <input id="profHandle" class="field-input" type="text" maxlength="24" />
               </div>
               <div>
-                <label for="profRegion" class="field-label">Region / Watershed</label>
+                <label for="profRegion" class="field-label"><span class="en">Region / Watershed</span><span class="es">Región / Cuenca</span></label>
                 <input id="profRegion" class="field-input" type="text" maxlength="60" />
               </div>
               <div>
-                <label for="profTheme" class="field-label">Default Theme</label>
+                <label for="profTheme" class="field-label"><span class="en">Default Theme</span><span class="es">Tema predeterminado</span></label>
                 <select id="profTheme" class="field-select">
                   <option value="hud">HUD</option>
                   <option value="earth">Earth</option>
@@ -70,24 +70,24 @@ import PageHero from '../../components/PageHero.astro';
                 </select>
               </div>
               <div>
-                <label for="profLang" class="field-label">Default Language</label>
+                <label for="profLang" class="field-label"><span class="en">Default Language</span><span class="es">Idioma predeterminado</span></label>
                 <select id="profLang" class="field-select">
                   <option value="en">English (EN)</option>
                   <option value="es">Español (ES)</option>
                 </select>
               </div>
               <div>
-                <label for="profUnits" class="field-label">CAD Default Units</label>
+                <label for="profUnits" class="field-label"><span class="en">CAD Default Units</span><span class="es">Unidades CAD predeterminadas</span></label>
                 <select id="profUnits" class="field-select">
                   <option value="imperial">Imperial (ft · gal)</option>
                   <option value="si">SI / Metric (m · L)</option>
                 </select>
               </div>
             </div>
-            <label for="profBio" class="field-label" style="margin-top:0.75rem;">Short Bio / Notes (max 240 chars)</label>
+            <label for="profBio" class="field-label" style="margin-top:0.75rem;"><span class="en">Short Bio / Notes (max 240 chars)</span><span class="es">Biografía corta / Notas (máx. 240 caracteres)</span></label>
             <input id="profBio" class="field-input" type="text" maxlength="240" />
             <div class="button-row" style="margin-top:1rem;">
-              <button type="submit" class="button button--primary">Save Profile</button>
+              <button type="submit" class="button button--primary"><span class="en">Save Profile</span><span class="es">Guardar perfil</span></button>
             </div>
             <p id="profileSaveStatus" class="note" role="status" aria-live="polite"></p>
           </form>

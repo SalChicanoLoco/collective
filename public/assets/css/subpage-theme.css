@@ -15,9 +15,9 @@ html[data-theme="lcars-hud"] {
   --deep: #0d131c !important;
   --paper: #e8eef5 !important;
   --fog: #9eb0c4 !important;
-  --serif: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  --serif: "Fraunces", Georgia, "Times New Roman", serif !important;
   --sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
 }
 
 html[data-theme="earth-gold"] {
@@ -57,8 +57,21 @@ html[data-theme="blueprint"] {
 body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
 }
+h1, h2, .page-title {
+  font-family: "Fraunces", Georgia, "Times New Roman", serif !important;
+}
 .hero {
   background: var(--warm) !important;
+}
+/* Regenerated hero art as the backdrop on legacy static subpages (dark themes
+   only — blueprint keeps its pale drafting paper). */
+html[data-theme="lcars-hud"] .hero,
+html[data-theme="earth-gold"] .hero {
+  background-image:
+    linear-gradient(to bottom, color-mix(in srgb, var(--warm) 72%, transparent), color-mix(in srgb, var(--warm) 88%, transparent)),
+    url("/assets/img/hero-graph-constellation.webp") !important;
+  background-size: cover !important;
+  background-position: center 30% !important;
 }
 .card, .note, table {
   border-radius: 6px !important;
@@ -72,3 +85,51 @@ body {
 html[data-theme="blueprint"] .btn.primary {
   color: #ffffff !important;
 }
+
+/* --- Publications & MathML journal surfaces (static briefs load this bridge) --- */
+math[display="block"] {
+  display: block !important;
+  margin: 18px auto !important;
+  padding: 14px 18px !important;
+  overflow-x: auto !important;
+  font-size: 1.12em !important;
+}
+.eq-box {
+  border: 1px solid var(--border-strong, rgba(76, 201, 240, 0.42)) !important;
+  border-left: 4px solid var(--gold) !important;
+  border-radius: 6px !important;
+  background: var(--panel) !important;
+  padding: 16px 18px !important;
+  margin: 20px 0 !important;
+  overflow-x: auto !important;
+}
+.eq-box math[display="block"] { margin: 0 !important; padding: 0 !important; }
+pre {
+  background: var(--panel) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 6px !important;
+  padding: 14px 16px !important;
+  overflow-x: auto !important;
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace !important;
+  font-size: 12.5px !important;
+  line-height: 1.55 !important;
+}
+pre code {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+table { border-collapse: collapse !important; }
+th {
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace !important;
+  font-size: 11px !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  color: var(--terr) !important;
+  text-align: left !important;
+  padding: 7px 10px !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+td { padding: 7px 10px !important; border-bottom: 1px solid var(--border) !important; font-variant-numeric: tabular-nums !important; }
+tbody tr:nth-child(even) { background: color-mix(in srgb, var(--panel) 55%, transparent) !important; }

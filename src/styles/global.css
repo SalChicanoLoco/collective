@@ -17,19 +17,50 @@ html[data-theme="lcars-hud"] {
   --header-bg: rgba(7, 10, 15, 0.90);
 }
 
+/* Self-hosted fonts (OFL — Fraunces + IBM Plex Mono, woff2 under
+   public/assets/fonts/, font-src 'self'). No external fonts, no CDNs. */
+@font-face {
+  font-family: "Fraunces";
+  src: url("/assets/fonts/fraunces-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Fraunces";
+  src: url("/assets/fonts/fraunces-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("/assets/fonts/ibm-plex-mono-500.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  src: url("/assets/fonts/ibm-plex-mono-600.woff2") format("woff2");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 html[data-theme="earth-gold"] {
-  --bg: #0f0c08;
-  --surface: #17130d;
-  --surface-2: #201a12;
-  --border: rgba(245, 239, 230, 0.14);
-  --border-strong: rgba(245, 239, 230, 0.28);
-  --text: #f5efe6;
-  --muted: #b8ae9f;
-  --faint: #8c8274;
+  --bg: #1a120a;
+  --surface: #261b0e;
+  --surface-2: #332412;
+  --border: rgba(232, 168, 37, 0.22);
+  --border-strong: rgba(232, 168, 37, 0.48);
+  --text: #f8ecd4;
+  --muted: #cdbd97;
+  --faint: #9a8a6c;
   --accent: #e8a825;
-  --accent-2: #789b68;
-  --accent-ink: #140f08;
-  --header-bg: rgba(15, 12, 8, 0.90);
+  --accent-2: #c96f3b;
+  --accent-ink: #1a120a;
+  --header-bg: rgba(26, 18, 10, 0.92);
 }
 
 html[data-theme="blueprint"] {
@@ -52,7 +83,8 @@ html[data-theme="blueprint"] {
   --radius-sm: 4px;
   --max: 1400px;
   --sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --display: "Fraunces", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -76,6 +108,31 @@ body {
 }
 
 img, svg, canvas { max-width: 100%; height: auto; }
+
+/* Per-theme backdrops — the themes FEEL different, not just swap accents:
+   HUD: cold obsidian + cyan engineering grid. Earth: warm adobe glow, no cold
+   grid, terracotta dusk. Blueprint: pale drafting paper, blue grid lines. */
+html[data-theme="lcars-hud"] body {
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -15%, rgba(76, 201, 240, 0.13), transparent 70%),
+    linear-gradient(to right, rgba(76, 201, 240, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(76, 201, 240, 0.06) 1px, transparent 1px);
+  background-size: 100% 100%, 48px 48px, 48px 48px;
+}
+html[data-theme="earth-gold"] body {
+  background-image:
+    radial-gradient(ellipse 90% 55% at 50% -10%, rgba(232, 168, 37, 0.16), transparent 65%),
+    radial-gradient(ellipse 60% 40% at 85% 110%, rgba(201, 111, 59, 0.12), transparent 70%);
+  background-size: 100% 100%, 100% 100%;
+}
+html[data-theme="blueprint"] body {
+  background-image:
+    linear-gradient(to right, rgba(0, 85, 204, 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 85, 204, 0.07) 1px, transparent 1px),
+    linear-gradient(to right, rgba(0, 85, 204, 0.14) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 85, 204, 0.14) 1px, transparent 1px);
+  background-size: 24px 24px, 24px 24px, 120px 120px, 120px 120px;
+}
 a { color: var(--accent); text-underline-offset: 0.2em; }
 a:hover { color: var(--text); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -200,19 +257,21 @@ a:hover { color: var(--text); }
 .hero-status { color: var(--accent-2); margin-top: 14px; }
 
 h1, .page-title {
-  font-size: clamp(1.65rem, 2.8vw, 2.35rem);
+  font-family: var(--display);
+  font-size: clamp(1.9rem, 3.2vw, 2.7rem);
   font-weight: 700;
-  line-height: 1.12;
-  letter-spacing: -0.025em;
-  margin: 8px 0 10px;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  margin: 10px 0 12px;
   text-wrap: balance;
 }
 h2 {
-  font-size: clamp(1.2rem, 1.8vw, 1.5rem);
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: -0.015em;
-  margin: 6px 0 10px;
+  font-family: var(--display);
+  font-size: clamp(1.35rem, 2vw, 1.65rem);
+  font-weight: 600;
+  line-height: 1.18;
+  letter-spacing: -0.01em;
+  margin: 8px 0 12px;
 }
 h3 {
   font-size: 1rem;
@@ -230,9 +289,10 @@ h3 {
 
 /* Compact Efficient Sections */
 .hero {
-  padding: 28px 0 24px;
+  padding: 36px 0 30px;
   border-bottom: 1px solid var(--border);
 }
+.page-hero-media { margin-top: 20px; }
 .hero-split {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
@@ -301,7 +361,7 @@ h3 {
   }
 }
 
-.section { padding: 28px 0; border-bottom: 1px solid var(--border); }
+.section { padding: 34px 0; border-bottom: 1px solid var(--border); }
 .section:last-of-type { border-bottom: 0; }
 
 /* Buttons */
@@ -451,6 +511,107 @@ a.card:hover h2, a.card:hover h3 { color: var(--accent); }
   gap: 10px 20px;
 }
 .site-footer p { margin: 0; }
+.site-footer a {
+  color: var(--muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--border-strong);
+}
+.site-footer a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.site-footer__links { font-size: 13px; }
+.site-footer__links a { font-weight: 600; }
+
+/* Explicit link affordance on link-cards (e.g. the TPU workflows card). */
+.card-link-note {
+  font-family: var(--mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+/* --- CAD Studio surfaces: HUD legends, blueprint callouts, scannable tables --- */
+.cad-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.cad-legend__item { display: inline-flex; align-items: center; gap: 6px; }
+.cad-legend__swatch {
+  display: inline-block;
+  width: 18px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--accent);
+}
+.cad-legend__swatch--2 { background: var(--accent-2); }
+.cad-callout {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  fill: var(--accent);
+}
+.cad-svg text { font-family: var(--mono); }
+.cad-frame table th,
+.cad-studio table th {
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+}
+.cad-frame table td,
+.cad-studio table td {
+  padding: 7px 10px;
+  font-variant-numeric: tabular-nums;
+  border-bottom: 1px solid var(--border);
+}
+.cad-frame table,
+.cad-studio table { font-size: 13px; }
+
+/* --- Publications & MathML: flagship-journal reading surfaces --- */
+math[display="block"] {
+  display: block;
+  margin: 18px auto;
+  padding: 14px 18px;
+  overflow-x: auto;
+  font-size: 1.12em;
+}
+.eq-box {
+  border: 1px solid var(--border-strong);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 14px 18px;
+  margin: 18px 0;
+  overflow-x: auto;
+}
+.eq-box math[display="block"] { margin: 0; padding: 0; }
+pre {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  overflow-x: auto;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+pre code {
+  font-family: var(--mono);
+  font-size: inherit;
+  background: transparent;
+  padding: 0;
+}
+code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  background: var(--surface-2);
+  border-radius: 3px;
+  padding: 1px 5px;
+}
 
 /* Bilingual toggle */
 .lang-es .en, .lang-en .es { display: none !important; }
@@ -460,8 +621,23 @@ a.card:hover h2, a.card:hover h3 { color: var(--accent); }
 }
 @media (max-width: 720px) {
   .wrap, .site-masthead__inner { padding-inline: 14px; }
-  .hero { padding: 20px 0; }
-  .section { padding: 22px 0; }
+  .hero { padding: 24px 0; }
+  .section { padding: 26px 0; }
+  .site-masthead__inner { gap: 8px; }
+  .nav-list { gap: 0; }
+  .nav-list a { padding: 5px 7px; font-size: 12px; }
+  .masthead-controls { width: 100%; justify-content: flex-start; }
+  .hero-media { border-radius: 8px; }
+  .button { min-height: 40px; }
+  .cad-canvas { height: 320px; }
+  .site-footer__inner { flex-direction: column; align-items: flex-start; gap: 6px; }
+}
+@media (max-width: 480px) {
+  body { font-size: 14.5px; }
+  h1, .page-title { font-size: 1.7rem; }
+  .brand { font-size: 14px; }
+  .button-row .button { flex: 1 1 100%; }
+  .field-input--inline { min-width: 0; }
 }
 
 @media print {

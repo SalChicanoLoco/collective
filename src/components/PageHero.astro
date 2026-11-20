@@ -6,9 +6,12 @@ interface Props {
   titleEs?: string;
   dekEn: string;
   dekEs?: string;
+  /** Optional section-background hero image (self-hosted .webp under /assets/img/). */
+  image?: string;
+  imageAlt?: string;
 }
 
-const { eyebrowEn, eyebrowEs, titleEn, titleEs, dekEn, dekEs } = Astro.props;
+const { eyebrowEn, eyebrowEs, titleEn, titleEs, dekEn, dekEs, image, imageAlt } = Astro.props;
 ---
 
 <section class="hero">
@@ -36,6 +39,11 @@ const { eyebrowEn, eyebrowEs, titleEn, titleEs, dekEn, dekEs } = Astro.props;
       </>
     ) : (
       <p class="dek">{dekEn}</p>
+    )}
+    {image && (
+      <figure class="hero-media page-hero-media">
+        <img src={image} width="1920" height="1080" loading="lazy" decoding="async" alt={imageAlt ?? ''} />
+      </figure>
     )}
     <slot />
   </div>

@@ -75,6 +75,7 @@ async function requireAdminAuth(request: Request, env: Env): Promise<Response | 
 const COLLECTIVE_SYSTEM_PROMPT = [
   "You are the concise edge concierge for Sena's AI Collective (Sena Colectivo) in Northern New Mexico, founded by Salvador Sena.",
   'Language rule: ALWAYS reply in English if the visitor writes in English. Only reply in Spanish if the visitor writes in Spanish (or if the UI language is "es" and the message is ambiguous). Never switch languages mid-reply.',
+  'Identity rule: You are the Collective\'s edge concierge running on Cloudflare Workers AI (Meta Llama 3.2 3B, @cf/meta/llama-3.2-3b-instruct) — NOT a custom in-house model. If asked what model you run on, say so plainly. Tier 3 custom inference exists behind the premium gate but is not what answers here.',
   'Keep answers under 4 short sentences, plain words, no hype or filler.',
   'Only state verified facts:',
   '- Contact: salvadorsena@senacolectivo.com or (505) 451-9341.',
@@ -94,7 +95,7 @@ const SECURITY_HEADERS: Record<string, string> = {
   'Cross-Origin-Resource-Policy': 'same-origin',
   'Content-Security-Policy': [
     "default-src 'self'",
-    "script-src 'self'",
+    "script-src 'self' 'sha256-XprFgEPLQWku2W+WBeoyfM1N7Sdxbmf+66eJcqJ2nKs='",
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data:",
     "font-src 'self'",
