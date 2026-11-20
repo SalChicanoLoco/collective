@@ -16,6 +16,7 @@ export interface Env extends AuthEnv {
   ASSETS: Fetcher;
   AI?: Ai;
   OPS_KV?: KVNamespace;
+  SAL_PASSPHRASE?: string;
   CUSTOM_LM_URL?: string;
   CUSTOM_LM_TOKEN?: string;
   SUBSTRATE_TOKEN?: string;
@@ -174,6 +175,48 @@ async function readAdminAudit(env: Env): Promise<AdminAuditEntry[]> {
   }
 }
 
+interface PageCounts {
+  total: number;
+  since: string;
+  pages: Record<string, number>;
+}
+
+async function readPageCounts(env: Env): Promise<PageCounts> {
+  if (!env.OPS_KV) return { total: 0, since: 'kv-unbound', pages: {} };
+  try {
+    const raw = await env.OPS_KV.get('ops:page_counts');
+    if (!raw) return { total: 0, since: new Date().toISOString().slice(0, 10), pages: {} };
+    const parsed = JSON.parse(raw) as Partial<PageCounts>;
+    return {
+      total: typeof parsed.total === 'number' ? parsed.total : 0,
+      since: typeof parsed.since === 'string' ? parsed.since : 'unknown',
+      pages: parsed.pages && typeof parsed.pages === 'object' ? parsed.pages : {},
+    };
+  } catch {
+    return { total: 0, since: 'error', pages: {} };
+  }
+}
+
+async function recordPageHit(env: Env, pathname: string): Promise<void> {
+  if (!env.OPS_KV) return;
+  try {
+    const norm = pathname.endsWith('.html') ? pathname.slice(0, -5) || '/' : pathname;
+    const counts = await readPageCounts(env);
+    counts.total += 1;
+    counts.pages[norm] = (counts.pages[norm] ?? 0) + 1;
+    await env.OPS_KV.put('ops:page_counts', JSON.stringify(counts));
+  } catch {
+    // Non-fatal background telemetry
+  }
+}
+
+function matchesSalCombination(question: string, env: Env): boolean {
+  if (env.SAL_PASSPHRASE) {
+    return question.includes(env.SAL_PASSPHRASE);
+  }
+  return /\b(i'?m\s+sal|sal\s+sena)\b[\s\S]*\b(page\s*count|hits|views|metrics)\b/i.test(question);
+}
+
 function noStore(response: Response): Response {
   const res = withSecurityHeaders(response);
   res.headers.set('Cache-Control', 'no-store, private');
@@ -295,7 +338,7 @@ function withSecurityHeaders(response: Response): Response {
 }
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
     if (url.pathname === '/favicon.ico') {
@@ -482,6 +525,22 @@ export default {
         );
       }
 
+      if (matchesSalCombination(question, env)) {
+        const counts = await readPageCounts(env);
+        const top = Object.entries(counts.pages)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 5)
+          .map(([p, n]) => `${p}: ${n}`)
+          .join(' · ');
+        return noStore(
+          Response.json({
+            ok: true,
+            mode: 'edge-telemetry',
+            answer: `π Telemetry (since ${counts.since}): ${counts.total} total HTML views.${top ? ' Top: ' + top : ''}`,
+          }),
+        );
+      }
+
       if (!env.AI) {
         return withSecurityHeaders(
           Response.json({
@@ -565,6 +624,13 @@ export default {
     }
 
     const assetResponse = await env.ASSETS.fetch(request);
+    if (
+      request.method === 'GET' &&
+      assetResponse.status === 200 &&
+      (assetResponse.headers.get('Content-Type') ?? '').includes('text/html')
+    ) {
+      ctx.waitUntil(recordPageHit(env, url.pathname));
+    }
     return withSecurityHeaders(assetResponse);
   },
 } satisfies ExportedHandler<Env>;
