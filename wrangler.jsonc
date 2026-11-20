@@ -15,7 +15,7 @@
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
-    "run_worker_first": ["/api/*", "/favicon.ico"]
+    "run_worker_first": ["/api/*", "/favicon.ico", "/cgs-community-suite/article.html"]
   },
   "ai": {
     "binding": "AI"
