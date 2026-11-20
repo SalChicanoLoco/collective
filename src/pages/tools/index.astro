@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const tools = [
+  {
+    kickerEn: 'Edge Audit · Live Worker',
+    kickerEs: 'Auditoría de borde · Worker en vivo',
+    titleEn: 'Site Audit (/api/audit)',
+    titleEs: 'Auditoría del sitio (/api/audit)',
+    descEn: 'Live HTTPS security header, HTTP status, and external asset triage powered by our Cloudflare Worker.',
+    descEs: 'Diagnóstico en vivo de encabezados de seguridad HTTPS, estado HTTP y activos externos mediante Cloudflare Worker.',
+    href: '/site-audit/',
+  },
+  {
+    kickerEn: 'Calculator · Separate lane',
+    kickerEs: 'Calculadora · Línea aparte',
+    titleEn: 'Commons Greenhouse Calculator',
+    titleEs: 'Calculadora de invernadero Commons',
+    descEn: 'Passive solar, aquaponics, thermal mass, and high-desert resilience planning.',
+    descEs: 'Energía solar pasiva, acuaponía, masa térmica y planificación de resiliencia en el desierto alto.',
+    href: '/commons-greenhouse-calculator-secure/index.html',
+  },
+  {
+    kickerEn: 'Blueprints · Separate lane',
+    kickerEs: 'Planos · Línea aparte',
+    titleEn: 'CGS Community Suite',
+    titleEs: 'Suite Comunitaria CGS',
+    descEn: 'Community infrastructure blueprints and documentation for the canonical 32×16-foot cell.',
+    descEs: 'Planos de infraestructura comunitaria y documentación para la célula canónica de 32×16 pies.',
+    href: '/cgs-community-suite/index.html',
+  },
+  {
+    kickerEn: 'Archive · Bilingual',
+    kickerEs: 'Archivo · Bilingüe',
+    title: 'La Biblioteca',
+    descEn: 'Six-volume civic research archive indexed alongside active publication packages.',
+    descEs: 'Archivo de investigación cívica de seis volúmenes indexado junto con publicaciones activas.',
+    href: '/biblioteca/',
+  },
+];
+---
+
+<BaseLayout
+  title="Tools | Sena's AI Collective"
+  description="Sena Colectivo tools: edge site audits, calculators, civic infrastructure utilities, and bilingual archives."
+  canonical="https://senacolectivo.com/tools/"
+>
+  <Header />
+  <main id="main">
+    <section class="hero">
+      <div class="wrap">
+        <p class="eyebrow en">Calculators · audits · utilities</p>
+        <p class="eyebrow es">Calculadoras · auditorías · utilidades</p>
+        <h1 class="en">Tools that make the research operational.</h1>
+        <h1 class="es">Herramientas que vuelven operativa la investigación.</h1>
+        <p class="dek en">
+          Repeatable workflows built on the edge: live header audits, public calculators, and bilingual research archives.
+        </p>
+        <p class="dek es">
+          Flujos repetibles construidos en el borde: auditorías en vivo, calculadoras públicas y archivos de investigación bilingües.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="eyebrow en">Active tools</div>
+        <div class="eyebrow es">Herramientas activas</div>
+        <h2 class="en">Tool index</h2>
+        <h2 class="es">Índice de herramientas</h2>
+        <div class="grid grid--spaced">
+          {tools.map((t) => (
+            <a class="card" href={t.href}>
+              <div class="kicker en">{t.kickerEn}</div>
+              <div class="kicker es">{t.kickerEs}</div>
+              {t.title ? (
+                <h3>{t.title}</h3>
+              ) : (
+                <>
+                  <h3 class="en">{t.titleEn}</h3>
+                  <h3 class="es">{t.titleEs}</h3>
+                </>
+              )}
+              <p class="en">{t.descEn}</p>
+              <p class="es">{t.descEs}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>

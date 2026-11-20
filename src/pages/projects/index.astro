@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const projects = [
+  {
+    kickerEn: 'Marketplace · For sale',
+    kickerEs: 'Mercado · En venta',
+    title: 'Merc Mercado',
+    descEn: 'Local handmade marketplace for Santa Fe makers on Cloudflare Pages. Zero percent platform take, direct buyer-seller payment.',
+    descEs: 'Mercado local de artesanía para creadores de Santa Fe en Cloudflare Pages. Cero por ciento de comisión, pago directo entre comprador y vendedor.',
+    href: 'https://merc.senacolectivo.com',
+    external: true,
+  },
+  {
+    kickerEn: 'Civic publishing · Live',
+    kickerEs: 'Publicación cívica · En vivo',
+    title: 'NewMexicoSocialists.org',
+    descEn: 'Renovated public information architecture for organizing, publishing, and civic education.',
+    descEs: 'Arquitectura renovada de información pública para organizar, publicar y educar a la comunidad.',
+    href: 'https://newmexicosocialists.org',
+    external: true,
+  },
+  {
+    kickerEn: 'Publication system',
+    kickerEs: 'Sistema de publicación',
+    title: 'AI Data Centers in Arid Regions',
+    descEn: 'Research-to-publication workflow with public, longform, political-economics, and calculation-spine versions.',
+    descEs: 'Flujo de investigación a publicación con versiones pública, extensa, de economía política y eje de cálculo.',
+    href: '/publications/ai-data-centers/index.html',
+    external: false,
+  },
+  {
+    kickerEn: 'Green Tech · Archival brief',
+    kickerEs: 'Tecnología verde · Resumen archivado',
+    title: 'Future Weather EPW Morphing',
+    descEn: 'Multi-pass LaTeX PDF + 6-part web package for transparent EnergyPlus Weather (EPW) climate morphing.',
+    descEs: 'PDF LaTeX multipaso + paquete web de 6 partes para la transformación transparente de archivos climáticos EPW.',
+    href: '/publications/future-weather-epw/index.html',
+    external: false,
+  },
+  {
+    kickerEn: 'AI ecosystem',
+    kickerEs: 'Ecosistema de IA',
+    titleEn: 'Local Metal & Cloud TPU workflows',
+    titleEs: 'Flujos en Metal local y Cloud TPU',
+    descEn: 'HITL-gated Apple Silicon MLX inference, LoRA adaptation, and fail-closed verification pipelines.',
+    descEs: 'Inferencia MLX en Apple Silicon con control HITL, adaptación LoRA y pipelines de verificación estricta.',
+  },
+  {
+    kickerEn: 'Resilience',
+    kickerEs: 'Resiliencia',
+    title: 'Greenhouse / MILPA / CCGS-C1',
+    descEn: 'Food, water, thermal mass, and community resilience concepts connecting practical infrastructure with planning tools.',
+    descEs: 'Comida, agua, masa térmica y resiliencia comunitaria conectando infraestructura práctica con herramientas de planificación.',
+    href: '/greenhouse/index.html',
+    external: false,
+  },
+];
+---
+
+<BaseLayout
+  title="Projects | Sena's AI Collective"
+  description="Sena Colectivo project index: Merc Mercado, NewMexicoSocialists.org, AI ecosystem work, civic infrastructure, and research-publication systems."
+  canonical="https://senacolectivo.com/projects/"
+>
+  <Header />
+  <main id="main">
+    <section class="hero">
+      <div class="wrap">
+        <p class="eyebrow en">Portfolio · prototypes · civic systems</p>
+        <p class="eyebrow es">Portafolio · prototipos · sistemas cívicos</p>
+        <h1 class="en">Projects that show the operating layer.</h1>
+        <h1 class="es">Proyectos que muestran la capa operativa.</h1>
+        <p class="dek en">
+          Marketplaces, civic sites, custom AI workflows, research infrastructure, and community technology systems.
+        </p>
+        <p class="dek es">
+          Mercados locales, sitios cívicos, flujos de IA personalizados, infraestructura de investigación y sistemas tecnológicos comunitarios.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="eyebrow en">Featured projects</div>
+        <div class="eyebrow es">Proyectos destacados</div>
+        <h2 class="en">Current proof of work</h2>
+        <h2 class="es">Prueba de trabajo actual</h2>
+        <div class="grid grid--spaced">
+          {projects.map((p) => {
+            const inner = (
+              <>
+                <div class="kicker en">{p.kickerEn}</div>
+                <div class="kicker es">{p.kickerEs}</div>
+                {p.title ? (
+                  <h3>{p.title}</h3>
+                ) : (
+                  <>
+                    <h3 class="en">{p.titleEn}</h3>
+                    <h3 class="es">{p.titleEs}</h3>
+                  </>
+                )}
+                <p class="en">{p.descEn}</p>
+                <p class="es">{p.descEs}</p>
+              </>
+            );
+            return p.href ? (
+              <a class="card" href={p.href} rel={p.external ? 'noopener' : undefined}>
+                {inner}
+              </a>
+            ) : (
+              <article class="card">{inner}</article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
