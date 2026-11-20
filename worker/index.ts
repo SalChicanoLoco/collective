@@ -397,15 +397,18 @@ export default {
             geometry?: { coordinates?: number[] };
           }>;
         };
-        const events = (geo.features ?? []).slice(0, 8).map((f) => {
+        const events = (geo.features ?? []).slice(0, 25).map((f) => {
           const mag = Number(f.properties?.mag ?? 0);
           const energyJ = Math.pow(10, 4.8 + 1.5 * mag);
+          const coords = f.geometry?.coordinates ?? [];
           return {
             id: f.id ?? '',
             mag,
             place: f.properties?.place ?? 'Unknown',
             timeUtc: f.properties?.time ? new Date(f.properties.time).toISOString() : '',
-            depthKm: Number((f.geometry?.coordinates?.[2] ?? 0).toFixed(2)),
+            lon: Number((coords[0] ?? 0).toFixed(4)),
+            lat: Number((coords[1] ?? 0).toFixed(4)),
+            depthKm: Number((coords[2] ?? 0).toFixed(2)),
             energyJoules: energyJ,
             energyGj: Number((energyJ / 1e9).toFixed(3)),
             url: f.properties?.url ?? '',

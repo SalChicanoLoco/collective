@@ -138,18 +138,62 @@ import PageHero from '../../../components/PageHero.astro';
 
         <div class="card grid--spaced">
           <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
-            <div class="kicker">Live USGS M2.5+ Feed (5-Min Edge KV Cache · Capped 15/min)</div>
-            <button type="button" id="qzFetchBtn" class="button button--primary">Load Live USGS Telemetry</button>
+            <div class="kicker">3D Planetary Globe · AOI Targeting · Experimental Forecast · Google Earth .KML</div>
+            <div class="button-row" style="margin:0;">
+              <button type="button" id="qzFetchBtn" class="button button--primary">Load Live USGS Telemetry</button>
+              <button type="button" id="qzKmlBtn" class="button">Export Google Earth .KML</button>
+              <button type="button" id="qzGeoJsonBtn" class="button">Export .GeoJSON</button>
+            </div>
           </div>
-          <p id="qzStatus" class="note" role="status" aria-live="polite">Click to fetch cached USGS M2.5+ telemetry.</p>
-          <div style="overflow-x:auto;margin-top:0.5rem;">
+
+          <div class="cad-studio" style="margin-top:1rem;">
+            <div class="cad-sidebar">
+              <div class="kicker">AOI (Area of Interest)</div>
+              <label for="qzAoiPreset" class="field-label">Region Preset</label>
+              <select id="qzAoiPreset" class="field-select">
+                <option value="nm" selected>Northern NM / Rio Grande Rift (35.7°N, -105.9°W)</option>
+                <option value="yellowstone">Yellowstone Caldera (44.4°N, -110.6°W)</option>
+                <option value="ca">SoCal / San Andreas (34.0°N, -118.4°W)</option>
+                <option value="ak">Alaska Subduction (57.0°N, -154.0°W)</option>
+              </select>
+              <label for="qzAoiLat" class="field-label">Center Latitude (°)</label>
+              <input id="qzAoiLat" class="field-input" type="number" step="0.1" min="-90" max="90" value="35.7" />
+              <label for="qzAoiLon" class="field-label">Center Longitude (°)</label>
+              <input id="qzAoiLon" class="field-input" type="number" step="0.1" min="-180" max="180" value="-105.9" />
+              <label for="qzAoiRadius" class="field-label">AOI Radius (km)</label>
+              <input id="qzAoiRadius" class="field-input" type="number" step="50" min="50" max="5000" value="500" />
+
+              <div class="kicker" style="margin-top:1rem;">Experimental Forecast (Poisson / G-R)</div>
+              <p class="note" style="font-size:12px;margin-top:4px;">
+                <strong>Experimental only:</strong> Empirical 24h rate scaled to 7-day Poisson exceedance within AOI. Not an official prediction.
+              </p>
+              <ul id="qzForecastList" style="list-style:none;padding:0;margin:6px 0 0;font-family:var(--mono);font-size:12px;">
+                <li>AOI Events (24h): <strong id="qzAoiCount">—</strong></li>
+                <li>AOI Energy (24h): <strong id="qzAoiEnergy">—</strong></li>
+                <li>7d P(M ≥ 3.0): <strong id="qzProbM3">—</strong></li>
+                <li>7d P(M ≥ 4.0): <strong id="qzProbM4">—</strong></li>
+                <li>7d P(M ≥ 5.0): <strong id="qzProbM5">—</strong></li>
+              </ul>
+            </div>
+
+            <div class="cad-main">
+              <div class="cad-frame">
+                <canvas id="qzGlobe" width="640" height="380" class="cad-canvas" style="height:380px;"></canvas>
+              </div>
+              <p id="qzStatus" class="note" role="status" aria-live="polite">Drag the 3D globe to rotate · Click "Load Live USGS Telemetry" to plot live events &amp; compute AOI forecast.</p>
+            </div>
+          </div>
+
+          <div style="overflow-x:auto;margin-top:1rem;">
             <table>
               <thead>
                 <tr>
                   <th>Mag</th>
                   <th>Location</th>
+                  <th>Coords</th>
                   <th>Depth</th>
-                  <th>Radiated Energy (GJ)</th>
+                  <th>Energy (GJ)</th>
+                  <th>AOI Dist</th>
                   <th>UTC Time</th>
                 </tr>
               </thead>
