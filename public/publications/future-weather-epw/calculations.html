@@ -26,30 +26,30 @@ th{color:var(--gold);font-family:var(--mono);font-size:11px;text-transform:upper
 <body>
 <header class="mast">
   <a class="brand" href="/">Sena's AI Collective</a>
-  <div class="kicker">Future Weather EPW / Calculations Spine</div>
+  <div class="kicker en">Future Weather EPW / Calculations Spine</div><div class="kicker es">Clima futuro EPW / Columna de cálculos</div>
 </header>
 <section class="hero">
   <div class="wrap">
-    <div class="kicker">Calculation & Psychrometric Spine</div>
-    <h1>Morphing Equations & Benchmarks</h1>
+    <div class="kicker en">Calculation & Psychrometric Spine</div><div class="kicker es">Columna de cálculo y psicrometría</div>
+    <h1 class="en">Morphing Equations & Benchmarks</h1><h1 class="es">Ecuaciones de morphing y referencias</h1>
     <nav class="nav">
-      <a class="btn" href="index.html">Hub</a>
-      <a class="btn" href="newspaper.html">Newspaper</a>
-      <a class="btn" href="periodical.html">Periodical</a>
-      <a class="btn" href="political-economics.html">Policy Brief</a>
-      <a class="btn" href="sources.html">Sources</a>
-      <a class="btn" href="future_weather_epw_brief.pdf" target="_blank">Download PDF</a>
+      <a class="btn en" href="index.html">Hub</a><a class="btn es" href="index.html">Centro</a>
+      <a class="btn en" href="newspaper.html">Newspaper</a><a class="btn es" href="newspaper.html">Periódico</a>
+      <a class="btn en" href="periodical.html">Periodical</a><a class="btn es" href="periodical.html">Revista</a>
+      <a class="btn en" href="political-economics.html">Policy Brief</a><a class="btn es" href="political-economics.html">Resumen de políticas</a>
+      <a class="btn en" href="sources.html">Sources</a><a class="btn es" href="sources.html">Fuentes</a>
+      <a class="btn en" href="future_weather_epw_brief.pdf" target="_blank">Download PDF</a><a class="btn es" href="future_weather_epw_brief.pdf" target="_blank">Descargar PDF</a>
     </nav>
   </div>
 </section>
 
 <section class="section">
   <div class="wrap">
-    <h2>1. The Core Dry-Bulb Temperature Morphing Formulation</h2>
-    <p>To preserve diurnal and seasonal weather patterns while injecting long-term Global Climate Model (GCM) warming trends, a <em>combined shift and stretch</em> operation is applied:</p>
+    <h2 class="en">1. The Core Dry-Bulb Temperature Morphing Formulation</h2><h2 class="es">1. La formulación central de morphing de temperatura de bulbo seco</h2>
+    <p class="en">To preserve diurnal and seasonal weather patterns while injecting long-term Global Climate Model (GCM) warming trends, a <em>combined shift and stretch</em> operation is applied:</p><p class="es">Para preservar los patrones meteorológicos diurnos y estacionales mientras se inyectan las tendencias de calentamiento a largo plazo de los Modelos Climáticos Globales (GCM), se aplica una operación <em>combinada de desplazamiento y estiramiento</em>:</p>
 
     <div class="eq-box">
-      <strong>Monthly Anomaly:</strong>
+      <strong class="en">Monthly Anomaly:</strong><strong class="es">Anomalía mensual:</strong>
       <math display="block" aria-label="Delta T sub m equals T sub m of GCM future minus T sub m of GCM baseline">
         <mrow>
           <msub><mi>&#x0394;T</mi><mi>m</mi></msub>
@@ -59,7 +59,7 @@ th{color:var(--gold);font-family:var(--mono);font-size:11px;text-transform:upper
           <msub><mi>T</mi><mi>m</mi></msub><mo>(</mo><mtext>GCM, baseline</mtext><mo>)</mo>
         </mrow>
       </math>
-      <strong>Variability Scaling Factor:</strong>
+      <strong class="en">Variability Scaling Factor:</strong><strong class="es">Factor de escala de variabilidad:</strong>
       <math display="block" aria-label="alpha sub m equals (Delta T MAX,m minus Delta T MIN,m) divided by (angle bracket T max angle bracket m,a minus angle bracket T min angle bracket m,a)">
         <mrow>
           <msub><mi>&#x03B1;</mi><mi>m</mi></msub>
@@ -78,7 +78,7 @@ th{color:var(--gold);font-family:var(--mono);font-size:11px;text-transform:upper
           </mfrac>
         </mrow>
       </math>
-      <strong>Future Hourly Dry-Bulb Temperature:</strong>
+      <strong class="en">Future Hourly Dry-Bulb Temperature:</strong><strong class="es">Temperatura futura horaria de bulbo seco:</strong>
       <math display="block" aria-label="T sub f equals T sub a plus Delta T sub m plus alpha sub m times (T sub a minus angle bracket T m,a angle bracket)">
         <mrow>
           <msub><mi>T</mi><mi>f</mi></msub>
@@ -99,15 +99,15 @@ th{color:var(--gold);font-family:var(--mono);font-size:11px;text-transform:upper
         </mrow>
       </math>
       <details style="margin-top:0.75rem">
-        <summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary>
+        <summary style="cursor:pointer;font-size:0.85rem;opacity:0.85" class="en">LaTeX source</summary><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85" class="es">Fuente LaTeX</summary>
         <pre style="margin:0.5rem 0 0;overflow-x:auto"><code>\Delta T_m = T_m(\text{GCM, future}) - T_m(\text{GCM, baseline})
 \alpha_m = \frac{\Delta T_{\text{MAX}, m} - \Delta T_{\text{MIN}, m}}{\langle T_{\text{max}} \rangle_{m, a} - \langle T_{\text{min}} \rangle_{m, a}}
 T_f = T_a + \Delta T_m + \alpha_m \cdot \left(T_a - \langle T_{m, a} \rangle\right)</code></pre>
       </details>
     </div>
 
-    <h2>2. Spatial Interpolation (Inverse Distance Weighting)</h2>
-    <p>Because GCM grids are coarse (~300 km for HadCM3, ~100 km for CMIP6), anomalies at site location <em>(x, y)</em> are weighted inversely by distance squared from the 4 surrounding nodes:</p>
+    <h2 class="en">2. Spatial Interpolation (Inverse Distance Weighting)</h2><h2 class="es">2. Interpolación espacial (ponderación por distancia inversa)</h2>
+    <p class="en">Because GCM grids are coarse (~300 km for HadCM3, ~100 km for CMIP6), anomalies at site location <em>(x, y)</em> are weighted inversely by distance squared from the 4 surrounding nodes:</p><p class="es">Como las mallas de los GCM son gruesas (~300 km para HadCM3, ~100 km para CMIP6), las anomalías en la ubicación del sitio <em>(x, y)</em> se ponderan de forma inversa al cuadrado de la distancia desde los 4 nodos circundantes:</p>
     <div class="eq-box">
       <math display="block" aria-label="w sub i equals 1 over d sub i squared">
         <mrow>
@@ -127,47 +127,47 @@ T_f = T_a + \Delta T_m + \alpha_m \cdot \left(T_a - \langle T_{m, a} \rangle\rig
         </mrow>
       </math>
       <details style="margin-top:0.75rem">
-        <summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary>
+        <summary style="cursor:pointer;font-size:0.85rem;opacity:0.85" class="en">LaTeX source</summary><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85" class="es">Fuente LaTeX</summary>
         <pre style="margin:0.5rem 0 0;overflow-x:auto"><code>w_i = \frac{1}{d_i^2}
 \text{Anomaly}(\text{site}) = \frac{\sum w_i \cdot \text{Anomaly}_i}{\sum w_i}</code></pre>
       </details>
     </div>
 
-    <h2>3. Statistical Benchmarking Results (Centred on 2080s)</h2>
+    <h2 class="en">3. Statistical Benchmarking Results (Centred on 2080s)</h2><h2 class="es">3. Resultados de la evaluación estadística (centrados en la década de 2080)</h2>
     <table>
       <thead>
         <tr>
-          <th>Metric / Parameter</th>
-          <th>Exeter (Baseline)</th>
-          <th>Exeter (2080 Morphed)</th>
-          <th>Bahía Blanca (Baseline)</th>
-          <th>Bahía Blanca (2080 Morphed)</th>
+          <th class="en">Metric / Parameter</th><th class="es">Métrica / Parámetro</th>
+          <th class="en">Exeter (Baseline)</th><th class="es">Exeter (línea base)</th>
+          <th class="en">Exeter (2080 Morphed)</th><th class="es">Exeter (2080 con morphing)</th>
+          <th class="en">Bahía Blanca (Baseline)</th><th class="es">Bahía Blanca (línea base)</th>
+          <th class="en">Bahía Blanca (2080 Morphed)</th><th class="es">Bahía Blanca (2080 con morphing)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td>Annual Mean Temperature</td>
+          <td class="en">Annual Mean Temperature</td><td class="es">Temperatura media anual</td>
           <td>10.1 °C</td>
           <td>12.8 °C</td>
           <td>15.7 °C</td>
           <td>18.3 °C</td>
         </tr>
         <tr>
-          <td>Annual Maximum Temperature</td>
+          <td class="en">Annual Maximum Temperature</td><td class="es">Temperatura máxima anual</td>
           <td>27.0 °C</td>
           <td>31.6 °C</td>
           <td>38.0 °C</td>
           <td>39.6 °C</td>
         </tr>
         <tr>
-          <td>Annual Minimum Temperature</td>
+          <td class="en">Annual Minimum Temperature</td><td class="es">Temperatura mínima anual</td>
           <td>-4.4 °C</td>
           <td>-2.5 °C</td>
           <td>-6.0 °C</td>
           <td>-3.0 °C</td>
         </tr>
         <tr>
-          <td>Pearson Correlation (r) vs Reference</td>
+          <td class="en">Pearson Correlation (r) vs Reference</td><td class="es">Correlación de Pearson (r) vs. referencia</td>
           <td colspan="2">0.748 to 0.799 (p &lt; 0.05)</td>
           <td colspan="2">0.744 to 0.767 (p &lt; 0.05)</td>
         </tr>

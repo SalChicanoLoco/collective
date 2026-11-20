@@ -110,7 +110,7 @@
   }
 
   // Re-sync labels when the visitor switches language mid-session.
-  window.addEventListener('sena:lang-change', function () { syncUnitLabels(); });
+  window.addEventListener('sena:lang-change', function () { syncUnitLabels(); updateAll(); });
 
   function applyUnitSystem(nextUnits, convertInputs) {
     var prevSi = isSI();
@@ -807,11 +807,12 @@
 
   function buildPartsRows(d) {
     var si = isSI();
+    var es = isES();
     var fmtArea = function (sqft) {
-      return si ? (sqft * SQFT_TO_SQM).toFixed(1) + ' m²' : Math.round(sqft) + ' sq ft';
+      return si ? (sqft * SQFT_TO_SQM).toFixed(1) + ' m\u00b2' : Math.round(sqft) + ' sq ft';
     };
     var fmtVol = function (cuft) {
-      return si ? (cuft * 0.0283168).toFixed(2) + ' m³' : (cuft / 27).toFixed(2) + ' cu yd';
+      return si ? (cuft * 0.0283168).toFixed(2) + ' m\u00b3' : (cuft / 27).toFixed(2) + ' cu yd';
     };
     var hoopMat =
       state.tier === 'upgraded'
@@ -819,74 +820,129 @@
         : state.tier === 'balanced'
           ? '1" EMT / Schedule 40 PVC'
           : 'Salvaged conduit / wood ribs';
+    var hoopMatEs =
+      state.tier === 'upgraded'
+        ? 'acero galvanizado de 1.315"'
+        : state.tier === 'balanced'
+          ? 'EMT de 1" / PVC c\u00e9dula 40'
+          : 'Conducto recuperado / costillas de madera';
     var glazeMat =
       state.tier === 'upgraded'
         ? '8 mm twin-wall polycarbonate'
         : state.tier === 'balanced'
           ? '6-mil UV greenhouse poly'
           : 'Reclaimed glazing / poly film';
+    var glazeMatEs =
+      state.tier === 'upgraded'
+        ? 'policarbonato alveolar de 8 mm'
+        : state.tier === 'balanced'
+          ? 'polietileno de invernadero UV de 6 mil'
+          : 'vidriado recuperado / pel\u00edcula de polietileno';
 
+    // Written ES, Salvador's voice — no machine translation. Each row
+    // carries its Spanish twin; the active language is picked at render
+    // time from body.lang-es (see isES), matching the paired .en/.es
+    // spans in the CAD page markup.
     var rows = [
       {
         item: 'Structural Hoops',
+        itemEs: 'Arcos estructurales',
         qty: d.hoops + ' pcs',
-        spec: fmtLen(d.hoopArcFt) + ' arc · ' + hoopMat,
+        qtyEs: d.hoops + ' uds.',
+        spec: fmtLen(d.hoopArcFt) + ' arc \u00b7 ' + hoopMat,
+        specEs: fmtLen(d.hoopArcFt) + ' de arco \u00b7 ' + hoopMatEs,
         note: 'Spaced ' + fmtLen(state.spacingFt) + ' O.C. (+1 end frame)',
+        noteEs: 'Con separaci\u00f3n de ' + fmtLen(state.spacingFt) + ' entre ejes (+1 marco extremo)',
       },
       {
         item: 'Ground Anchors / Sleeves',
+        itemEs: 'Anclajes de tierra / fundas',
         qty: d.hoops * 2 + ' pcs',
+        qtyEs: d.hoops * 2 + ' uds.',
         spec: fmtLen(3.0) + ' rebar or pipe sleeve',
+        specEs: fmtLen(3.0) + ' de varilla o funda de tubo',
         note: '2 per hoop driven along perimeter wall',
+        noteEs: '2 por arco clavados a lo largo del muro perimetral',
       },
       {
         item: 'Ridge & Side Purlins',
+        itemEs: 'Correas de cumbrera y laterales',
         qty: '3 runs',
+        qtyEs: '3 tramos',
         spec: fmtLen(state.lengthFt) + ' each (' + fmtLen(d.purlinRunsFt) + ' total)',
+        specEs: fmtLen(state.lengthFt) + ' c/u (' + fmtLen(d.purlinRunsFt) + ' total)',
         note: 'Includes ridge spine + 2 lateral wind braces',
+        noteEs: 'Incluye espina de cumbrera + 2 refuerzos laterales contra viento',
       },
       {
         item: 'South Glazing Envelope',
+        itemEs: 'Envolvente vidriada sur',
         qty: fmtArea(d.glazingCutSqFt),
+        qtyEs: fmtArea(d.glazingCutSqFt),
         spec: glazeMat,
+        specEs: glazeMatEs,
         note: 'Net ' + fmtArea(d.glazingSqFt) + ' + 10% sill/batten wrap offset',
+        noteEs: 'Neto ' + fmtArea(d.glazingSqFt) + ' + 10% de solape de alféizar/listón',
       },
       {
         item: 'Raised Bed Framing',
+        itemEs: 'Estructura de camas elevadas',
         qty: fmtLen(d.bedCurbLinFt),
+        qtyEs: fmtLen(d.bedCurbLinFt),
         spec: 'Untreated cedar / adobe / salvaged curb (' + fmtLen(d.bedDepthFt) + ' high)',
+        specEs: 'Cedro sin tratar / adobe / bordillo recuperado (' + fmtLen(d.bedDepthFt) + ' de alto)',
         note: fmtLen(d.endClearanceFt) + ' end-wall & ' + fmtLen(d.southClearanceFt) + ' south clearance',
+        noteEs: fmtLen(d.endClearanceFt) + ' de muro extremo y ' + fmtLen(d.southClearanceFt) + ' de despeje sur',
       },
       {
         item: 'Growing Bed Soil / Compost',
+        itemEs: 'Tierra / composta para camas',
         qty: fmtVol(d.totalSoilCuFt),
+        qtyEs: fmtVol(d.totalSoilCuFt),
         spec: 'Loam + compost blend (' + fmtLen(d.bedDepthFt) + ' bed depth)',
-        note: 'North: ' + fmtVol(d.northSoilCuFt) + ' · South: ' + fmtVol(d.southSoilCuFt),
+        specEs: 'Mezcla de tierra franca + composta (' + fmtLen(d.bedDepthFt) + ' de profundidad de cama)',
+        note: 'North: ' + fmtVol(d.northSoilCuFt) + ' \u00b7 South: ' + fmtVol(d.southSoilCuFt),
+        noteEs: 'Norte: ' + fmtVol(d.northSoilCuFt) + ' \u00b7 Sur: ' + fmtVol(d.southSoilCuFt),
       },
     ];
     if (state.showBarrels) {
       rows.push({
         item: 'North Thermal Water Barrels',
+        itemEs: 'Barriles térmicos de agua al norte',
         qty: d.barrelCount + ' drums',
+        qtyEs: d.barrelCount + ' tambores',
         spec: si ? '208-L black HDPE drums' : '55-gal black HDPE drums',
+        specEs: si ? 'Tambores negros HDPE de 208 L' : 'Tambores negros HDPE de 55 gal',
         note: fmtLen(d.barrelClearanceFt) + ' north wall offset (' + (si ? Math.round(d.waterGal * GAL_TO_L).toLocaleString() + ' L' : d.waterGal + ' gal') + ')',
+        noteEs: fmtLen(d.barrelClearanceFt) + ' de desplazamiento del muro norte (' + (si ? Math.round(d.waterGal * GAL_TO_L).toLocaleString() + ' L' : d.waterGal + ' gal') + ')',
       });
     }
     if (state.showAirTube) {
       rows.push({
         item: 'Geothermal Earth-Tube Duct',
+        itemEs: 'Conducto geotérmico de tubo enterrado',
         qty: fmtLen(Math.max(4, state.lengthFt - 4)),
-        spec: '4–6" corrugated pipe + 2 risers',
+        qtyEs: fmtLen(Math.max(4, state.lengthFt - 4)),
+        spec: '4\u20136" corrugated pipe + 2 risers',
+        specEs: 'Tubo corrugado de 4\u20136" + 2 elevadores',
         note: 'Buried ' + fmtLen(state.trenchFt + 1.5) + ' below grade datum',
+        noteEs: 'Enterrado a ' + fmtLen(state.trenchFt + 1.5) + ' bajo el nivel de referencia',
       });
     }
     rows.push({
       item: 'Hardware, Battens & Anchors',
+      itemEs: 'Herrajes, listones y anclajes',
       qty: '1 kit',
+      qtyEs: '1 kit',
       spec: 'Wiggle wire / batten tape, purlin clamps, vent latches',
+      specEs: 'Alambre ondulado / cinta de listón, abrazaderas de correa, pestillos de ventilación',
       note: 'Sized for ' + d.hoops + ' hoop stations',
+      noteEs: 'Dimensionado para ' + d.hoops + ' estaciones de arco',
     });
-    return rows;
+    if (!es) return rows;
+    return rows.map(function (r) {
+      return { item: r.itemEs || r.item, qty: r.qtyEs || r.qty, spec: r.specEs || r.spec, note: r.noteEs || r.note };
+    });
   }
 
   function exportPartsCsv() {
@@ -895,7 +951,7 @@
     var esc = function (s) {
       return '"' + String(s).replace(/"/g, '""') + '"';
     };
-    var lines = ['Item,Qty,Cut_or_Spec,Offset_and_Notes'];
+    var lines = [isES() ? 'Artículo,Cant.,Corte_o_Espec,Desplazamiento_y_Notas' : 'Item,Qty,Cut_or_Spec,Offset_and_Notes'];
     rows.forEach(function (r) {
       lines.push([esc(r.item), esc(r.qty), esc(r.spec), esc(r.note)].join(','));
     });

@@ -6,6 +6,12 @@
   };
   var TOKEN_KEY = 'sena_admin_token';
 
+  // Written ES, Salvador's voice — no machine translation. Dynamic status
+  // strings pick their language from body.lang-es, like greenhouse-cad.js.
+  function isES() {
+    return document.body && document.body.classList.contains('lang-es');
+  }
+
   function getToken() {
     try {
       return sessionStorage.getItem(TOKEN_KEY) || '';
@@ -30,27 +36,27 @@
     var statusEl = el('adminAuthStatus');
     var t = getToken();
     if (!t) {
-      if (statusEl) statusEl.textContent = 'Locked. Enter SUBSTRATE_TOKEN to unlock admin endpoints.';
+      if (statusEl) statusEl.textContent = isES() ? 'Bloqueado. Ingresa SUBSTRATE_TOKEN para desbloquear los endpoints de administración.' : 'Locked. Enter SUBSTRATE_TOKEN to unlock admin endpoints.';
       return;
     }
-    if (statusEl) statusEl.textContent = 'Checking /api/admin/overview...';
+    if (statusEl) statusEl.textContent = isES() ? 'Consultando /api/admin/overview…' : 'Checking /api/admin/overview...';
     try {
       var res = await fetch('/api/admin/overview', { headers: authHeaders() });
       var data = await res.json();
       if (!res.ok || !data.ok) {
-        if (statusEl) statusEl.textContent = 'Auth error (HTTP ' + res.status + '): ' + (data.error || 'Denied');
+        if (statusEl) statusEl.textContent = (isES() ? 'Error de autenticación (HTTP ' : 'Auth error (HTTP ') + res.status + '): ' + (data.error || (isES() ? 'Denegado' : 'Denied'));
         return;
       }
-      if (statusEl) statusEl.textContent = 'Connected · ' + data.siteUrl + ' · ' + data.timestamp;
+      if (statusEl) statusEl.textContent = (isES() ? 'Conectado · ' : 'Connected · ') + data.siteUrl + ' · ' + data.timestamp;
       var s = data.substrate || {};
       var tiers = s.tiers || {};
-      if (el('statTier1')) el('statTier1').textContent = tiers.tier1_deterministic ? 'Online' : 'Offline';
-      if (el('statTier2')) el('statTier2').textContent = tiers.tier2_edge_workers_ai ? 'Online' : 'Fallback';
-      if (el('statTier3')) el('statTier3').textContent = tiers.tier3_custom_lm ? 'Connected' : 'Unconfigured';
+      if (el('statTier1')) el('statTier1').textContent = tiers.tier1_deterministic ? (isES() ? 'En línea' : 'Online') : (isES() ? 'Sin conexión' : 'Offline');
+      if (el('statTier2')) el('statTier2').textContent = tiers.tier2_edge_workers_ai ? (isES() ? 'En línea' : 'Online') : (isES() ? 'Respaldo' : 'Fallback');
+      if (el('statTier3')) el('statTier3').textContent = tiers.tier3_custom_lm ? (isES() ? 'Conectado' : 'Connected') : (isES() ? 'Sin configurar' : 'Unconfigured');
       var rl = data.rateLimit || {};
       if (el('statRate')) el('statRate').textContent = (rl.limitPerMinute || 20) + '/min (' + (rl.activeTrackedIps || 0) + ' active)';
     } catch (_e) {
-      if (statusEl) statusEl.textContent = 'Network error querying /api/admin/overview.';
+      if (statusEl) statusEl.textContent = isES() ? 'Error de red al consultar /api/admin/overview.' : 'Network error querying /api/admin/overview.';
     }
   }
 
@@ -69,7 +75,7 @@
     if (el('statTier2')) el('statTier2').textContent = '—';
     if (el('statTier3')) el('statTier3').textContent = '—';
     if (el('statRate')) el('statRate').textContent = '—';
-    if (el('adminAuthStatus')) el('adminAuthStatus').textContent = 'Locked. Token cleared from sessionStorage.';
+    if (el('adminAuthStatus')) el('adminAuthStatus').textContent = isES() ? 'Bloqueado. Token eliminado de sessionStorage.' : 'Locked. Token cleared from sessionStorage.';
   });
 
   el('adminRefreshBtn')?.addEventListener('click', refreshOverview);
@@ -77,7 +83,7 @@
   el('runHealthBtn')?.addEventListener('click', async function () {
     var out = el('healthOutput');
     if (!out) return;
-    out.textContent = 'Checking routes...';
+    out.textContent = isES() ? 'Verificando rutas…' : 'Checking routes...';
     var paths = ['/', '/tools/', '/projects/', '/publications/', '/colophon/', '/commons-greenhouse-calculator-secure/', '/api/health', '/api/substrate/status'];
     var lines = [];
     for (var i = 0; i < paths.length; i++) {
@@ -96,13 +102,13 @@
     var out = el('auditOutput');
     var target = (el('auditUrlInput')?.value || '').trim();
     if (!out || !target) return;
-    out.textContent = 'Running /api/audit...';
+    out.textContent = isES() ? 'Ejecutando /api/audit…' : 'Running /api/audit...';
     try {
       var res = await fetch('/api/audit?url=' + encodeURIComponent(target), { headers: authHeaders() });
       var data = await res.json();
       out.textContent = JSON.stringify(data, null, 2);
     } catch (_e) {
-      out.textContent = 'Network error running /api/audit.';
+      out.textContent = isES() ? 'Error de red al ejecutar /api/audit.' : 'Network error running /api/audit.';
     }
   });
 
@@ -111,7 +117,7 @@
     var out = el('inferOutput');
     var prompt = (el('inferPromptInput')?.value || '').trim();
     if (!out || !prompt) return;
-    out.textContent = 'Running /api/substrate/infer...';
+    out.textContent = isES() ? 'Ejecutando /api/substrate/infer…' : 'Running /api/substrate/infer...';
     try {
       var headers = Object.assign({ 'Content-Type': 'application/json' }, authHeaders());
       var res = await fetch('/api/substrate/infer', {
@@ -122,9 +128,12 @@
       var data = await res.json();
       out.textContent = JSON.stringify(data, null, 2);
     } catch (_e) {
-      out.textContent = 'Network error running /api/substrate/infer.';
+      out.textContent = isES() ? 'Error de red al ejecutar /api/substrate/infer.' : 'Network error running /api/substrate/infer.';
     }
   });
+
+  // Re-render the status line when the visitor switches language.
+  window.addEventListener('sena:lang-change', refreshOverview);
 
   refreshOverview();
 })();

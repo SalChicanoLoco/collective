@@ -26,47 +26,54 @@ pre{background:#110a05;border:1px solid rgba(246,234,215,.15);padding:16px;color
 <body>
 <header class="mast">
   <a class="brand" href="/">Sena's AI Collective</a>
-  <div class="kicker">Technical Periodical / Building Energy Modeling & Green Tech</div>
+  <div class="kicker en">Technical Periodical / Building Energy Modeling & Green Tech</div><div class="kicker es">Revista técnica / Modelado energético de edificios y tecnología verde</div>
 </header>
 <div class="wrap">
-  <div class="kicker">In-Depth Architecture · Climate Downscaling</div>
-  <h1>A Transparent Morphing Workflow for Future EnergyPlus Weather Files</h1>
-  <p class="meta">Review of Reolon, Marengo, and Picco (2026) · Ingested for the Sena Colectivo Engineering & Resilience Archive</p>
+  <div class="kicker en">In-Depth Architecture · Climate Downscaling</div><div class="kicker es">Arquitectura a fondo · Reducción de escala climática</div>
+  <h1 class="en">A Transparent Morphing Workflow for Future EnergyPlus Weather Files</h1><h1 class="es">Un flujo de trabajo transparente de morphing para archivos futuros de EnergyPlus Weather</h1>
+  <p class="meta en">Review of Reolon, Marengo, and Picco (2026) · Ingested for the Sena Colectivo Engineering & Resilience Archive</p><p class="meta es">Reseña de Reolon, Marengo y Picco (2026) · Ingresado al Archivo de Ingeniería y Resiliencia de Sena Colectivo</p>
 
   <div class="nav">
-    <a class="btn" href="index.html">Hub</a>
-    <a class="btn" href="newspaper.html">Public Brief</a>
-    <a class="btn" href="political-economics.html">Policy Brief</a>
-    <a class="btn" href="calculations.html">Calculations</a>
-    <a class="btn" href="sources.html">Sources</a>
-    <a class="btn sage" href="future_weather_epw_brief.pdf" target="_blank">📄 Download Compiled LaTeX PDF</a>
+    <a class="btn en" href="index.html">Hub</a><a class="btn es" href="index.html">Centro</a>
+    <a class="btn en" href="newspaper.html">Public Brief</a><a class="btn es" href="newspaper.html">Informe público</a>
+    <a class="btn en" href="political-economics.html">Policy Brief</a><a class="btn es" href="political-economics.html">Resumen de políticas</a>
+    <a class="btn en" href="calculations.html">Calculations</a><a class="btn es" href="calculations.html">Cálculos</a>
+    <a class="btn en" href="sources.html">Sources</a><a class="btn es" href="sources.html">Fuentes</a>
+    <a class="btn sage en" href="future_weather_epw_brief.pdf" target="_blank">📄 Download Compiled LaTeX PDF</a><a class="btn sage es" href="future_weather_epw_brief.pdf" target="_blank">📄 Descargar el PDF compilado en LaTeX</a>
   </div>
 
-  <h2>1. The Mechanical Limits of Static TMY Weather Files</h2>
-  <p>Typical Meteorological Year (TMY) datasets combine twelve typical calendar months selected from historical weather station observations (e.g., 1991–2020). While effective for sizing equipment under past weather regimes, TMY files fail to reflect two dominant climate signals: the secular shift in mean annual temperatures and the amplified volatility of extreme heat events.</p>
-  <p>In building performance simulation (BEM) using tools like EnergyPlus, heating and cooling demands depend non-linearly on ambient dry-bulb temperature, solar radiation, humidity, and atmospheric long-wave infrared radiation. Overheating risk assessment under standards such as CIBSE TM59 requires hourly resolution data that captures the peak thermal stresses of future decades.</p>
+  <h2 class="en">1. The Mechanical Limits of Static TMY Weather Files</h2><h2 class="es">1. Los límites mecánicos de los archivos TMY estáticos</h2>
+  <p class="en">Typical Meteorological Year (TMY) datasets combine twelve typical calendar months selected from historical weather station observations (e.g., 1991–2020). While effective for sizing equipment under past weather regimes, TMY files fail to reflect two dominant climate signals: the secular shift in mean annual temperatures and the amplified volatility of extreme heat events.</p><p class="es">Los conjuntos de datos del Año Meteorológico Típico (TMY) combinan doce meses típicos del calendario seleccionados de observaciones históricas de estaciones meteorológicas (p. ej., 1991–2020). Aunque son eficaces para dimensionar equipos bajo regímenes climáticos pasados, los archivos TMY no reflejan dos señales climáticas dominantes: el cambio secular de las temperaturas medias anuales y la volatilidad amplificada de los eventos de calor extremo.</p>
+  <p class="en">In building performance simulation (BEM) using tools like EnergyPlus, heating and cooling demands depend non-linearly on ambient dry-bulb temperature, solar radiation, humidity, and atmospheric long-wave infrared radiation. Overheating risk assessment under standards such as CIBSE TM59 requires hourly resolution data that captures the peak thermal stresses of future decades.</p><p class="es">En la simulación del desempeño de edificios (BEM) con herramientas como EnergyPlus, las demandas de calefacción y enfriamiento dependen de forma no lineal de la temperatura de bulbo seco del ambiente, la radiación solar, la humedad y la radiación infrarroja atmosférica de onda larga. La evaluación del riesgo de sobrecalentamiento bajo normas como CIBSE TM59 exige datos de resolución horaria que capturen los picos de estrés térmico de las próximas décadas.</p>
 
-  <h2>2. The Five-Step Morphing Procedure</h2>
-  <p>Originally formulated by Belcher et al. (2005), "morphing" modifies a baseline hourly weather file by applying additive (shift) and multiplicative (stretch) transformations derived from climate model projections. Reolon et al. (2026) systematize this into a five-step, fully auditable workflow:</p>
+  <h2 class="en">2. The Five-Step Morphing Procedure</h2><h2 class="es">2. El procedimiento de morphing en cinco pasos</h2>
+  <p class="en">Originally formulated by Belcher et al. (2005), "morphing" modifies a baseline hourly weather file by applying additive (shift) and multiplicative (stretch) transformations derived from climate model projections. Reolon et al. (2026) systematize this into a five-step, fully auditable workflow:</p><p class="es">Formulado originalmente por Belcher et al. (2005), el "morphing" modifica un archivo meteorológico horario de base aplicando transformaciones aditivas (desplazamiento) y multiplicativas (estiramiento) derivadas de proyecciones de modelos climáticos. Reolon et al. (2026) lo sistematizan en un flujo de trabajo de cinco pasos, totalmente auditable:</p>
 
-  <div class="callout">
+  <div class="callout en">
     <strong>Step 1: Baseline EPW Selection.</strong> Obtain an authentic baseline EPW (TMY, IWEC, or calibrated station data) establishing diurnal patterns and site microclimate.<br><br>
     <strong>Step 2: GCM Climate Anomaly Extraction.</strong> Extract monthly anomalies (deviations between future and historical periods) from a Global Climate Model (e.g., HadCM3, CMIP6 ensembles).<br><br>
     <strong>Step 3: Spatial Interpolation.</strong> Map coarse global model outputs (~100–300 km) to the exact latitude and longitude of the weather station using inverse-distance squared weighting of the four nearest grid cells.<br><br>
     <strong>Step 4: Variable-Specific Transformations.</strong> Apply shift transformations to temperature and atmospheric pressure; stretch transformations to solar radiation and wind speed; and combined shift-and-stretch to dry-bulb temperature.<br><br>
     <strong>Step 5: Psychrometric Derivation of Secondary Data.</strong> Calculate dew-point temperature, vapor pressure, and atmospheric infrared radiation using standard ASHRAE thermodynamic equations rather than blindly morphing them.
   </div>
+  <div class="callout es">
+    <strong>Paso 1: Selección del EPW de base.</strong> Obtener un EPW de base auténtico (TMY, IWEC o datos calibrados de estación) que establezca los patrones diurnos y el microclima del sitio.<br><br>
+    <strong>Paso 2: Extracción de anomalías climáticas de los GCM.</strong> Extraer las anomalías mensuales (desviaciones entre los periodos futuro e histórico) de un Modelo Climático Global (p. ej., HadCM3, ensambles CMIP6).<br><br>
+    <strong>Paso 3: Interpolación espacial.</strong> Mapear las salidas gruesas del modelo mundial (~100–300 km) a la latitud y longitud exactas de la estación meteorológica usando ponderación por distancia inversa al cuadrado de las cuatro celdas más cercanas.<br><br>
+    <strong>Paso 4: Transformaciones específicas por variable.</strong> Aplicar transformaciones de desplazamiento a la temperatura y la presión atmosférica; de estiramiento a la radiación solar y la velocidad del viento; y combinadas de desplazamiento y estiramiento a la temperatura de bulbo seco.<br><br>
+    <strong>Paso 5: Derivación psicrométrica de datos secundarios.</strong> Calcular la temperatura de punto de rocío, la presión de vapor y la radiación infrarroja atmosférica con las ecuaciones termodinámicas estándar de ASHRAE, en lugar de someterlas a morphing a ciegas.
+  </div>
 
-  <h2>3. Mathematical Consistency & Psychrometrics</h2>
-  <p>A crucial flaw in rudimentary future-weather generators is the independent scaling of coupled thermodynamic parameters. For example, stretching temperature while separately stretching relative humidity can generate impossible states where water vapor pressure exceeds saturation vapor pressure.</p>
-  <p>Reolon et al. enforce physical consistency by treating dry-bulb temperature and atmospheric pressure as primary variables, while re-deriving psychrometric properties using standard formulations (Perez et al. for radiation components, ASHRAE Handbook of Fundamentals for vapor pressure and dew point).</p>
+  <h2 class="en">3. Mathematical Consistency & Psychrometrics</h2><h2 class="es">3. Consistencia matemática y psicrometría</h2>
+  <p class="en">A crucial flaw in rudimentary future-weather generators is the independent scaling of coupled thermodynamic parameters. For example, stretching temperature while separately stretching relative humidity can generate impossible states where water vapor pressure exceeds saturation vapor pressure.</p><p class="es">Un defecto crucial de los generadores rudimentarios de clima futuro es escalar por separado parámetros termodinámicos acoplados. Por ejemplo, estirar la temperatura mientras se estira por separado la humedad relativa puede generar estados imposibles donde la presión de vapor de agua supera la presión de vapor de saturación.</p>
+  <p class="en">Reolon et al. enforce physical consistency by treating dry-bulb temperature and atmospheric pressure as primary variables, while re-deriving psychrometric properties using standard formulations (Perez et al. for radiation components, ASHRAE Handbook of Fundamentals for vapor pressure and dew point).</p><p class="es">Reolon et al. imponen la consistencia física tratando la temperatura de bulbo seco y la presión atmosférica como variables primarias, mientras rederivan las propiedades psicrométricas con formulaciones estándar (Perez et al. para los componentes de radiación, Manual de Fundamentos de ASHRAE para la presión de vapor y el punto de rocío).</p>
 
-  <h2>4. Benchmarking Outcomes & Limitations</h2>
-  <p>The workflow was evaluated against PROMETHEUS (UKCP09 probabilistic data), Meteonorm (commercial multi-source), and the Future Weather Generator (FWG). Pearson correlation coefficients for hourly dry-bulb temperature across 2080 projections in Exeter ranged from <strong>0.748 to 0.799 (p &lt; 0.05)</strong>, confirming high statistical consistency with existing generators while exposing all mathematical transformations.</p>
-  <p>The authors note that because morphing preserves the baseline temporal sequence, extreme heat events absent from the historical record are not synthesized. Morphing is therefore ideal for early-stage design sensitivity and long-term energy modeling, but should be supplemented with synthetic extreme reference years (e.g., CIBSE DSYs) for catastrophic heat dome survival analysis.</p>
+  <h2 class="en">4. Benchmarking Outcomes & Limitations</h2><h2 class="es">4. Resultados de la evaluación y limitaciones</h2>
+  <p class="en">The workflow was evaluated against PROMETHEUS (UKCP09 probabilistic data), Meteonorm (commercial multi-source), and the Future Weather Generator (FWG). Pearson correlation coefficients for hourly dry-bulb temperature across 2080 projections in Exeter ranged from <strong>0.748 to 0.799 (p &lt; 0.05)</strong>, confirming high statistical consistency with existing generators while exposing all mathematical transformations.</p><p class="es">El flujo de trabajo se evaluó frente a PROMETHEUS (datos probabilísticos UKCP09), Meteonorm (comercial, multifuent) y el Generador de Clima Futuro (FWG). Los coeficientes de correlación de Pearson para la temperatura horaria de bulbo seco en las proyecciones de 2080 en Exeter oscilaron entre <strong>0.748 y 0.799 (p &lt; 0.05)</strong>, lo que confirma una alta consistencia estadística con los generadores existentes, exponiendo al mismo tiempo todas las transformaciones matemáticas.</p>
+  <p class="en">The authors note that because morphing preserves the baseline temporal sequence, extreme heat events absent from the historical record are not synthesized. Morphing is therefore ideal for early-stage design sensitivity and long-term energy modeling, but should be supplemented with synthetic extreme reference years (e.g., CIBSE DSYs) for catastrophic heat dome survival analysis.</p><p class="es">Los autores señalan que, como el morphing preserva la secuencia temporal de base, los eventos de calor extremo ausentes del registro histórico no se sintetizan. El morphing es, por tanto, ideal para la sensibilidad de diseño en etapas tempranas y el modelado energético a largo plazo, pero debería complementarse con años sintéticos extremos de referencia (p. ej., DSY de CIBSE) para el análisis de supervivencia ante cúpulas de calor catastróficas.</p>
 
-  <h2>5. Sources, References &amp; BibTeX</h2>
-  <p>For the complete equation derivations and interactive MathML/LaTeX spine, see <a href="calculations.html">Calculations</a>. For the full archive ledger, see <a href="sources.html">Sources &amp; BibTeX Ledger</a>.</p>
+  <h2 class="en">5. Sources, References &amp; BibTeX</h2><h2 class="es">5. Fuentes, referencias y BibTeX</h2>
+  <p class="en">For the complete equation derivations and interactive MathML/LaTeX spine, see <a href="calculations.html">Calculations</a>. For the full archive ledger, see <a href="sources.html">Sources &amp; BibTeX Ledger</a>.</p><p class="es">Para las derivaciones completas de las ecuaciones y la columna interactiva MathML/LaTeX, ver <a href="calculations.html">Cálculos</a>. Para el registro completo del archivo, ver <a href="sources.html">Fuentes y registro BibTeX</a>.</p>
   <ol>
     <li><strong>Reolon, M., Marengo, M., &amp; Picco, M. (2026).</strong> A transparent workflow for future EnergyPlus Weather (EPW) files for building energy simulation. <em>Academia Green Energy</em>, 3, 1–16. DOI: <a href="https://doi.org/10.20935/AcadEnergy8325" target="_blank" rel="noopener">10.20935/AcadEnergy8325</a></li>
     <li><strong>Belcher, S. E., Hacker, J. N., &amp; Powell, D. S. (2005).</strong> Constructing design weather data for future climates. <em>Building Services Engineering Research and Technology</em>, 26(1), 49–61.</li>
@@ -79,7 +86,7 @@ pre{background:#110a05;border:1px solid rgba(246,234,215,.15);padding:16px;color
     <li><strong>IPCC (2021).</strong> <em>Climate Change 2021: The Physical Science Basis (AR6 Working Group I)</em>.</li>
   </ol>
 
-  <h3>BibTeX Citation</h3>
+  <h3 class="en">BibTeX Citation</h3><h3 class="es">Cita BibTeX</h3>
   <pre><code>@article{Reolon2026_EnergyPlusWeather,
   author       = {Reolon, Mattia and Marengo, Marco and Picco, Marco},
   title        = {A transparent workflow for future {EnergyPlus} Weather ({EPW}) files for building energy simulation},

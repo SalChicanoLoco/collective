@@ -25,34 +25,34 @@ p{margin-top:0;margin-bottom:18px}
 <body>
 <header class="mast">
   <a class="brand" href="/">Sena's AI Collective</a>
-  <div class="kicker">Civic Broadsheet / Green Tech & Built Environment</div>
+  <div class="kicker en">Civic Broadsheet / Green Tech & Built Environment</div><div class="kicker es">Hoja cívica / Tecnología verde y entorno construido</div>
 </header>
 <div class="wrap">
-  <div class="kicker">Public Edition · Climate Resilience</div>
-  <h1>Designing Tomorrow’s Homes with Yesterday’s Thermometer</h1>
-  <div class="lead">Why historical weather files leave our homes vulnerable to deadly heatwaves—and how a transparent mathematical tool bridges global climate models with neighborhood architecture.</div>
+  <div class="kicker en">Public Edition · Climate Resilience</div><div class="kicker es">Edición pública · Resiliencia climática</div>
+  <h1 class="en">Designing Tomorrow’s Homes with Yesterday’s Thermometer</h1><h1 class="es">Diseñar las casas del mañana con el termómetro de ayer</h1>
+  <div class="lead en">Why historical weather files leave our homes vulnerable to deadly heatwaves—and how a transparent mathematical tool bridges global climate models with neighborhood architecture.</div><div class="lead es">Por qué los archivos meteorológicos históricos dejan nuestras casas vulnerables a olas de calor mortales, y cómo una herramienta matemática transparente conecta los modelos climáticos mundiales con la arquitectura del vecindario.</div>
   
   <div class="nav">
-    <a class="btn" href="index.html">Hub</a>
-    <a class="btn" href="periodical.html">Longform Tech</a>
-    <a class="btn" href="political-economics.html">Policy Brief</a>
-    <a class="btn" href="calculations.html">Calculations</a>
-    <a class="btn" href="sources.html">Sources</a>
-    <a class="btn" href="future_weather_epw_brief.pdf" target="_blank">PDF Brief</a>
+    <a class="btn en" href="index.html">Hub</a><a class="btn es" href="index.html">Centro</a>
+    <a class="btn en" href="periodical.html">Longform Tech</a><a class="btn es" href="periodical.html">Tecnología a fondo</a>
+    <a class="btn en" href="political-economics.html">Policy Brief</a><a class="btn es" href="political-economics.html">Resumen de políticas</a>
+    <a class="btn en" href="calculations.html">Calculations</a><a class="btn es" href="calculations.html">Cálculos</a>
+    <a class="btn en" href="sources.html">Sources</a><a class="btn es" href="sources.html">Fuentes</a>
+    <a class="btn en" href="future_weather_epw_brief.pdf" target="_blank">PDF Brief</a><a class="btn es" href="future_weather_epw_brief.pdf" target="_blank">Informe en PDF</a>
   </div>
 
   <div class="columns">
-    <p>When an architect designs a home, school, or clinic today, building regulations require computer simulations to estimate how much energy it will consume and whether it will overheat in the summer. Yet in nearly every city, those simulations run on "Typical Meteorological Year" (TMY) datasets constructed from historical weather records from the 1980s and 1990s.</p>
+    <p class="en">When an architect designs a home, school, or clinic today, building regulations require computer simulations to estimate how much energy it will consume and whether it will overheat in the summer. Yet in nearly every city, those simulations run on "Typical Meteorological Year" (TMY) datasets constructed from historical weather records from the 1980s and 1990s.</p><p class="es">Cuando hoy un arquitecto diseña una casa, una escuela o una clínica, las normas de construcción exigen simulaciones por computadora para estimar cuánta energía consumirá y si se sobrecalentará en verano. Sin embargo, en casi todas las ciudades esas simulaciones usan conjuntos de datos del "Año Meteorológico Típico" (TMY) construidos a partir de registros meteorológicos históricos de los años ochenta y noventa.</p>
 
-    <p>Buildings erected today are expected to stand for fifty to eighty years. Relying on past climate data guarantees that cooling demands will be vastly underestimated, passive ventilation strategies will fail during unmodeled heat spikes, and vulnerable occupants—particularly low-income elders and working families—will face severe thermal stress.</p>
+    <p class="en">Buildings erected today are expected to stand for fifty to eighty years. Relying on past climate data guarantees that cooling demands will be vastly underestimated, passive ventilation strategies will fail during unmodeled heat spikes, and vulnerable occupants—particularly low-income elders and working families—will face severe thermal stress.</p><p class="es">Se espera que los edificios que se levantan hoy duren de cincuenta a ochenta años. Depender de datos climáticos del pasado garantiza que las demandas de enfriamiento se subestimen enormemente, que las estrategias de ventilación pasiva fallen durante picos de calor no modelados, y que los ocupantes vulnerables —en particular las personas mayores de bajos ingresos y las familias trabajadoras— enfrenten un estrés térmico severo.</p>
 
-    <p>A new open-access study published in <em>Academia Green Energy</em> by researchers Mattia Reolon, Marco Marengo, and Marco Picco presents a solution: a transparent, reproducible workflow to generate future EnergyPlus Weather (EPW) files by "morphing" baseline local weather with Global Climate Model (GCM) projections.</p>
+    <p class="en">A new open-access study published in <em>Academia Green Energy</em> by researchers Mattia Reolon, Marco Marengo, and Marco Picco presents a solution: a transparent, reproducible workflow to generate future EnergyPlus Weather (EPW) files by "morphing" baseline local weather with Global Climate Model (GCM) projections.</p><p class="es">Un nuevo estudio de acceso abierto publicado en <em>Academia Green Energy</em> por los investigadores Mattia Reolon, Marco Marengo y Marco Picco presenta una solución: un flujo de trabajo transparente y reproducible para generar archivos futuros de EnergyPlus Weather (EPW) mediante el "morphing" del clima local de base con proyecciones de Modelos Climáticos Globales (GCM).</p>
 
-    <p>Unlike commercial tools that hide their calculations behind proprietary walls, this workflow explicitly documents every step: mapping global climate grids to local coordinates via inverse distance weighting, scaling temperature swings, and rebalancing humidity and radiation equations so the simulated air doesn't violate the laws of physics.</p>
+    <p class="en">Unlike commercial tools that hide their calculations behind proprietary walls, this workflow explicitly documents every step: mapping global climate grids to local coordinates via inverse distance weighting, scaling temperature swings, and rebalancing humidity and radiation equations so the simulated air doesn't violate the laws of physics.</p><p class="es">A diferencia de las herramientas comerciales que esconden sus cálculos detrás de muros propietarios, este flujo de trabajo documenta explícitamente cada paso: mapear las mallas climáticas mundiales a coordenadas locales mediante ponderación por distancia inversa, escalar las oscilaciones de temperatura y reequilibrar las ecuaciones de humedad y radiación para que el aire simulado no viole las leyes de la física.</p>
 
-    <p>In testing across Exeter, UK and Bahía Blanca, Argentina, the methodology captured the steep upward shift in summer maximum temperatures—rising over 4.5°C in Exeter by the 2080s—while closely matching established benchmarks.</p>
+    <p class="en">In testing across Exeter, UK and Bahía Blanca, Argentina, the methodology captured the steep upward shift in summer maximum temperatures—rising over 4.5°C in Exeter by the 2080s—while closely matching established benchmarks.</p><p class="es">En las pruebas en Exeter, Reino Unido, y Bahía Blanca, Argentina, la metodología capturó el fuerte aumento de las temperaturas máximas de verano —más de 4.5°C en Exeter para la década de 2080— al tiempo que coincidía estrechamente con las referencias establecidas.</p>
 
-    <p>For high-altitude and arid communities like Northern New Mexico, where passive solar adobe design and community greenhouses (MILPA/CGS-C1) must withstand both freezing winter nights and blazing summer droughts, open future weather files are not an academic luxury. They are essential public infrastructure for climate survival.</p>
+    <p class="en">For high-altitude and arid communities like Northern New Mexico, where passive solar adobe design and community greenhouses (MILPA/CGS-C1) must withstand both freezing winter nights and blazing summer droughts, open future weather files are not an academic luxury. They are essential public infrastructure for climate survival.</p><p class="es">Para las comunidades áridas y de altura como el norte de Nuevo México, donde el diseño de adobe solar pasivo y los invernaderos comunitarios (MILPA/CGS-C1) deben soportar tanto las noches heladas de invierno como las sequías abrasadoras del verano, los archivos abiertos de clima futuro no son un lujo académico. Son infraestructura pública esencial para sobrevivir al clima.</p>
   </div>
 </div>
 </body>

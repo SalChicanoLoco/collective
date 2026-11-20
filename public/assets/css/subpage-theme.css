@@ -133,3 +133,9 @@ th {
 }
 td { padding: 7px 10px !important; border-bottom: 1px solid var(--border) !important; font-variant-numeric: tabular-nums !important; }
 tbody tr:nth-child(even) { background: color-mix(in srgb, var(--panel) 55%, transparent) !important; }
+
+/* Language packs: paired .en/.es spans — show only the active language.
+   Same rule as global.css:617 / site.css:331; static briefs load only this
+   bridge, so the rule must live here too. site.js sets body.lang-en/lang-es. */
+.lang-es .en,
+.lang-en .es { display: none !important; }

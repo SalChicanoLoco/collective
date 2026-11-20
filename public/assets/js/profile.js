@@ -5,19 +5,35 @@
     return document.getElementById(id);
   };
 
+  // Written ES, Salvador's voice — no machine translation. Dynamic status
+  // strings pick their language from body.lang-es, like greenhouse-cad.js.
+  function isES() {
+    return document.body && document.body.classList.contains('lang-es');
+  }
+
+  var lastProviders = null;
+
+  function renderProviderStatus() {
+    var provRes = lastProviders;
+    if (!provRes || !provRes.ok) return;
+    var p = provRes.providers || {};
+    var ready = [];
+    if (p.google) ready.push('Google');
+    if (p.microsoft) ready.push('Microsoft');
+    if (p.meta) ready.push('Meta');
+    if (el('providerStatus')) {
+      el('providerStatus').textContent = ready.length
+        ? (isES() ? 'Proveedores activos: ' : 'Active providers: ') + ready.join(', ') + (isES() ? ' · Almacenamiento: ' : ' · Storage: ') + provRes.profileStorage
+        : (isES() ? 'Cierre seguro: secretos de OAuth aún no configurados en este Worker (AUTH_SESSION_SECRET + Client ID/Secret del proveedor).' : 'Fail-closed: OAuth secrets not configured on this Worker yet (AUTH_SESSION_SECRET + provider Client ID/Secret).');
+    }
+  }
+
   async function init() {
     var provRes = await fetch('/api/auth/providers').then(function (r) { return r.json(); }).catch(function () { return null; });
     if (provRes && provRes.ok) {
+      lastProviders = provRes;
+      renderProviderStatus();
       var p = provRes.providers || {};
-      var ready = [];
-      if (p.google) ready.push('Google');
-      if (p.microsoft) ready.push('Microsoft');
-      if (p.meta) ready.push('Meta');
-      if (el('providerStatus')) {
-        el('providerStatus').textContent = ready.length
-          ? 'Active providers: ' + ready.join(', ') + ' · Storage: ' + provRes.profileStorage
-          : 'Fail-closed: OAuth secrets not configured on this Worker yet (AUTH_SESSION_SECRET + provider Client ID/Secret).';
-      }
       if (!p.google && el('loginGoogleBtn')) el('loginGoogleBtn').setAttribute('aria-disabled', 'true');
       if (!p.microsoft && el('loginMicrosoftBtn')) el('loginMicrosoftBtn').setAttribute('aria-disabled', 'true');
       if (!p.meta && el('loginMetaBtn')) el('loginMetaBtn').setAttribute('aria-disabled', 'true');
@@ -32,7 +48,7 @@
       el('profileIdentityKicker').textContent =
         sess.user.provider.toUpperCase() + ' · ' + (sess.user.email || sess.user.id) + ' · ' + sess.user.role.toUpperCase();
     }
-    if (el('profileHeading')) el('profileHeading').textContent = sess.user.name || 'Member Profile';
+    if (el('profileHeading')) el('profileHeading').textContent = sess.user.name || (isES() ? 'Perfil de miembro' : 'Member Profile');
     if (sess.user.role === 'admin' && el('adminLinkBtn')) el('adminLinkBtn').hidden = false;
 
     var profRes = await fetch('/api/profile').then(function (r) { return r.json(); }).catch(function () { return null; });
@@ -51,7 +67,7 @@
   el('profileForm')?.addEventListener('submit', async function (e) {
     e.preventDefault();
     var status = el('profileSaveStatus');
-    if (status) status.textContent = 'Saving...';
+    if (status) status.textContent = isES() ? 'Guardando…' : 'Saving...';
     var payload = {
       displayName: el('profDisplayName')?.value || '',
       handle: el('profHandle')?.value || '',
@@ -69,7 +85,7 @@
       });
       var data = await res.json();
       if (!res.ok || !data.ok) {
-        if (status) status.textContent = data.error || 'Failed to save profile.';
+        if (status) status.textContent = data.error || (isES() ? 'No se pudo guardar el perfil.' : 'Failed to save profile.');
         return;
       }
       try {
@@ -79,11 +95,14 @@
         document.documentElement.dataset.theme = data.profile.preferredTheme;
         document.documentElement.lang = data.profile.preferredLang;
       } catch (_e) {}
-      if (status) status.textContent = 'Saved (' + data.profile.updatedAt + ')';
+      if (status) status.textContent = (isES() ? 'Guardado (' : 'Saved (') + data.profile.updatedAt + ')';
     } catch (_e) {
-      if (status) status.textContent = 'Network error saving profile.';
+      if (status) status.textContent = isES() ? 'Error de red al guardar el perfil.' : 'Network error saving profile.';
     }
   });
+
+  // Re-render the provider status line when the visitor switches language.
+  window.addEventListener('sena:lang-change', renderProviderStatus);
 
   el('logoutBtn')?.addEventListener('click', async function () {
     await fetch('/api/auth/logout', { method: 'POST' });
