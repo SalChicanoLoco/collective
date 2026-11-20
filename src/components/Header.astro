@@ -14,8 +14,8 @@ const navItems = isMaintenance
       { href: '/projects/', en: 'Projects', es: 'Proyectos' },
       { href: '/tools/', en: 'Tools', es: 'Herramientas' },
       { href: '/biblioteca/', en: 'Biblioteca', es: 'Biblioteca' },
-      { href: '/site-audit/', en: 'Site Audit', es: 'Auditoría' },
-      { href: '/commons-greenhouse-calculator-secure/', en: 'Greenhouse CAD', es: 'CAD Invernadero' },
+      { href: '/site-audit/', en: 'Audit', es: 'Auditoría' },
+      { href: '/commons-greenhouse-calculator-secure/', en: 'CAD Studio', es: 'Estudio CAD' },
     ];
 ---
 
@@ -23,7 +23,7 @@ const navItems = isMaintenance
   <div class="site-masthead__inner">
     <div class="brand-group">
       <a class="brand" href="/">Sena's AI Collective</a>
-      <p class="brand-sub">Sena Colectivo · New Mexico</p>
+      <p class="brand-sub">Sena Colectivo · NM-01</p>
     </div>
     <nav aria-label="Main navigation">
       <ul class="nav-list">
@@ -47,9 +47,16 @@ const navItems = isMaintenance
         ))}
       </ul>
     </nav>
-    <div class="lang-toggle" role="group" aria-label="Language">
-      <button type="button" data-lang-button="en" aria-pressed="true">EN</button>
-      <button type="button" data-lang-button="es" aria-pressed="false">ES</button>
+    <div class="masthead-controls">
+      <div class="theme-toggle" role="group" aria-label="Theme">
+        <button type="button" data-theme-button="lcars-hud" aria-pressed="true">HUD</button>
+        <button type="button" data-theme-button="earth-gold" aria-pressed="false">Earth</button>
+        <button type="button" data-theme-button="blueprint" aria-pressed="false">CAD</button>
+      </div>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang-button="en" aria-pressed="true">EN</button>
+        <button type="button" data-lang-button="es" aria-pressed="false">ES</button>
+      </div>
     </div>
   </div>
 </header>

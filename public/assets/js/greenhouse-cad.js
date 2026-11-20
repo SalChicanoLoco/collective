@@ -122,8 +122,13 @@
     }
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    // CAD dark drafting background matching --surface
-    ctx.fillStyle = '#17130d';
+    // CAD drafting background synced to active theme
+    var cs = getComputedStyle(document.documentElement);
+    var bgHex = cs.getPropertyValue('--surface').trim() || '#0d131c';
+    var accentHex = cs.getPropertyValue('--accent').trim() || '#4cc9f0';
+    var accent2Hex = cs.getPropertyValue('--accent-2').trim() || '#f4a261';
+    var textHex = cs.getPropertyValue('--text').trim() || '#e8eef5';
+    ctx.fillStyle = bgHex;
     ctx.fillRect(0, 0, w, h);
 
     var L = state.lengthFt;
@@ -243,79 +248,194 @@
     return n;
   }
 
+  function themeTokens() {
+    var cs = getComputedStyle(document.documentElement);
+    return {
+      bg: cs.getPropertyValue('--bg').trim() || '#070a0f',
+      surface: cs.getPropertyValue('--surface').trim() || '#0d131c',
+      text: cs.getPropertyValue('--text').trim() || '#e8eef5',
+      muted: cs.getPropertyValue('--muted').trim() || '#9eb0c4',
+      accent: cs.getPropertyValue('--accent').trim() || '#4cc9f0',
+      accent2: cs.getPropertyValue('--accent-2').trim() || '#f4a261',
+      border: cs.getPropertyValue('--border').trim() || 'rgba(76,201,240,0.2)',
+    };
+  }
+
+  function svgText(x, y, text, color, size, anchor) {
+    var t = makeSvg('text', {
+      x: x, y: y, fill: color, 'font-size': size || 10,
+      'font-family': 'ui-monospace, SFMono-Regular, Menlo, monospace',
+      'text-anchor': anchor || 'start',
+    });
+    t.textContent = text;
+    return t;
+  }
+
   function renderPlanSvg() {
     var root = el('planSvg');
     if (!root) return;
     while (root.firstChild) root.removeChild(root.firstChild);
     var d = derived();
-    var pad = 40;
-    var scale = 14;
-    var w = state.lengthFt * scale;
-    var h = state.widthFt * scale;
-    root.setAttribute('viewBox', '0 0 ' + (w + pad * 2) + ' ' + (h + pad * 2));
+    var T = themeTokens();
+    var padL = 56, padT = 52, padR = 64, padB = 62;
+    var scale = 15;
+    var L = state.lengthFt, W = state.widthFt;
+    var w = L * scale, h = W * scale;
+    var vw = w + padL + padR, vh = h + padT + padB;
+    root.setAttribute('viewBox', '0 0 ' + vw + ' ' + vh);
 
-    root.appendChild(makeSvg('rect', { x: pad, y: pad, width: w, height: h, fill: '#0f0c08', stroke: '#e8a825', 'stroke-width': 2 }));
-    // North barrel spine
-    if (state.showBarrels) {
-      root.appendChild(makeSvg('rect', { x: pad + 6, y: pad + 4, width: w - 12, height: 18, fill: '#356085', stroke: '#7ab4e8', 'stroke-width': 1 }));
+    // Sheet background
+    root.appendChild(makeSvg('rect', { x: 0, y: 0, width: vw, height: vh, fill: T.bg, rx: 4 }));
+
+    // Minor (1 ft) & Major (4 ft) CAD grid
+    for (var gx = 0; gx <= L; gx++) {
+      var x = padL + gx * scale;
+      var majorX = gx % 4 === 0;
+      root.appendChild(makeSvg('line', {
+        x1: x, y1: padT, x2: x, y2: padT + h,
+        stroke: T.accent, 'stroke-opacity': majorX ? 0.22 : 0.07, 'stroke-width': majorX ? 0.8 : 0.4,
+      }));
+      if (majorX) root.appendChild(svgText(x, padT + h + 14, gx + "'", T.muted, 9, 'middle'));
     }
-    // Central aisle
+    for (var gy = 0; gy <= W; gy++) {
+      var y = padT + gy * scale;
+      var majorY = gy % 4 === 0;
+      root.appendChild(makeSvg('line', {
+        x1: padL, y1: y, x2: padL + w, y2: y,
+        stroke: T.accent, 'stroke-opacity': majorY ? 0.22 : 0.07, 'stroke-width': majorY ? 0.8 : 0.4,
+      }));
+      if (majorY) root.appendChild(svgText(padL - 8, y + 3, gy + "'", T.muted, 9, 'end'));
+    }
+
+    // North Earth Berm apron (top)
+    if (state.bermFt > 0) {
+      root.appendChild(makeSvg('rect', {
+        x: padL, y: padT - 14, width: w, height: 14,
+        fill: T.accent2, 'fill-opacity': 0.14, stroke: T.accent2, 'stroke-width': 0.8, 'stroke-dasharray': '3 2',
+      }));
+      root.appendChild(svgText(padL + 6, padT - 4, 'NORTH EARTH BERM (' + state.bermFt + "')", T.accent2, 8.5));
+    }
+
+    // Double-line perimeter wall (0.5 ft wall thickness)
+    var wt = 0.5 * scale;
+    root.appendChild(makeSvg('rect', { x: padL, y: padT, width: w, height: h, fill: 'none', stroke: T.text, 'stroke-width': 1.8 }));
+    root.appendChild(makeSvg('rect', { x: padL + wt, y: padT + wt, width: w - wt * 2, height: h - wt * 2, fill: 'none', stroke: T.muted, 'stroke-width': 0.8 }));
+
+    // Central Longitudinal Aisle
     var aislePx = state.aisleFt * scale;
-    var aisleY = pad + h / 2 - aislePx / 2;
-    root.appendChild(makeSvg('rect', { x: pad + 4, y: aisleY, width: w - 8, height: aislePx, fill: '#2a2015', stroke: 'rgba(246,234,215,0.35)', 'stroke-dasharray': '4 3' }));
+    var aisleY = padT + h / 2 - aislePx / 2;
+    root.appendChild(makeSvg('rect', {
+      x: padL + wt, y: aisleY, width: w - wt * 2, height: aislePx,
+      fill: T.surface, stroke: T.accent, 'stroke-width': 0.8, 'stroke-dasharray': '5 3',
+    }));
+    root.appendChild(svgText(padL + w / 2, aisleY + aislePx / 2 + 3, 'ACCESS AISLE (' + state.aisleFt + "' WIDE)", T.accent, 9, 'middle'));
 
-    // North & South grow beds
-    var northBedH = Math.max(14, aisleY - (pad + 26));
-    var southBedY = aisleY + aislePx + 4;
-    var southBedH = Math.max(14, pad + h - 6 - southBedY);
-    root.appendChild(makeSvg('rect', { x: pad + 8, y: pad + 26, width: w - 16, height: northBedH, fill: 'rgba(120,155,104,0.45)', stroke: '#9bc289' }));
-    root.appendChild(makeSvg('rect', { x: pad + 8, y: southBedY, width: w - 16, height: southBedH, fill: 'rgba(120,155,104,0.45)', stroke: '#9bc289' }));
+    // North & South Growing Beds
+    var barrelClearance = state.showBarrels ? 2.1 * scale : wt + 4;
+    var nBedY = padT + barrelClearance;
+    var nBedH = Math.max(10, aisleY - nBedY - 4);
+    var sBedY = aisleY + aislePx + 4;
+    var sBedH = Math.max(10, padT + h - wt - 4 - sBedY);
+    root.appendChild(makeSvg('rect', { x: padL + wt + 4, y: nBedY, width: w - wt * 2 - 8, height: nBedH, fill: T.accent, 'fill-opacity': 0.08, stroke: T.accent, 'stroke-width': 1 }));
+    root.appendChild(svgText(padL + w / 2, nBedY + nBedH / 2 + 3, 'NORTH GROW BED (' + d.bedWidth.toFixed(1) + "')", T.text, 9, 'middle'));
+    root.appendChild(makeSvg('rect', { x: padL + wt + 4, y: sBedY, width: w - wt * 2 - 8, height: sBedH, fill: T.accent, 'fill-opacity': 0.08, stroke: T.accent, 'stroke-width': 1 }));
+    root.appendChild(svgText(padL + w / 2, sBedY + sBedH / 2 + 3, 'SOUTH GROW BED (' + d.bedWidth.toFixed(1) + "')", T.text, 9, 'middle'));
 
-    // Hoop stations
-    for (var i = 0; i < d.hoops; i++) {
-      var hx = Math.min(pad + w, pad + i * state.spacingFt * scale);
-      root.appendChild(makeSvg('line', { x1: hx, y1: pad - 4, x2: hx, y2: pad + h + 4, stroke: 'rgba(232,168,37,0.45)', 'stroke-width': 1 }));
+    // Individual 55-gal circular barrel CAD symbols along North Wall
+    if (state.showBarrels) {
+      var nB = d.barrelCount;
+      var bR = 0.85 * scale;
+      var bStep = (w - wt * 2 - 16) / Math.max(1, nB);
+      for (var bi = 0; bi < nB; bi++) {
+        var bx = padL + wt + 8 + bStep * (bi + 0.5);
+        var by = padT + wt + bR + 2;
+        root.appendChild(makeSvg('circle', { cx: bx, cy: by, r: Math.min(bR, bStep * 0.42), fill: T.surface, stroke: T.accent2, 'stroke-width': 1.2 }));
+        root.appendChild(makeSvg('circle', { cx: bx, cy: by, r: 2, fill: T.accent2 }));
+      }
     }
 
-    var lbl = makeSvg('text', { x: pad, y: pad - 12, fill: '#f6ead7', 'font-size': 12, 'font-family': 'monospace' });
-    lbl.textContent = 'PLAN: ' + state.lengthFt + ' ft (X) × ' + state.widthFt + ' ft (Y) · North Barrels at Top · Central Aisle ' + state.aisleFt + ' ft';
-    root.appendChild(lbl);
+    // Hoop station centerlines + callouts (H1..Hn)
+    for (var i = 0; i < d.hoops; i++) {
+      var hx = Math.min(padL + w, padL + i * state.spacingFt * scale);
+      root.appendChild(makeSvg('line', { x1: hx, y1: padT - 6, x2: hx, y2: padT + h + 6, stroke: T.accent2, 'stroke-opacity': 0.55, 'stroke-width': 0.9, 'stroke-dasharray': '4 3' }));
+      root.appendChild(svgText(hx, padT - 19, 'H' + (i + 1), T.muted, 8, 'middle'));
+    }
+
+    // Overall Dimension Chains (Top X, Right Y)
+    var dimY = 18;
+    root.appendChild(makeSvg('line', { x1: padL, y1: dimY, x2: padL + w, y2: dimY, stroke: T.text, 'stroke-width': 1 }));
+    root.appendChild(makeSvg('line', { x1: padL, y1: dimY - 5, x2: padL, y2: padT - 4, stroke: T.muted, 'stroke-width': 0.7 }));
+    root.appendChild(makeSvg('line', { x1: padL + w, y1: dimY - 5, x2: padL + w, y2: padT - 4, stroke: T.muted, 'stroke-width': 0.7 }));
+    root.appendChild(svgText(padL + w / 2, dimY - 4, L + "'-0\" OVERALL LENGTH (X)", T.text, 9.5, 'middle'));
+
+    var dimX = padL + w + 26;
+    root.appendChild(makeSvg('line', { x1: dimX, y1: padT, x2: dimX, y2: padT + h, stroke: T.text, 'stroke-width': 1 }));
+    root.appendChild(makeSvg('line', { x1: padL + w + 4, y1: padT, x2: dimX + 5, y2: padT, stroke: T.muted, 'stroke-width': 0.7 }));
+    root.appendChild(makeSvg('line', { x1: padL + w + 4, y1: padT + h, x2: dimX + 5, y2: padT + h, stroke: T.muted, 'stroke-width': 0.7 }));
+    var wLbl = svgText(dimX + 12, padT + h / 2, W + "'-0\" (Y)", T.text, 9.5, 'middle');
+    wLbl.setAttribute('transform', 'rotate(-90 ' + (dimX + 12) + ' ' + (padT + h / 2) + ')');
+    root.appendChild(wLbl);
+
+    // North Arrow & Title Block
+    root.appendChild(svgText(18, 22, '▲ N', T.accent, 11, 'start'));
+    root.appendChild(makeSvg('rect', { x: vw - 250, y: vh - 28, width: 242, height: 22, fill: T.surface, stroke: T.border }));
+    root.appendChild(svgText(vw - 242, vh - 13, 'SENA COLECTIVO · PLAN VIEW · 1/4"=1\'-0"', T.muted, 9));
   }
 
   function renderSectionSvg() {
     var root = el('sectionSvg');
     if (!root) return;
     while (root.firstChild) root.removeChild(root.firstChild);
+    var T = themeTokens();
     var scale = 18;
-    var pad = 44;
+    var pad = 52;
     var w = state.widthFt * scale;
-    var groundY = 210;
+    var vw = w + pad * 2, vh = 290;
+    var groundY = 215;
     var trenchPx = state.trenchFt * scale;
     var bermPx = state.bermFt * scale;
     var ridgePx = state.ridgeFt * scale;
-    root.setAttribute('viewBox', '0 0 ' + (w + pad * 2) + ' 270');
+    root.setAttribute('viewBox', '0 0 ' + vw + ' ' + vh);
 
-    // Ground datum
-    root.appendChild(makeSvg('line', { x1: 12, y1: groundY, x2: w + pad * 2 - 12, y2: groundY, stroke: 'rgba(246,234,215,0.4)', 'stroke-dasharray': '5 4' }));
-    // Earth berm on North (left)
+    root.appendChild(makeSvg('rect', { x: 0, y: 0, width: vw, height: vh, fill: T.bg, rx: 4 }));
+
+    // Grade datum
+    root.appendChild(makeSvg('line', { x1: 14, y1: groundY, x2: vw - 14, y2: groundY, stroke: T.muted, 'stroke-dasharray': '6 4', 'stroke-width': 1 }));
+    root.appendChild(svgText(16, groundY - 5, 'GRADE ±0.0\'', T.muted, 8.5));
+
+    // North earth berm
     root.appendChild(makeSvg('polygon', {
-      points: (pad - 32) + ',' + groundY + ' ' + pad + ',' + (groundY - bermPx) + ' ' + pad + ',' + groundY,
-      fill: 'rgba(130,90,45,0.75)', stroke: '#e8a825',
+      points: (pad - 36) + ',' + groundY + ' ' + pad + ',' + (groundY - bermPx) + ' ' + pad + ',' + groundY,
+      fill: T.accent2, 'fill-opacity': 0.22, stroke: T.accent2, 'stroke-width': 1.2,
     }));
-    // Sunken trench floor
-    root.appendChild(makeSvg('rect', { x: pad, y: groundY, width: w, height: trenchPx, fill: '#0f0c08', stroke: '#f5efe6' }));
-    // South glazing arch / slope
+
+    // Excavated sunken trench
+    root.appendChild(makeSvg('rect', { x: pad, y: groundY, width: w, height: trenchPx, fill: T.surface, stroke: T.text, 'stroke-width': 1.2 }));
+    if (state.trenchFt > 0) {
+      root.appendChild(svgText(pad + w / 2, groundY + trenchPx / 2 + 3, 'SUNKEN TRENCH (-' + state.trenchFt + "')", T.muted, 8.5, 'middle'));
+    }
+
+    // North thermal barrel silhouette
+    if (state.showBarrels) {
+      root.appendChild(makeSvg('rect', { x: pad + 6, y: groundY - 3 * scale, width: 1.8 * scale, height: 3 * scale, fill: T.surface, stroke: T.accent2, 'stroke-width': 1.2 }));
+    }
+
+    // Glazing arch envelope
     root.appendChild(makeSvg('path', {
       d: 'M ' + pad + ' ' + (groundY - bermPx) + ' Q ' + (pad + w * 0.45) + ' ' + (groundY - ridgePx * 1.45) + ' ' + (pad + w) + ' ' + groundY,
-      fill: 'none', stroke: '#e8a825', 'stroke-width': 2.5,
+      fill: 'none', stroke: T.accent, 'stroke-width': 2.2,
     }));
-    // Geothermal air tube
+    root.appendChild(svgText(pad + w * 0.48, groundY - ridgePx - 6, 'RIDGE ' + state.ridgeFt + "' · 50° SOUTH GLAZING", T.accent, 9, 'middle'));
+
+    // Sub-soil geothermal air tube
     if (state.showAirTube) {
-      root.appendChild(makeSvg('circle', { cx: pad + w / 2, cy: groundY + trenchPx + 18, r: 9, fill: '#356085', stroke: '#7ab4e8', 'stroke-width': 1.5 }));
+      var tubeY = groundY + trenchPx + 18;
+      root.appendChild(makeSvg('circle', { cx: pad + w / 2, cy: tubeY, r: 9, fill: T.surface, stroke: T.accent, 'stroke-width': 1.5 }));
+      root.appendChild(svgText(pad + w / 2 + 14, tubeY + 3, 'GEOTHERMAL AIR TUBE', T.accent, 8.5));
     }
-    var lbl = makeSvg('text', { x: pad, y: 24, fill: '#f6ead7', 'font-size': 12, 'font-family': 'monospace' });
-    lbl.textContent = 'SECTION (N → S): Berm ' + state.bermFt + ' ft · Trench ' + state.trenchFt + ' ft · Ridge ' + state.ridgeFt + ' ft';
-    root.appendChild(lbl);
+
+    root.appendChild(makeSvg('rect', { x: vw - 246, y: vh - 28, width: 238, height: 22, fill: T.surface, stroke: T.border }));
+    root.appendChild(svgText(vw - 238, vh - 13, 'SECTION (N → S) · BERM ' + state.bermFt + "' · TRENCH " + state.trenchFt + "'", T.muted, 9));
   }
 
   // --- Real 3D-Printable .STL Generator (1:50 Scale in mm) ---
@@ -623,6 +743,11 @@
   el('exportPltBtn')?.addEventListener('click', exportPlt);
   el('printPlotBtn')?.addEventListener('click', function () { window.print(); });
   window.addEventListener('resize', render3D);
+  window.addEventListener('sena:theme-change', function () {
+    render3D();
+    renderPlanSvg();
+    renderSectionSvg();
+  });
 
   updateAll();
 })();
