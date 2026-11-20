@@ -122,8 +122,52 @@ import Footer from '../../components/Footer.astro';
             <svg id="sectionSvg" class="cad-svg"></svg>
           </div>
         </div>
+        <div class="grid grid--2 grid--spaced">
+          <div class="card">
+            <div class="kicker">Growing Bed Dimensions &amp; Soil Volume</div>
+            <div style="overflow-x:auto;margin-top:0.75rem;">
+              <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+                <thead>
+                  <tr>
+                    <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Zone</th>
+                    <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Length × Width × Depth</th>
+                    <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Area</th>
+                    <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Soil Volume</th>
+                  </tr>
+                </thead>
+                <tbody id="bedDetailsBody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="kicker">Materials Offsets, Clearances &amp; Earthworks</div>
+            <ul id="offsetDetailsList" style="margin-top:0.75rem;"></ul>
+          </div>
+        </div>
+
         <div class="card grid--spaced">
-          <div class="kicker">Derived Bill of Materials</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+            <div class="kicker">Builder's Itemized Parts List &amp; Cut Schedule</div>
+            <button type="button" id="exportPartsCsvBtn" class="button" style="padding:5px 12px;font-size:11px;">Export Parts .CSV</button>
+          </div>
+          <div style="overflow-x:auto;margin-top:0.75rem;">
+            <table style="width:100%;border-collapse:collapse;font-size:0.9rem;">
+              <thead>
+                <tr>
+                  <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Item</th>
+                  <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Qty</th>
+                  <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Cut / Spec</th>
+                  <th style="text-align:left;padding:6px;border-bottom:1px solid var(--border);">Offset / Notes</th>
+                </tr>
+              </thead>
+              <tbody id="partsTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card grid--spaced">
+          <div class="kicker">Derived Bill of Materials Summary</div>
           <ul id="bomList"></ul>
         </div>
       </div>

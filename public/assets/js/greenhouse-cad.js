@@ -133,22 +133,62 @@
   function derived() {
     var area = state.lengthFt * state.widthFt;
     var hoops = Math.floor(state.lengthFt / state.spacingFt) + 1;
-    var bedWidth = Math.max(1.5, (state.widthFt - state.aisleFt - 2) / 2);
+    var wallOffsetFt = 0.5;
+    var endClearanceFt = 1.0;
+    var southClearanceFt = 0.8;
+    var barrelClearanceFt = state.showBarrels ? 2.1 : wallOffsetFt;
+    var bedLenFt = Math.max(4, state.lengthFt - endClearanceFt * 2);
+    var bedDepthFt = 1.4;
+    var northBedWidthFt = Math.max(1.5, (state.widthFt - state.aisleFt) / 2 - barrelClearanceFt);
+    var southBedWidthFt = Math.max(1.5, (state.widthFt - state.aisleFt) / 2 - southClearanceFt);
+    var bedWidth = Number(((northBedWidthFt + southBedWidthFt) / 2).toFixed(2));
+    var northBedArea = bedLenFt * northBedWidthFt;
+    var southBedArea = bedLenFt * southBedWidthFt;
+    var aisleArea = Math.max(4, state.lengthFt - wallOffsetFt * 2) * state.aisleFt;
+    var northSoilCuFt = northBedArea * bedDepthFt;
+    var southSoilCuFt = southBedArea * bedDepthFt;
+    var totalSoilCuFt = northSoilCuFt + southSoilCuFt;
+    var trenchCutCuFt = area * state.trenchFt;
+    var bermFillCuFt = state.lengthFt * state.bermFt * 3.0;
     var barrelCount = state.showBarrels ? Math.max(2, Math.floor((state.lengthFt - 2) / 2)) : 0;
     var waterGal = barrelCount * 55;
     var btuPerDegF = Math.round(waterGal * 8.34);
     var glazingSqFt = Math.round(state.lengthFt * (state.widthFt * 1.18));
+    var glazingCutSqFt = Math.round(glazingSqFt * 1.1); // +10% batten/sill overlap
+    var hoopArcFt = Number((Math.PI * (state.widthFt / 2) + 2.0).toFixed(1));
+    var purlinRunsFt = Number((state.lengthFt * 3).toFixed(1));
+    var bedCurbLinFt = Number(((bedLenFt * 2 + northBedWidthFt * 2) + (bedLenFt * 2 + southBedWidthFt * 2)).toFixed(1));
     var foodLbYr = Math.round(area * 0.65);
     var tierInfo = TIERS[state.tier] || TIERS.balanced;
     var estCost = Math.round(area * tierInfo.rate);
     return {
       area: area,
       hoops: hoops,
+      wallOffsetFt: wallOffsetFt,
+      endClearanceFt: endClearanceFt,
+      southClearanceFt: southClearanceFt,
+      barrelClearanceFt: barrelClearanceFt,
+      bedLenFt: bedLenFt,
+      bedDepthFt: bedDepthFt,
       bedWidth: bedWidth,
+      northBedWidthFt: northBedWidthFt,
+      southBedWidthFt: southBedWidthFt,
+      northBedArea: northBedArea,
+      southBedArea: southBedArea,
+      aisleArea: aisleArea,
+      northSoilCuFt: northSoilCuFt,
+      southSoilCuFt: southSoilCuFt,
+      totalSoilCuFt: totalSoilCuFt,
+      trenchCutCuFt: trenchCutCuFt,
+      bermFillCuFt: bermFillCuFt,
       barrelCount: barrelCount,
       waterGal: waterGal,
       btuPerDegF: btuPerDegF,
       glazingSqFt: glazingSqFt,
+      glazingCutSqFt: glazingCutSqFt,
+      hoopArcFt: hoopArcFt,
+      purlinRunsFt: purlinRunsFt,
+      bedCurbLinFt: bedCurbLinFt,
       foodLbYr: foodLbYr,
       tierInfo: tierInfo,
       estCost: estCost,
@@ -419,9 +459,9 @@
     var sBedY = aisleY + aislePx + 4;
     var sBedH = Math.max(10, padT + h - wt - 4 - sBedY);
     root.appendChild(makeSvg('rect', { x: padL + wt + 4, y: nBedY, width: w - wt * 2 - 8, height: nBedH, fill: T.accent, 'fill-opacity': 0.08, stroke: T.accent, 'stroke-width': 1 }));
-    root.appendChild(svgText(padL + w / 2, nBedY + nBedH / 2 + 3, 'NORTH GROW BED (' + fmtLenShort(d.bedWidth) + ')', T.text, 9, 'middle'));
+    root.appendChild(svgText(padL + w / 2, nBedY + nBedH / 2 + 3, 'NORTH GROW BED (' + fmtLenShort(d.northBedWidthFt) + ')', T.text, 9, 'middle'));
     root.appendChild(makeSvg('rect', { x: padL + wt + 4, y: sBedY, width: w - wt * 2 - 8, height: sBedH, fill: T.accent, 'fill-opacity': 0.08, stroke: T.accent, 'stroke-width': 1 }));
-    root.appendChild(svgText(padL + w / 2, sBedY + sBedH / 2 + 3, 'SOUTH GROW BED (' + fmtLenShort(d.bedWidth) + ')', T.text, 9, 'middle'));
+    root.appendChild(svgText(padL + w / 2, sBedY + sBedH / 2 + 3, 'SOUTH GROW BED (' + fmtLenShort(d.southBedWidthFt) + ')', T.text, 9, 'middle'));
 
     // Individual 55-gal circular barrel CAD symbols along North Wall
     if (state.showBarrels) {
@@ -746,6 +786,103 @@
     setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
   }
 
+  function buildPartsRows(d) {
+    var si = isSI();
+    var fmtArea = function (sqft) {
+      return si ? (sqft * SQFT_TO_SQM).toFixed(1) + ' m²' : Math.round(sqft) + ' sq ft';
+    };
+    var fmtVol = function (cuft) {
+      return si ? (cuft * 0.0283168).toFixed(2) + ' m³' : (cuft / 27).toFixed(2) + ' cu yd';
+    };
+    var hoopMat =
+      state.tier === 'upgraded'
+        ? '1.315" galvanized steel'
+        : state.tier === 'balanced'
+          ? '1" EMT / Schedule 40 PVC'
+          : 'Salvaged conduit / wood ribs';
+    var glazeMat =
+      state.tier === 'upgraded'
+        ? '8 mm twin-wall polycarbonate'
+        : state.tier === 'balanced'
+          ? '6-mil UV greenhouse poly'
+          : 'Reclaimed glazing / poly film';
+
+    var rows = [
+      {
+        item: 'Structural Hoops',
+        qty: d.hoops + ' pcs',
+        spec: fmtLen(d.hoopArcFt) + ' arc · ' + hoopMat,
+        note: 'Spaced ' + fmtLen(state.spacingFt) + ' O.C. (+1 end frame)',
+      },
+      {
+        item: 'Ground Anchors / Sleeves',
+        qty: d.hoops * 2 + ' pcs',
+        spec: fmtLen(3.0) + ' rebar or pipe sleeve',
+        note: '2 per hoop driven along perimeter wall',
+      },
+      {
+        item: 'Ridge & Side Purlins',
+        qty: '3 runs',
+        spec: fmtLen(state.lengthFt) + ' each (' + fmtLen(d.purlinRunsFt) + ' total)',
+        note: 'Includes ridge spine + 2 lateral wind braces',
+      },
+      {
+        item: 'South Glazing Envelope',
+        qty: fmtArea(d.glazingCutSqFt),
+        spec: glazeMat,
+        note: 'Net ' + fmtArea(d.glazingSqFt) + ' + 10% sill/batten wrap offset',
+      },
+      {
+        item: 'Raised Bed Framing',
+        qty: fmtLen(d.bedCurbLinFt),
+        spec: 'Untreated cedar / adobe / salvaged curb (' + fmtLen(d.bedDepthFt) + ' high)',
+        note: fmtLen(d.endClearanceFt) + ' end-wall & ' + fmtLen(d.southClearanceFt) + ' south clearance',
+      },
+      {
+        item: 'Growing Bed Soil / Compost',
+        qty: fmtVol(d.totalSoilCuFt),
+        spec: 'Loam + compost blend (' + fmtLen(d.bedDepthFt) + ' bed depth)',
+        note: 'North: ' + fmtVol(d.northSoilCuFt) + ' · South: ' + fmtVol(d.southSoilCuFt),
+      },
+    ];
+    if (state.showBarrels) {
+      rows.push({
+        item: 'North Thermal Water Barrels',
+        qty: d.barrelCount + ' drums',
+        spec: si ? '208-L black HDPE drums' : '55-gal black HDPE drums',
+        note: fmtLen(d.barrelClearanceFt) + ' north wall offset (' + (si ? Math.round(d.waterGal * GAL_TO_L).toLocaleString() + ' L' : d.waterGal + ' gal') + ')',
+      });
+    }
+    if (state.showAirTube) {
+      rows.push({
+        item: 'Geothermal Earth-Tube Duct',
+        qty: fmtLen(Math.max(4, state.lengthFt - 4)),
+        spec: '4–6" corrugated pipe + 2 risers',
+        note: 'Buried ' + fmtLen(state.trenchFt + 1.5) + ' below grade datum',
+      });
+    }
+    rows.push({
+      item: 'Hardware, Battens & Anchors',
+      qty: '1 kit',
+      spec: 'Wiggle wire / batten tape, purlin clamps, vent latches',
+      note: 'Sized for ' + d.hoops + ' hoop stations',
+    });
+    return rows;
+  }
+
+  function exportPartsCsv() {
+    var d = derived();
+    var rows = buildPartsRows(d);
+    var esc = function (s) {
+      return '"' + String(s).replace(/"/g, '""') + '"';
+    };
+    var lines = ['Item,Qty,Cut_or_Spec,Offset_and_Notes'];
+    rows.forEach(function (r) {
+      lines.push([esc(r.item), esc(r.qty), esc(r.spec), esc(r.note)].join(','));
+    });
+    downloadFile('greenhouse-parts-list-' + (isSI() ? 'si' : 'imperial') + '.csv', lines.join('\n'), 'text/csv');
+  }
+
   function renderMetrics() {
     var d = derived();
     var si = isSI();
@@ -753,6 +890,12 @@
     var glazingM2 = d.glazingSqFt * SQFT_TO_SQM;
     var waterL = Math.round(d.waterGal * GAL_TO_L);
     var kjk = Math.round(d.btuPerDegF * BTUF_TO_KJK);
+    var fmtArea = function (sqft) {
+      return si ? (sqft * SQFT_TO_SQM).toFixed(1) + ' m²' : Math.round(sqft) + ' sq ft';
+    };
+    var fmtVol = function (cuft) {
+      return si ? (cuft * 0.0283168).toFixed(2) + ' m³' : (cuft / 27).toFixed(2) + ' cu yd';
+    };
 
     el('footprintValue').textContent = si ? areaM2.toFixed(1) + ' m²' : Math.round(d.area) + ' sq ft';
     el('hoopsValue').textContent = d.hoops + ' hoops';
@@ -761,16 +904,69 @@
       : d.waterGal + ' gal (' + d.btuPerDegF + ' BTU/°F)';
     el('costValue').textContent = '$' + d.estCost.toLocaleString() + ' (' + d.tierInfo.label + ')';
 
+    var bedBody = el('bedDetailsBody');
+    if (bedBody) {
+      bedBody.textContent = '';
+      [
+        ['North Grow Bed', fmtLen(d.bedLenFt) + ' × ' + fmtLen(d.northBedWidthFt) + ' × ' + fmtLen(d.bedDepthFt), fmtArea(d.northBedArea), fmtVol(d.northSoilCuFt)],
+        ['South Grow Bed', fmtLen(d.bedLenFt) + ' × ' + fmtLen(d.southBedWidthFt) + ' × ' + fmtLen(d.bedDepthFt), fmtArea(d.southBedArea), fmtVol(d.southSoilCuFt)],
+        ['Central Aisle', fmtLen(state.lengthFt - d.wallOffsetFt * 2) + ' × ' + fmtLen(state.aisleFt) + ' × —', fmtArea(d.aisleArea), '—'],
+      ].forEach(function (cols) {
+        var tr = document.createElement('tr');
+        cols.forEach(function (val) {
+          var td = document.createElement('td');
+          td.style.padding = '6px';
+          td.style.borderBottom = '1px solid var(--border)';
+          td.textContent = val;
+          tr.appendChild(td);
+        });
+        bedBody.appendChild(tr);
+      });
+    }
+
+    var offsetList = el('offsetDetailsList');
+    if (offsetList) {
+      offsetList.textContent = '';
+      [
+        'Perimeter wall thickness offset: ' + fmtLen(d.wallOffsetFt) + ' on all 4 sides',
+        'East/West bed end-wall clearance: ' + fmtLen(d.endClearanceFt) + ' each end (door & vent swing)',
+        'North barrel zone offset: ' + fmtLen(d.barrelClearanceFt) + (state.showBarrels ? ' (55-gal/208-L drum row)' : ' (barrels disabled)'),
+        'South glazing sill clearance: ' + fmtLen(d.southClearanceFt),
+        'Glazing overlap & waste factor: +10% over net ' + fmtArea(d.glazingSqFt) + ' → ' + fmtArea(d.glazingCutSqFt) + ' cut sheet',
+        'Earthworks volume: ' + fmtVol(d.trenchCutCuFt) + ' trench cut · ' + fmtVol(d.bermFillCuFt) + ' north berm fill',
+      ].forEach(function (line) {
+        var li = document.createElement('li');
+        li.textContent = line;
+        offsetList.appendChild(li);
+      });
+    }
+
+    var partsBody = el('partsTableBody');
+    if (partsBody) {
+      partsBody.textContent = '';
+      buildPartsRows(d).forEach(function (r) {
+        var tr = document.createElement('tr');
+        [r.item, r.qty, r.spec, r.note].forEach(function (val) {
+          var td = document.createElement('td');
+          td.style.padding = '6px';
+          td.style.borderBottom = '1px solid var(--border)';
+          td.textContent = val;
+          tr.appendChild(td);
+        });
+        partsBody.appendChild(tr);
+      });
+    }
+
     var bom = el('bomList');
     bom.textContent = '';
     [
       'Footprint: ' + fmtLen(state.lengthFt) + ' × ' + fmtLen(state.widthFt) + ' (' + (si ? areaM2.toFixed(1) + ' m²' : Math.round(d.area) + ' sq ft') + ')',
-      'Glazing envelope: ~' + (si ? glazingM2.toFixed(1) + ' m²' : d.glazingSqFt + ' sq ft') + ' (50° south slope)',
+      'Glazing envelope: ~' + (si ? glazingM2.toFixed(1) + ' m²' : d.glazingSqFt + ' sq ft') + ' net / ' + fmtArea(d.glazingCutSqFt) + ' cut sheet (50° south slope)',
       'Hoops & ground anchors: ' + d.hoops + ' hoops / ' + d.hoops * 2 + ' anchors',
       si
         ? 'North thermal mass: ' + d.barrelCount + ' × 208-L barrels (' + waterL.toLocaleString() + ' L)'
         : 'North thermal mass: ' + d.barrelCount + ' × 55-gal barrels (' + d.waterGal + ' gal)',
-      'Grow beds: 2 × ' + fmtLen(d.bedWidth) + ' wide, separated by ' + fmtLen(state.aisleFt) + ' aisle',
+      'Grow beds: North ' + fmtLen(d.northBedWidthFt) + ' · South ' + fmtLen(d.southBedWidthFt) + ' × ' + fmtLen(d.bedLenFt) + ' long, ' + fmtLen(state.aisleFt) + ' aisle',
       'Climate loop: ' + (state.showAirTube ? 'Sub-soil geothermal air tube' : 'Passive roll-up ventilation'),
       'Build profile: ' + d.tierInfo.label + ' — ' + d.tierInfo.desc,
     ].forEach(function (line) {
@@ -842,6 +1038,7 @@
   el('validateStlBtn')?.addEventListener('click', runStlValidation);
   el('exportDxfBtn')?.addEventListener('click', exportDxf);
   el('exportPltBtn')?.addEventListener('click', exportPlt);
+  el('exportPartsCsvBtn')?.addEventListener('click', exportPartsCsv);
   el('printPlotBtn')?.addEventListener('click', function () { window.print(); });
   window.addEventListener('resize', render3D);
   window.addEventListener('sena:theme-change', function () {
