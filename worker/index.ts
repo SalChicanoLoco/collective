@@ -17,6 +17,47 @@ export interface Env {
   CONTACT_PHONE?: string;
 }
 
+const ASK_RATE_LIMIT = 20;
+const ASK_WINDOW_MS = 60_000;
+const askBuckets = new Map<string, { count: number; resetAt: number }>();
+
+function checkAskRateLimit(ip: string): { allowed: boolean; remaining: number; retryAfterSec: number } {
+  const now = Date.now();
+  if (askBuckets.size > 500) {
+    for (const [k, v] of askBuckets) {
+      if (v.resetAt <= now) askBuckets.delete(k);
+    }
+  }
+  const existing = askBuckets.get(ip);
+  if (!existing || existing.resetAt <= now) {
+    askBuckets.set(ip, { count: 1, resetAt: now + ASK_WINDOW_MS });
+    return { allowed: true, remaining: ASK_RATE_LIMIT - 1, retryAfterSec: 0 };
+  }
+  if (existing.count >= ASK_RATE_LIMIT) {
+    return {
+      allowed: false,
+      remaining: 0,
+      retryAfterSec: Math.max(1, Math.ceil((existing.resetAt - now) / 1000)),
+    };
+  }
+  existing.count += 1;
+  return { allowed: true, remaining: ASK_RATE_LIMIT - existing.count, retryAfterSec: 0 };
+}
+
+function requireAdminAuth(request: Request, env: Env): Response | null {
+  if (!env.SUBSTRATE_TOKEN) {
+    return withSecurityHeaders(
+      Response.json({ ok: false, error: 'Fail-closed: SUBSTRATE_TOKEN not configured.' }, { status: 503 }),
+    );
+  }
+  if (request.headers.get('Authorization') !== `Bearer ${env.SUBSTRATE_TOKEN}`) {
+    return withSecurityHeaders(
+      Response.json({ ok: false, error: 'Unauthorized: Bearer token required.' }, { status: 401 }),
+    );
+  }
+  return null;
+}
+
 const COLLECTIVE_SYSTEM_PROMPT = [
   "You are the concise edge concierge for Sena's AI Collective (Sena Colectivo) in Northern New Mexico, founded by Salvador Sena.",
   'Language rule: ALWAYS reply in English if the visitor writes in English. Only reply in Spanish if the visitor writes in Spanish (or if the UI language is "es" and the message is ambiguous). Never switch languages mid-reply.',
@@ -87,17 +128,27 @@ export default {
       );
     }
 
+    if (url.pathname === '/api/admin/overview') {
+      const authErr = requireAdminAuth(request, env);
+      if (authErr) return authErr;
+      return withSecurityHeaders(
+        Response.json({
+          ok: true,
+          siteUrl: env.SITE_URL ?? 'https://senacolectivo.com',
+          timestamp: new Date().toISOString(),
+          substrate: substrateStatus(env),
+          rateLimit: {
+            endpoint: '/api/ask',
+            limitPerMinute: ASK_RATE_LIMIT,
+            activeTrackedIps: askBuckets.size,
+          },
+        }),
+      );
+    }
+
     if (url.pathname === '/api/audit') {
-      if (!env.SUBSTRATE_TOKEN) {
-        return withSecurityHeaders(
-          Response.json({ ok: false, error: 'Fail-closed: SUBSTRATE_TOKEN not configured.' }, { status: 503 }),
-        );
-      }
-      if (request.headers.get('Authorization') !== `Bearer ${env.SUBSTRATE_TOKEN}`) {
-        return withSecurityHeaders(
-          Response.json({ ok: false, error: 'Unauthorized: Bearer token required.' }, { status: 401 }),
-        );
-      }
+      const authErr = requireAdminAuth(request, env);
+      if (authErr) return authErr;
       const target = url.searchParams.get('url') ?? '';
       const result = await auditSite(target);
       return withSecurityHeaders(
@@ -109,6 +160,20 @@ export default {
       if (request.method !== 'POST') {
         return withSecurityHeaders(
           Response.json({ ok: false, error: 'Use POST with JSON { question }.' }, { status: 405 }),
+        );
+      }
+
+      const clientIp =
+        request.headers.get('CF-Connecting-IP') ??
+        request.headers.get('X-Forwarded-For')?.split(',')[0]?.trim() ??
+        'unknown';
+      const rl = checkAskRateLimit(clientIp);
+      if (!rl.allowed) {
+        return withSecurityHeaders(
+          Response.json(
+            { ok: false, error: `Rate limit exceeded. Try again in ${rl.retryAfterSec}s.` },
+            { status: 429, headers: { 'Retry-After': String(rl.retryAfterSec) } },
+          ),
         );
       }
 

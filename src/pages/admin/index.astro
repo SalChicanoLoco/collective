@@ -1,0 +1,94 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PageHero from '../../components/PageHero.astro';
+---
+
+<BaseLayout
+  title="Ops & Management Hub | Sena Colectivo"
+  description="Token-gated Edge AI, Delta Quadrant Substrate, Route Health, and Private Site Audit console."
+  canonical="https://senacolectivo.com/admin/"
+>
+  <Header />
+  <main id="main">
+    <PageHero
+      eyebrowEn="Private Ops Hub · Fail-Closed · Zero-Cookie"
+      eyebrowEs="Centro de Operaciones · Cierre Seguro · Sin Cookies"
+      titleEn="Collective Ops & Edge AI Hub"
+      titleEs="Centro de Operaciones e IA en el Borde"
+      dekEn="Authenticate with SUBSTRATE_TOKEN to inspect Tier 1/2/3 substrate health, run private site audits, check routes, and test inference."
+      dekEs="Autentícate con SUBSTRATE_TOKEN para inspeccionar el sustrato, ejecutar auditorías privadas, verificar rutas y probar inferencia."
+    />
+
+    <section class="section">
+      <div class="wrap">
+        <div class="card">
+          <div class="kicker">Auth Gate · sessionStorage only</div>
+          <form id="adminAuthForm" class="button-row" style="margin-top:0.75rem;">
+            <input
+              id="adminTokenInput"
+              class="field-input field-input--inline"
+              type="password"
+              autocomplete="off"
+              placeholder="Paste SUBSTRATE_TOKEN (Bearer)"
+              required
+            />
+            <button type="submit" class="button button--primary">Connect</button>
+            <button type="button" id="adminLockBtn" class="button">Lock / Clear</button>
+            <button type="button" id="adminRefreshBtn" class="button">Refresh Status</button>
+          </form>
+          <p id="adminAuthStatus" class="note" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="grid grid--4 grid--spaced">
+          <div class="card"><div class="kicker">Tier 1 · Kernel</div><span id="statTier1" class="stat">—</span></div>
+          <div class="card"><div class="kicker">Tier 2 · Workers AI</div><span id="statTier2" class="stat">—</span></div>
+          <div class="card"><div class="kicker">Tier 3 · Custom LM</div><span id="statTier3" class="stat">—</span></div>
+          <div class="card"><div class="kicker">/api/ask Rate Limit</div><span id="statRate" class="stat">—</span></div>
+        </div>
+
+        <div class="grid grid--2 grid--spaced">
+          <div class="card">
+            <div class="kicker">Route Health Check</div>
+            <p class="note">Verifies live HTTP status across core pages and API endpoints.</p>
+            <button type="button" id="runHealthBtn" class="button button--primary">Run Route Health Check</button>
+            <pre id="healthOutput" class="note" style="margin-top:0.75rem;overflow-x:auto;">Not run yet.</pre>
+          </div>
+
+          <div class="card">
+            <div class="kicker">Private Edge Tool Audit (/api/audit)</div>
+            <form id="auditForm" class="button-row" style="margin-top:0.75rem;">
+              <input
+                id="auditUrlInput"
+                class="field-input field-input--inline"
+                type="url"
+                value="https://test.senacolectivo.com"
+                required
+              />
+              <button type="submit" class="button button--primary">Audit URL</button>
+            </form>
+            <pre id="auditOutput" class="note" style="margin-top:0.75rem;overflow-x:auto;">Requires SUBSTRATE_TOKEN.</pre>
+          </div>
+        </div>
+
+        <div class="card grid--spaced">
+          <div class="kicker">Tier 3 Substrate Inference Test (/api/substrate/infer)</div>
+          <form id="inferForm" class="button-row" style="margin-top:0.75rem;">
+            <input
+              id="inferPromptInput"
+              class="field-input field-input--inline"
+              type="text"
+              value="Summarize the 3-tier substrate status in two sentences."
+              required
+            />
+            <button type="submit" class="button button--primary">Run Tier 3 / Fallback</button>
+          </form>
+          <pre id="inferOutput" class="note" style="margin-top:0.75rem;overflow-x:auto;">Requires SUBSTRATE_TOKEN.</pre>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <script src="/assets/js/admin.js" defer></script>
+</BaseLayout>
