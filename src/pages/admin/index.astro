@@ -87,6 +87,38 @@ import PageHero from '../../components/PageHero.astro';
           </form>
           <pre id="inferOutput" class="note" style="margin-top:0.75rem;overflow-x:auto;">Requires SUBSTRATE_TOKEN.</pre>
         </div>
+
+        <div class="grid grid--2 grid--spaced">
+          <div class="card">
+            <div class="kicker"><span class="en">Runtime Ops Config (OPS_KV)</span><span class="es">Configuración en Tiempo Real (OPS_KV)</span></div>
+            <form id="opsConfigForm" style="margin-top:0.75rem;">
+              <label class="field-check">
+                <input id="cfgAskEnabled" type="checkbox" checked />
+                <span class="en">Enable Public Edge AI (/api/ask)</span>
+                <span class="es">Habilitar IA en el Borde (/api/ask)</span>
+              </label>
+              <label for="cfgRateLimit" class="field-label">
+                <span class="en">Rate Limit (requests / min / IP, 1–120)</span>
+                <span class="es">Límite de tasa (solicitudes / min / IP, 1–120)</span>
+              </label>
+              <input id="cfgRateLimit" class="field-input" type="number" min="1" max="120" value="20" required />
+              <label for="cfgFactsAppend" class="field-label">
+                <span class="en">Live Edge AI Facts Append (max 500 chars)</span>
+                <span class="es">Notas verificadas en vivo para IA (máx. 500)</span>
+              </label>
+              <input id="cfgFactsAppend" class="field-input" type="text" maxlength="500" placeholder="Optional verified note appended to system prompt" />
+              <div class="button-row" style="margin-top:0.9rem;">
+                <button type="submit" class="button button--primary"><span class="en">Save Runtime Config</span><span class="es">Guardar Configuración</span></button>
+              </div>
+              <p id="cfgSaveStatus" class="note" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+
+          <div class="card">
+            <div class="kicker"><span class="en">Admin Security Audit Log</span><span class="es">Registro de Auditoría de Seguridad</span></div>
+            <pre id="auditLogOutput" class="note" style="margin-top:0.75rem;overflow-x:auto;">Connect to view OPS_KV audit trail.</pre>
+          </div>
+        </div>
       </div>
     </section>
   </main>

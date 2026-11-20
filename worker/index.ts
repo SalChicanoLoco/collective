@@ -15,6 +15,7 @@ import {
 export interface Env extends AuthEnv {
   ASSETS: Fetcher;
   AI?: Ai;
+  OPS_KV?: KVNamespace;
   CUSTOM_LM_URL?: string;
   CUSTOM_LM_TOKEN?: string;
   SUBSTRATE_TOKEN?: string;
@@ -23,11 +24,69 @@ export interface Env extends AuthEnv {
   CONTACT_PHONE?: string;
 }
 
-const ASK_RATE_LIMIT = 20;
+interface RuntimeOpsConfig {
+  askEnabled: boolean;
+  askRateLimitPerMin: number;
+  edgeFactsAppend: string;
+  updatedAt: string;
+  updatedBy: string;
+}
+
+interface AdminAuditEntry {
+  at: string;
+  actor: string;
+  ipHash: string;
+  action: string;
+  summary: string;
+}
+
+const DEFAULT_OPS_CONFIG: RuntimeOpsConfig = {
+  askEnabled: true,
+  askRateLimitPerMin: 20,
+  edgeFactsAppend: '',
+  updatedAt: 'default',
+  updatedBy: 'system',
+};
+
 const ASK_WINDOW_MS = 60_000;
 const askBuckets = new Map<string, { count: number; resetAt: number }>();
 
-function checkAskRateLimit(ip: string): { allowed: boolean; remaining: number; retryAfterSec: number } {
+const ADMIN_FAIL_LIMIT = 5;
+const ADMIN_FAIL_WINDOW_MS = 5 * 60_000;
+const adminFailBuckets = new Map<string, { count: number; resetAt: number }>();
+
+function getClientIp(request: Request): string {
+  return (
+    request.headers.get('CF-Connecting-IP') ??
+    request.headers.get('X-Forwarded-For')?.split(',')[0]?.trim() ??
+    'unknown'
+  );
+}
+
+async function sha256Hex(text: string): Promise<string> {
+  const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)));
+  return Array.from(digest)
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+async function timingSafeEqualStr(a: string, b: string): Promise<boolean> {
+  const enc = new TextEncoder();
+  const [da, db] = await Promise.all([
+    crypto.subtle.digest('SHA-256', enc.encode(a)),
+    crypto.subtle.digest('SHA-256', enc.encode(b)),
+  ]);
+  const ua = new Uint8Array(da);
+  const ub = new Uint8Array(db);
+  let diff = a.length ^ b.length;
+  for (let i = 0; i < ua.length; i++) diff |= ua[i] ^ ub[i];
+  return diff === 0;
+}
+
+function checkAskRateLimit(
+  ip: string,
+  limitPerMin: number,
+): { allowed: boolean; remaining: number; retryAfterSec: number } {
   const now = Date.now();
   if (askBuckets.size > 500) {
     for (const [k, v] of askBuckets) {
@@ -37,9 +96,9 @@ function checkAskRateLimit(ip: string): { allowed: boolean; remaining: number; r
   const existing = askBuckets.get(ip);
   if (!existing || existing.resetAt <= now) {
     askBuckets.set(ip, { count: 1, resetAt: now + ASK_WINDOW_MS });
-    return { allowed: true, remaining: ASK_RATE_LIMIT - 1, retryAfterSec: 0 };
+    return { allowed: true, remaining: Math.max(0, limitPerMin - 1), retryAfterSec: 0 };
   }
-  if (existing.count >= ASK_RATE_LIMIT) {
+  if (existing.count >= limitPerMin) {
     return {
       allowed: false,
       remaining: 0,
@@ -47,29 +106,142 @@ function checkAskRateLimit(ip: string): { allowed: boolean; remaining: number; r
     };
   }
   existing.count += 1;
-  return { allowed: true, remaining: ASK_RATE_LIMIT - existing.count, retryAfterSec: 0 };
+  return { allowed: true, remaining: Math.max(0, limitPerMin - existing.count), retryAfterSec: 0 };
 }
 
-async function requireAdminAuth(request: Request, env: Env): Promise<Response | null> {
-  const bearer = request.headers.get('Authorization');
-  if (env.SUBSTRATE_TOKEN && bearer === `Bearer ${env.SUBSTRATE_TOKEN}`) {
-    return null;
+function checkAdminLockout(ip: string): { locked: boolean; retryAfterSec: number } {
+  const now = Date.now();
+  const entry = adminFailBuckets.get(ip);
+  if (!entry || entry.resetAt <= now) return { locked: false, retryAfterSec: 0 };
+  if (entry.count >= ADMIN_FAIL_LIMIT) {
+    return { locked: true, retryAfterSec: Math.max(1, Math.ceil((entry.resetAt - now) / 1000)) };
   }
+  return { locked: false, retryAfterSec: 0 };
+}
+
+function recordAdminFailure(ip: string) {
+  const now = Date.now();
+  const entry = adminFailBuckets.get(ip);
+  if (!entry || entry.resetAt <= now) {
+    adminFailBuckets.set(ip, { count: 1, resetAt: now + ADMIN_FAIL_WINDOW_MS });
+  } else {
+    entry.count += 1;
+  }
+}
+
+async function loadOpsConfig(env: Env): Promise<RuntimeOpsConfig> {
+  if (!env.OPS_KV) return DEFAULT_OPS_CONFIG;
+  try {
+    const raw = await env.OPS_KV.get('ops:config');
+    if (!raw) return DEFAULT_OPS_CONFIG;
+    const parsed = JSON.parse(raw) as Partial<RuntimeOpsConfig>;
+    return {
+      askEnabled: parsed.askEnabled !== false,
+      askRateLimitPerMin:
+        typeof parsed.askRateLimitPerMin === 'number' &&
+        parsed.askRateLimitPerMin >= 1 &&
+        parsed.askRateLimitPerMin <= 120
+          ? Math.round(parsed.askRateLimitPerMin)
+          : 20,
+      edgeFactsAppend: typeof parsed.edgeFactsAppend === 'string' ? parsed.edgeFactsAppend.slice(0, 500) : '',
+      updatedAt: typeof parsed.updatedAt === 'string' ? parsed.updatedAt : 'kv',
+      updatedBy: typeof parsed.updatedBy === 'string' ? parsed.updatedBy : 'admin',
+    };
+  } catch {
+    return DEFAULT_OPS_CONFIG;
+  }
+}
+
+async function appendAdminAudit(env: Env, entry: AdminAuditEntry): Promise<void> {
+  if (!env.OPS_KV) return;
+  try {
+    const raw = await env.OPS_KV.get('ops:audit_log');
+    const list: AdminAuditEntry[] = raw ? (JSON.parse(raw) as AdminAuditEntry[]) : [];
+    list.unshift(entry);
+    await env.OPS_KV.put('ops:audit_log', JSON.stringify(list.slice(0, 20)));
+  } catch {
+    // Non-fatal
+  }
+}
+
+async function readAdminAudit(env: Env): Promise<AdminAuditEntry[]> {
+  if (!env.OPS_KV) return [];
+  try {
+    const raw = await env.OPS_KV.get('ops:audit_log');
+    return raw ? (JSON.parse(raw) as AdminAuditEntry[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function noStore(response: Response): Response {
+  const res = withSecurityHeaders(response);
+  res.headers.set('Cache-Control', 'no-store, private');
+  res.headers.set('Pragma', 'no-cache');
+  return res;
+}
+
+async function requireAdminAuth(
+  request: Request,
+  env: Env,
+  url: URL,
+): Promise<{ error: Response | null; actor: string }> {
+  const ip = getClientIp(request);
+  const lock = checkAdminLockout(ip);
+  if (lock.locked) {
+    return {
+      actor: '',
+      error: noStore(
+        Response.json(
+          { ok: false, error: `Too many failed auth attempts. Retry in ${lock.retryAfterSec}s.` },
+          { status: 429, headers: { 'Retry-After': String(lock.retryAfterSec) } },
+        ),
+      ),
+    };
+  }
+
+  const bearer = request.headers.get('Authorization') ?? '';
+  if (env.SUBSTRATE_TOKEN && bearer.startsWith('Bearer ')) {
+    const token = bearer.slice(7);
+    if (await timingSafeEqualStr(token, env.SUBSTRATE_TOKEN)) {
+      adminFailBuckets.delete(ip);
+      return { error: null, actor: 'bearer-token' };
+    }
+  }
+
   const sessionUser = await getSessionUser(request, env);
   if (sessionUser && sessionUser.role === 'admin') {
-    return null;
+    const isMutating = request.method !== 'GET' && request.method !== 'HEAD';
+    const origin = request.headers.get('Origin');
+    if (isMutating && origin && origin !== url.origin) {
+      return {
+        actor: '',
+        error: noStore(Response.json({ ok: false, error: 'CSRF origin mismatch.' }, { status: 403 })),
+      };
+    }
+    adminFailBuckets.delete(ip);
+    return { error: null, actor: sessionUser.email || sessionUser.id };
   }
+
   if (!env.SUBSTRATE_TOKEN && !env.AUTH_SESSION_SECRET) {
-    return withSecurityHeaders(
-      Response.json(
-        { ok: false, error: 'Fail-closed: SUBSTRATE_TOKEN or AUTH_SESSION_SECRET not configured.' },
-        { status: 503 },
+    return {
+      actor: '',
+      error: noStore(
+        Response.json(
+          { ok: false, error: 'Fail-closed: SUBSTRATE_TOKEN or AUTH_SESSION_SECRET not configured.' },
+          { status: 503 },
+        ),
       ),
-    );
+    };
   }
-  return withSecurityHeaders(
-    Response.json({ ok: false, error: 'Unauthorized: Admin session or Bearer token required.' }, { status: 401 }),
-  );
+
+  recordAdminFailure(ip);
+  return {
+    actor: '',
+    error: noStore(
+      Response.json({ ok: false, error: 'Unauthorized: Admin session or Bearer token required.' }, { status: 401 }),
+    ),
+  };
 }
 
 const COLLECTIVE_SYSTEM_PROMPT = [
@@ -145,39 +317,90 @@ export default {
 
     if (url.pathname.startsWith('/api/auth/')) {
       const authRes = await handleAuthRequest(request, url, env);
-      if (authRes) return withSecurityHeaders(authRes);
+      if (authRes) return noStore(authRes);
     }
 
     if (url.pathname === '/api/profile') {
-      return withSecurityHeaders(await handleProfileRequest(request, env));
+      return noStore(await handleProfileRequest(request, env));
     }
 
     if (url.pathname === '/api/admin/overview') {
-      const authErr = await requireAdminAuth(request, env);
-      if (authErr) return authErr;
-      return withSecurityHeaders(
+      const auth = await requireAdminAuth(request, env, url);
+      if (auth.error) return auth.error;
+      const [config, auditLog] = await Promise.all([loadOpsConfig(env), readAdminAudit(env)]);
+      return noStore(
         Response.json({
           ok: true,
           siteUrl: env.SITE_URL ?? 'https://senacolectivo.com',
           timestamp: new Date().toISOString(),
+          actor: auth.actor,
+          kvBound: Boolean(env.OPS_KV),
           substrate: substrateStatus(env),
+          config,
+          auditLog,
           rateLimit: {
             endpoint: '/api/ask',
-            limitPerMinute: ASK_RATE_LIMIT,
+            limitPerMinute: config.askRateLimitPerMin,
             activeTrackedIps: askBuckets.size,
           },
         }),
       );
     }
 
+    if (url.pathname === '/api/admin/config') {
+      const auth = await requireAdminAuth(request, env, url);
+      if (auth.error) return auth.error;
+      if (request.method === 'GET') {
+        return noStore(Response.json({ ok: true, kvBound: Boolean(env.OPS_KV), config: await loadOpsConfig(env) }));
+      }
+      if (request.method === 'PUT') {
+        if (!env.OPS_KV) {
+          return noStore(Response.json({ ok: false, error: 'OPS_KV binding not configured.' }, { status: 503 }));
+        }
+        let body: Record<string, unknown>;
+        try {
+          body = (await request.json()) as Record<string, unknown>;
+        } catch {
+          return noStore(Response.json({ ok: false, error: 'Invalid JSON body.' }, { status: 400 }));
+        }
+        const rate = Number(body.askRateLimitPerMin);
+        if (!Number.isFinite(rate) || rate < 1 || rate > 120) {
+          return noStore(
+            Response.json({ ok: false, error: 'askRateLimitPerMin must be between 1 and 120.' }, { status: 400 }),
+          );
+        }
+        const facts = typeof body.edgeFactsAppend === 'string' ? body.edgeFactsAppend.trim().slice(0, 500) : '';
+        if (facts && hasInjectionSignal(facts)) {
+          return noStore(
+            Response.json({ ok: false, error: 'edgeFactsAppend blocked by Shaman input gate.' }, { status: 403 }),
+          );
+        }
+        const next: RuntimeOpsConfig = {
+          askEnabled: body.askEnabled !== false,
+          askRateLimitPerMin: Math.round(rate),
+          edgeFactsAppend: facts,
+          updatedAt: new Date().toISOString(),
+          updatedBy: auth.actor,
+        };
+        await env.OPS_KV.put('ops:config', JSON.stringify(next));
+        await appendAdminAudit(env, {
+          at: next.updatedAt,
+          actor: auth.actor,
+          ipHash: (await sha256Hex(getClientIp(request))).slice(0, 12),
+          action: 'PUT /api/admin/config',
+          summary: `askEnabled=${next.askEnabled}, rate=${next.askRateLimitPerMin}/min`,
+        });
+        return noStore(Response.json({ ok: true, config: next }));
+      }
+      return noStore(Response.json({ ok: false, error: 'Use GET or PUT.' }, { status: 405 }));
+    }
+
     if (url.pathname === '/api/audit') {
-      const authErr = await requireAdminAuth(request, env);
-      if (authErr) return authErr;
+      const auth = await requireAdminAuth(request, env, url);
+      if (auth.error) return auth.error;
       const target = url.searchParams.get('url') ?? '';
       const result = await auditSite(target);
-      return withSecurityHeaders(
-        Response.json(result, { status: result.ok ? 200 : result.status }),
-      );
+      return noStore(Response.json(result, { status: result.ok ? 200 : result.status }));
     }
 
     if (url.pathname === '/api/ask') {
@@ -187,11 +410,20 @@ export default {
         );
       }
 
-      const clientIp =
-        request.headers.get('CF-Connecting-IP') ??
-        request.headers.get('X-Forwarded-For')?.split(',')[0]?.trim() ??
-        'unknown';
-      const rl = checkAskRateLimit(clientIp);
+      const opsConfig = await loadOpsConfig(env);
+      if (!opsConfig.askEnabled) {
+        return withSecurityHeaders(
+          Response.json({
+            ok: true,
+            mode: 'fallback',
+            answer:
+              'Edge AI chat is paused for maintenance. Reach Salvador Sena directly at salvadorsena@senacolectivo.com or (505) 451-9341.',
+          }),
+        );
+      }
+
+      const clientIp = getClientIp(request);
+      const rl = checkAskRateLimit(clientIp, opsConfig.askRateLimitPerMin);
       if (!rl.allowed) {
         return withSecurityHeaders(
           Response.json(
@@ -262,9 +494,12 @@ export default {
       }
 
       try {
+        const systemPrompt = opsConfig.edgeFactsAppend
+          ? `${COLLECTIVE_SYSTEM_PROMPT}\nAdditional verified notes: ${opsConfig.edgeFactsAppend}\nCurrent UI language: ${lang}.`
+          : `${COLLECTIVE_SYSTEM_PROMPT}\nCurrent UI language: ${lang}.`;
         const aiResult = (await env.AI.run('@cf/meta/llama-3.2-3b-instruct', {
           messages: [
-            { role: 'system', content: `${COLLECTIVE_SYSTEM_PROMPT}\nCurrent UI language: ${lang}.` },
+            { role: 'system', content: systemPrompt },
             ...history,
             { role: 'user', content: question },
           ],

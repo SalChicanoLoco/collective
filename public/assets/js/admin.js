@@ -55,6 +55,17 @@
       if (el('statTier3')) el('statTier3').textContent = tiers.tier3_custom_lm ? (isES() ? 'Conectado' : 'Connected') : (isES() ? 'Sin configurar' : 'Unconfigured');
       var rl = data.rateLimit || {};
       if (el('statRate')) el('statRate').textContent = (rl.limitPerMinute || 20) + '/min (' + (rl.activeTrackedIps || 0) + ' active)';
+      if (data.config) {
+        if (el('cfgAskEnabled')) el('cfgAskEnabled').checked = data.config.askEnabled !== false;
+        if (el('cfgRateLimit')) el('cfgRateLimit').value = String(data.config.askRateLimitPerMin || 20);
+        if (el('cfgFactsAppend')) el('cfgFactsAppend').value = data.config.edgeFactsAppend || '';
+      }
+      if (el('auditLogOutput')) {
+        var logs = data.auditLog || [];
+        el('auditLogOutput').textContent = logs.length
+          ? logs.map(function (l) { return l.at + ' · ' + l.actor + ' (' + l.ipHash + ') · ' + l.action + ' — ' + l.summary; }).join('\n')
+          : 'No config mutations recorded yet.';
+      }
     } catch (_e) {
       if (statusEl) statusEl.textContent = isES() ? 'Error de red al consultar /api/admin/overview.' : 'Network error querying /api/admin/overview.';
     }
@@ -129,6 +140,33 @@
       out.textContent = JSON.stringify(data, null, 2);
     } catch (_e) {
       out.textContent = isES() ? 'Error de red al ejecutar /api/substrate/infer.' : 'Network error running /api/substrate/infer.';
+    }
+  });
+
+  el('opsConfigForm')?.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    var out = el('cfgSaveStatus');
+    if (out) out.textContent = isES() ? 'Guardando en OPS_KV…' : 'Saving to OPS_KV...';
+    try {
+      var headers = Object.assign({ 'Content-Type': 'application/json' }, authHeaders());
+      var res = await fetch('/api/admin/config', {
+        method: 'PUT',
+        headers: headers,
+        body: JSON.stringify({
+          askEnabled: Boolean(el('cfgAskEnabled')?.checked),
+          askRateLimitPerMin: Number(el('cfgRateLimit')?.value || 20),
+          edgeFactsAppend: el('cfgFactsAppend')?.value || '',
+        }),
+      });
+      var data = await res.json();
+      if (!res.ok || !data.ok) {
+        if (out) out.textContent = data.error || 'Save failed (HTTP ' + res.status + ').';
+        return;
+      }
+      if (out) out.textContent = (isES() ? 'Guardado: ' : 'Saved: ') + data.config.updatedAt;
+      refreshOverview();
+    } catch (_e) {
+      if (out) out.textContent = isES() ? 'Error de red al guardar.' : 'Network error saving config.';
     }
   });
 

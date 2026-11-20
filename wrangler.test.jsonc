@@ -19,6 +19,12 @@
   "ai": {
     "binding": "AI"
   },
+  "kv_namespaces": [
+    {
+      "binding": "OPS_KV",
+      "id": "d8d8ed19933446beb4cfd7223789d5f5"
+    }
+  ],
   "vars": {
     "SITE_URL": "https://test.senacolectivo.com",
     "CONTACT_EMAIL": "salvadorsena@senacolectivo.com",
