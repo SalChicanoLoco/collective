@@ -2,6 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import PageHero from '../../components/PageHero.astro';
+import Card from '../../components/Card.astro';
 
 const publications = [
   {
@@ -10,10 +12,10 @@ const publications = [
     titleEn: 'Future Weather EPW Morphing',
     titleEs: 'Transformación de archivos climáticos EPW futuros',
     descEn:
-      'Transparent workflow for future EnergyPlus Weather (EPW) files for building energy simulation (Reolon, Marengo, Picco, DOI: 10.20935/AcadEnergy8325). Includes 6-part web package and 2-page LaTeX PDF.',
+      'Transparent workflow for future EnergyPlus Weather (EPW) files (DOI: 10.20935/AcadEnergy8325). 6-part web package + 2-page LaTeX PDF.',
     descEs:
-      'Flujo transparente para archivos futuros EnergyPlus Weather (EPW) en simulación energética de edificios. Incluye paquete web de 6 partes y PDF LaTeX de 2 páginas.',
-    href: '/publications/future-weather-epw/index.html',
+      'Flujo transparente para archivos futuros EnergyPlus Weather (EPW). Paquete web de 6 partes + PDF LaTeX de 2 páginas.',
+    href: '/publications/future-weather-epw/',
     pdfHref: '/publications/future-weather-epw/future_weather_epw_brief.pdf',
   },
   {
@@ -48,43 +50,38 @@ const publications = [
 >
   <Header />
   <main id="main">
-    <section class="hero">
-      <div class="wrap">
-        <p class="eyebrow en">Publications · Readable, printable, inspectable</p>
-        <p class="eyebrow es">Publicaciones · Legibles, imprimibles, inspeccionables</p>
-        <h1 class="en">Public research archive.</h1>
-        <h1 class="es">Archivo público de investigación.</h1>
-        <p class="dek en">
-          Every package includes primary sources, calculation spines, and plain-language briefs.
-        </p>
-        <p class="dek es">
-          Cada paquete incluye fuentes primarias, ejes de cálculo y resúmenes en lenguaje claro.
-        </p>
-      </div>
-    </section>
+    <PageHero
+      eyebrowEn="Publications · Readable, printable, inspectable"
+      eyebrowEs="Publicaciones · Legibles, imprimibles, inspeccionables"
+      titleEn="Public research archive."
+      titleEs="Archivo público de investigación."
+      dekEn="Every package includes primary sources, calculation spines, and plain-language briefs."
+      dekEs="Cada paquete incluye fuentes primarias, ejes de cálculo y resúmenes en lenguaje claro."
+    />
 
     <section class="section">
       <div class="wrap">
-        <div class="grid grid--spaced">
+        <div class="grid grid--3">
           {publications.map((pub) => (
-            <article class="card">
-              <div class="kicker en">{pub.kickerEn}</div>
-              <div class="kicker es">{pub.kickerEs}</div>
-              <h2 class="en">{pub.titleEn}</h2>
-              <h2 class="es">{pub.titleEs}</h2>
-              <p class="en">{pub.descEn}</p>
-              <p class="es">{pub.descEs}</p>
-              <div class="button-row">
+            <Card
+              kickerEn={pub.kickerEn}
+              kickerEs={pub.kickerEs}
+              titleEn={pub.titleEn}
+              titleEs={pub.titleEs}
+              descEn={pub.descEn}
+              descEs={pub.descEs}
+            >
+              <div slot="footer" class="button-row" style="margin-top:0;">
                 <a class="button button--primary en" href={pub.href}>Open package</a>
                 <a class="button button--primary es" href={pub.href}>Abrir paquete</a>
                 {pub.pdfHref && (
                   <>
-                    <a class="button button--ghost en" href={pub.pdfHref}>Download PDF</a>
-                    <a class="button button--ghost es" href={pub.pdfHref}>Descargar PDF</a>
+                    <a class="button en" href={pub.pdfHref} target="_blank" rel="noopener">PDF</a>
+                    <a class="button es" href={pub.pdfHref} target="_blank" rel="noopener">PDF</a>
                   </>
                 )}
               </div>
-            </article>
+            </Card>
           ))}
         </div>
       </div>

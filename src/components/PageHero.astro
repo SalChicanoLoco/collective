@@ -1,0 +1,42 @@
+---
+interface Props {
+  eyebrowEn: string;
+  eyebrowEs?: string;
+  titleEn: string;
+  titleEs?: string;
+  dekEn: string;
+  dekEs?: string;
+}
+
+const { eyebrowEn, eyebrowEs, titleEn, titleEs, dekEn, dekEs } = Astro.props;
+---
+
+<section class="hero">
+  <div class="wrap">
+    {eyebrowEs ? (
+      <>
+        <p class="eyebrow en">{eyebrowEn}</p>
+        <p class="eyebrow es">{eyebrowEs}</p>
+      </>
+    ) : (
+      <p class="eyebrow">{eyebrowEn}</p>
+    )}
+    {titleEs ? (
+      <>
+        <h1 class="en">{titleEn}</h1>
+        <h1 class="es">{titleEs}</h1>
+      </>
+    ) : (
+      <h1>{titleEn}</h1>
+    )}
+    {dekEs ? (
+      <>
+        <p class="dek en">{dekEn}</p>
+        <p class="dek es">{dekEs}</p>
+      </>
+    ) : (
+      <p class="dek">{dekEn}</p>
+    )}
+    <slot />
+  </div>
+</section>

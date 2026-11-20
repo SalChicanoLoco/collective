@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Card from '../components/Card.astro';
 
 const isMaintenance = import.meta.env.PUBLIC_MAINTENANCE === 'true';
 ---
@@ -93,46 +94,34 @@ const isMaintenance = import.meta.env.PUBLIC_MAINTENANCE === 'true';
           <h2 class="en">Hire the practice</h2>
           <h2 class="es">Contrata la práctica</h2>
           <div class="grid grid--3 grid--spaced">
-            <article class="card">
-              <div class="kicker en">Consulting · Since 2003</div>
-              <div class="kicker es">Consultoría · Desde 2003</div>
-              <h3 class="en">Sena IT &amp; AI Services</h3>
-              <h3 class="es">Servicios de TI e IA de Sena</h3>
-              <p class="en">
-                Linux, networks, and custom AI automation for homes, schools, and small businesses in Northern New Mexico. Discounts for seniors and neighbors; trade welcome.
-              </p>
-              <p class="es">
-                Linux, redes y automatización de IA a medida para hogares, escuelas y negocios del norte de Nuevo México. Descuentos para mayores y vecinos; trueque bienvenido.
-              </p>
-              <span class="stat">Per job</span>
-            </article>
-
-            <a class="card" href="https://merc.senacolectivo.com" rel="noopener">
-              <div class="kicker en">Turnkey Asset · For Sale</div>
-              <div class="kicker es">Activo llave en mano · En venta</div>
-              <h3>Merc Mercado</h3>
-              <p class="en">
-                Live Santa Fe handmade marketplace on Cloudflare Pages: 0% platform take, direct buyer-seller payment, local-first commerce.
-              </p>
-              <p class="es">
-                Mercado local de artesanía para creadores de Santa Fe en Cloudflare Pages: 0% comisión, pago directo entre comprador y vendedor.
-              </p>
-              <span class="stat">$2,500 (floor $1,000)</span>
-            </a>
-
-            <article class="card">
-              <div class="kicker en">Service · Per project</div>
-              <div class="kicker es">Servicio · Por proyecto</div>
-              <h3 class="en">Grant Writing</h3>
-              <h3 class="es">Redacción de Subvenciones</h3>
-              <p class="en">
-                Grant writing for community projects and small organizations. Scope and price agreed before work starts.
-              </p>
-              <p class="es">
-                Redacción de subvenciones para proyectos comunitarios y organizaciones pequeñas. Alcance y precio acordados antes de empezar.
-              </p>
-              <span class="stat">Per project</span>
-            </article>
+            <Card
+              kickerEn="Consulting · Since 2003"
+              kickerEs="Consultoría · Desde 2003"
+              titleEn="Sena IT & AI Services"
+              titleEs="Servicios de TI e IA de Sena"
+              descEn="Linux, networks, and custom AI automation for homes, schools, and small businesses in Northern New Mexico. Discounts for seniors and neighbors; trade welcome."
+              descEs="Linux, redes y automatización de IA a medida para hogares, escuelas y negocios del norte de Nuevo México. Descuentos para mayores y vecinos; trueque bienvenido."
+              stat="Per job"
+            />
+            <Card
+              href="https://merc.senacolectivo.com"
+              external={true}
+              kickerEn="Turnkey Asset · For Sale"
+              kickerEs="Activo llave en mano · En venta"
+              titleEn="Merc Mercado"
+              descEn="Live Santa Fe handmade marketplace on Cloudflare Pages: 0% platform take, direct buyer-seller payment, local-first commerce."
+              descEs="Mercado local de artesanía para creadores de Santa Fe en Cloudflare Pages: 0% comisión, pago directo entre comprador y vendedor."
+              stat="$2,500 (floor $1,000)"
+            />
+            <Card
+              kickerEn="Service · Per project"
+              kickerEs="Servicio · Por proyecto"
+              titleEn="Grant Writing"
+              titleEs="Redacción de Subvenciones"
+              descEn="Grant writing for community projects and small organizations. Scope and price agreed before work starts."
+              descEs="Redacción de subvenciones para proyectos comunitarios y organizaciones pequeñas. Alcance y precio acordados antes de empezar."
+              stat="Per project"
+            />
           </div>
         </div>
       </section>
@@ -144,51 +133,58 @@ const isMaintenance = import.meta.env.PUBLIC_MAINTENANCE === 'true';
           <h2 class="en">Live platforms &amp; research</h2>
           <h2 class="es">Plataformas en vivo e investigación</h2>
           <div class="grid grid--3 grid--spaced">
-            <a class="card" href="/commons-greenhouse-calculator-secure/">
-              <div class="kicker en">CAD Studio · 3D .STL &amp; .DXF</div>
-              <div class="kicker es">Estudio CAD · .STL 3D y .DXF</div>
-              <h3>Commons Greenhouse CAD</h3>
-              <p class="en">Interactive 3D orbitable greenhouse model, 2D plan/section blueprints, and 1:50 3D-printable .STL export.</p>
-              <p class="es">Modelo 3D orbital, planos 2D de planta/sección y exportación .STL imprimible en 3D (1:50).</p>
-            </a>
-            <a class="card" href="/site-audit/">
-              <div class="kicker en">Edge Audit · Worker API</div>
-              <div class="kicker es">Auditoría de borde · API Worker</div>
-              <h3 class="en">Site Audit (/api/audit)</h3>
-              <h3 class="es">Auditoría del sitio (/api/audit)</h3>
-              <p class="en">Live HTTPS security header, HTTP status, and external script/stylesheet triage.</p>
-              <p class="es">Diagnóstico en vivo de encabezados HTTPS, estado HTTP y activos externos.</p>
-            </a>
-            <a class="card" href="/publications/">
-              <div class="kicker en">Publications · PDF &amp; Web</div>
-              <div class="kicker es">Publicaciones · PDF y Web</div>
-              <h3 class="en">Publication Archive</h3>
-              <h3 class="es">Archivo de Publicaciones</h3>
-              <p class="en">Future Weather EPW Morphing, AI Data Centers in Arid Regions, and The People's Greenhouse.</p>
-              <p class="es">Transformación EPW, Centros de Datos de IA en Regiones Áridas e Invernadero del Pueblo.</p>
-            </a>
-            <a class="card" href="/biblioteca/">
-              <div class="kicker en">Archive · Bilingual</div>
-              <div class="kicker es">Archivo · Bilingüe</div>
-              <h3>La Biblioteca</h3>
-              <p class="en">Six-volume civic, land, water, and energy archive indexed with active publications.</p>
-              <p class="es">Archivo de seis volúmenes sobre lo cívico, la tierra, el agua y la energía.</p>
-            </a>
-            <a class="card" href="/projects/">
-              <div class="kicker en">Portfolio</div>
-              <div class="kicker es">Portafolio</div>
-              <h3 class="en">Projects Index</h3>
-              <h3 class="es">Índice de Proyectos</h3>
-              <p class="en">Marketplaces, civic sites, local Metal &amp; Cloud TPU workflows, and resilience systems.</p>
-              <p class="es">Mercados, sitios cívicos, flujos en Metal local y Cloud TPU, y sistemas de resiliencia.</p>
-            </a>
-            <a class="card" href="https://newmexicosocialists.org" rel="noopener">
-              <div class="kicker en">Civic Publishing · Live</div>
-              <div class="kicker es">Publicación Cívica · En vivo</div>
-              <h3>NewMexicoSocialists.org</h3>
-              <p class="en">Public information architecture for organizing, publishing, and community education.</p>
-              <p class="es">Arquitectura de información pública para organizar, publicar y educar a la comunidad.</p>
-            </a>
+            <Card
+              href="/commons-greenhouse-calculator-secure/"
+              kickerEn="CAD Studio · 3D .STL & .DXF"
+              kickerEs="Estudio CAD · .STL 3D y .DXF"
+              titleEn="Commons Greenhouse CAD"
+              descEn="Interactive 3D orbitable greenhouse model, 2D plan/section blueprints, and 1:50 3D-printable .STL export."
+              descEs="Modelo 3D orbital, planos 2D de planta/sección y exportación .STL imprimible en 3D (1:50)."
+            />
+            <Card
+              href="/site-audit/"
+              kickerEn="Edge Audit · Worker API"
+              kickerEs="Auditoría de borde · API Worker"
+              titleEn="Site Audit (/api/audit)"
+              titleEs="Auditoría del sitio (/api/audit)"
+              descEn="Live HTTPS security header, HTTP status, and external script/stylesheet triage."
+              descEs="Diagnóstico en vivo de encabezados HTTPS, estado HTTP y activos externos."
+            />
+            <Card
+              href="/publications/"
+              kickerEn="Publications · PDF & Web"
+              kickerEs="Publicaciones · PDF y Web"
+              titleEn="Publication Archive"
+              titleEs="Archivo de Publicaciones"
+              descEn="Future Weather EPW Morphing, AI Data Centers in Arid Regions, and The People's Greenhouse."
+              descEs="Transformación EPW, Centros de Datos de IA en Regiones Áridas e Invernadero del Pueblo."
+            />
+            <Card
+              href="/biblioteca/"
+              kickerEn="Archive · Bilingual"
+              kickerEs="Archivo · Bilingüe"
+              titleEn="La Biblioteca"
+              descEn="Six-volume civic, land, water, and energy archive indexed with active publications."
+              descEs="Archivo de seis volúmenes sobre lo cívico, la tierra, el agua y la energía."
+            />
+            <Card
+              href="/projects/"
+              kickerEn="Portfolio"
+              kickerEs="Portafolio"
+              titleEn="Projects Index"
+              titleEs="Índice de Proyectos"
+              descEn="Marketplaces, civic sites, local Metal & Cloud TPU workflows, and resilience systems."
+              descEs="Mercados, sitios cívicos, flujos en Metal local y Cloud TPU, y sistemas de resiliencia."
+            />
+            <Card
+              href="https://newmexicosocialists.org"
+              external={true}
+              kickerEn="Civic Publishing · Live"
+              kickerEs="Publicación Cívica · En vivo"
+              titleEn="NewMexicoSocialists.org"
+              descEn="Public information architecture for organizing, publishing, and community education."
+              descEs="Arquitectura de información pública para organizar, publicar y educar a la comunidad."
+            />
           </div>
         </div>
       </section>

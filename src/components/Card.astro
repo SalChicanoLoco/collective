@@ -1,0 +1,99 @@
+---
+interface Props {
+  href?: string;
+  external?: boolean;
+  kickerEn: string;
+  kickerEs?: string;
+  titleEn: string;
+  titleEs?: string;
+  descEn?: string;
+  descEs?: string;
+  stat?: string;
+}
+
+const {
+  href,
+  external = false,
+  kickerEn,
+  kickerEs,
+  titleEn,
+  titleEs,
+  descEn,
+  descEs,
+  stat,
+} = Astro.props;
+---
+
+{href ? (
+  <a class="card" href={href} rel={external ? 'noopener' : undefined}>
+    <div class="card__top">
+      {kickerEs ? (
+        <>
+          <div class="kicker en">{kickerEn}</div>
+          <div class="kicker es">{kickerEs}</div>
+        </>
+      ) : (
+        <div class="kicker">{kickerEn}</div>
+      )}
+      {titleEs ? (
+        <>
+          <h3 class="en">{titleEn}</h3>
+          <h3 class="es">{titleEs}</h3>
+        </>
+      ) : (
+        <h3>{titleEn}</h3>
+      )}
+      {descEn &&
+        (descEs ? (
+          <>
+            <p class="en">{descEn}</p>
+            <p class="es">{descEs}</p>
+          </>
+        ) : (
+          <p>{descEn}</p>
+        ))}
+    </div>
+    {(stat || Astro.slots.has('footer')) && (
+      <div class="card__foot">
+        {stat && <span class="stat">{stat}</span>}
+        <slot name="footer" />
+      </div>
+    )}
+  </a>
+) : (
+  <article class="card">
+    <div class="card__top">
+      {kickerEs ? (
+        <>
+          <div class="kicker en">{kickerEn}</div>
+          <div class="kicker es">{kickerEs}</div>
+        </>
+      ) : (
+        <div class="kicker">{kickerEn}</div>
+      )}
+      {titleEs ? (
+        <>
+          <h3 class="en">{titleEn}</h3>
+          <h3 class="es">{titleEs}</h3>
+        </>
+      ) : (
+        <h3>{titleEn}</h3>
+      )}
+      {descEn &&
+        (descEs ? (
+          <>
+            <p class="en">{descEn}</p>
+            <p class="es">{descEs}</p>
+          </>
+        ) : (
+          <p>{descEn}</p>
+        ))}
+    </div>
+    {(stat || Astro.slots.has('footer')) && (
+      <div class="card__foot">
+        {stat && <span class="stat">{stat}</span>}
+        <slot name="footer" />
+      </div>
+    )}
+  </article>
+)}

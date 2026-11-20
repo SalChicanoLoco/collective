@@ -2,6 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import PageHero from '../../components/PageHero.astro';
+import Card from '../../components/Card.astro';
 
 const tools = [
   {
@@ -14,13 +16,13 @@ const tools = [
     href: '/site-audit/',
   },
   {
-    kickerEn: 'Calculator · Separate lane',
-    kickerEs: 'Calculadora · Línea aparte',
-    titleEn: 'Commons Greenhouse Calculator',
-    titleEs: 'Calculadora de invernadero Commons',
-    descEn: 'Passive solar, aquaponics, thermal mass, and high-desert resilience planning.',
-    descEs: 'Energía solar pasiva, acuaponía, masa térmica y planificación de resiliencia en el desierto alto.',
-    href: '/commons-greenhouse-calculator-secure/index.html',
+    kickerEn: 'CAD Studio · 3D .STL & .DXF',
+    kickerEs: 'Estudio CAD · .STL 3D y .DXF',
+    titleEn: 'Commons Greenhouse CAD',
+    titleEs: 'CAD de Invernadero Commons',
+    descEn: '3D orbitable model, 2D plan and section blueprints, 1:50 .STL 3D-print export, and 2D .DXF export.',
+    descEs: 'Modelo 3D orbital, planos 2D de planta y sección, exportación .STL 3D (1:50) y .DXF 2D.',
+    href: '/commons-greenhouse-calculator-secure/',
   },
   {
     kickerEn: 'Blueprints · Separate lane',
@@ -34,7 +36,7 @@ const tools = [
   {
     kickerEn: 'Archive · Bilingual',
     kickerEs: 'Archivo · Bilingüe',
-    title: 'La Biblioteca',
+    titleEn: 'La Biblioteca',
     descEn: 'Six-volume civic research archive indexed alongside active publication packages.',
     descEs: 'Archivo de investigación cívica de seis volúmenes indexado junto con publicaciones activas.',
     href: '/biblioteca/',
@@ -44,48 +46,33 @@ const tools = [
 
 <BaseLayout
   title="Tools | Sena's AI Collective"
-  description="Sena Colectivo tools: edge site audits, calculators, civic infrastructure utilities, and bilingual archives."
+  description="Sena Colectivo tools: edge site audits, 3D CAD greenhouse configurator, civic infrastructure utilities, and bilingual archives."
   canonical="https://senacolectivo.com/tools/"
 >
   <Header />
   <main id="main">
-    <section class="hero">
-      <div class="wrap">
-        <p class="eyebrow en">Calculators · audits · utilities</p>
-        <p class="eyebrow es">Calculadoras · auditorías · utilidades</p>
-        <h1 class="en">Tools that make the research operational.</h1>
-        <h1 class="es">Herramientas que vuelven operativa la investigación.</h1>
-        <p class="dek en">
-          Repeatable workflows built on the edge: live header audits, public calculators, and bilingual research archives.
-        </p>
-        <p class="dek es">
-          Flujos repetibles construidos en el borde: auditorías en vivo, calculadoras públicas y archivos de investigación bilingües.
-        </p>
-      </div>
-    </section>
+    <PageHero
+      eyebrowEn="Calculators · CAD · audits · utilities"
+      eyebrowEs="Calculadoras · CAD · auditorías · utilidades"
+      titleEn="Tools that make the research operational."
+      titleEs="Herramientas que vuelven operativa la investigación."
+      dekEn="Repeatable workflows built on the edge: live header audits, 3D-printable CAD tools, and bilingual research archives."
+      dekEs="Flujos repetibles construidos en el borde: auditorías en vivo, herramientas CAD imprimibles en 3D y archivos bilingües."
+    />
 
     <section class="section">
       <div class="wrap">
-        <div class="eyebrow en">Active tools</div>
-        <div class="eyebrow es">Herramientas activas</div>
-        <h2 class="en">Tool index</h2>
-        <h2 class="es">Índice de herramientas</h2>
-        <div class="grid grid--spaced">
+        <div class="grid grid--2">
           {tools.map((t) => (
-            <a class="card" href={t.href}>
-              <div class="kicker en">{t.kickerEn}</div>
-              <div class="kicker es">{t.kickerEs}</div>
-              {t.title ? (
-                <h3>{t.title}</h3>
-              ) : (
-                <>
-                  <h3 class="en">{t.titleEn}</h3>
-                  <h3 class="es">{t.titleEs}</h3>
-                </>
-              )}
-              <p class="en">{t.descEn}</p>
-              <p class="es">{t.descEs}</p>
-            </a>
+            <Card
+              href={t.href}
+              kickerEn={t.kickerEn}
+              kickerEs={t.kickerEs}
+              titleEn={t.titleEn}
+              titleEs={t.titleEs}
+              descEn={t.descEn}
+              descEs={t.descEs}
+            />
           ))}
         </div>
       </div>

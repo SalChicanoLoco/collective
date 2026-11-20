@@ -231,6 +231,9 @@ h3 {
 .card {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  height: 100%;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -239,6 +242,8 @@ h3 {
   text-decoration: none;
   transition: border-color 0.15s, transform 0.15s;
 }
+.card__top { display: flex; flex-direction: column; gap: 6px; }
+.card__foot { margin-top: auto; padding-top: 8px; border-top: 1px solid var(--border); }
 a.card:hover { border-color: var(--accent); transform: translateY(-1px); }
 .card h2, .card h3 { color: var(--text); }
 a.card:hover h2, a.card:hover h3 { color: var(--accent); }

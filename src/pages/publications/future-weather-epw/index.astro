@@ -2,6 +2,8 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
+import PageHero from '../../../components/PageHero.astro';
+import Card from '../../../components/Card.astro';
 
 const editions = [
   {
@@ -38,35 +40,28 @@ const editions = [
 >
   <Header />
   <main id="main">
-    <section class="hero">
-      <div class="wrap">
-        <p class="eyebrow">Peer-Reviewed Paper Ingest · Academia Green Energy (2026)</p>
-        <h1>Future Weather EPW Morphing for Building Energy Simulation</h1>
-        <p class="dek">
-          A transparent, location-agnostic workflow to generate future EnergyPlus Weather files by morphing baseline TMY datasets with Global Climate Model anomalies.
-        </p>
-        <p class="note">
-          Authors: Mattia Reolon, Marco Marengo, Marco Picco · DOI: 10.20935/AcadEnergy8325 · Archived by Salvador Sena
-        </p>
-        <div class="button-row">
-          <a class="button button--primary" href="/publications/future-weather-epw/future_weather_epw_brief.pdf" target="_blank" rel="noopener">Download LaTeX PDF</a>
-          <a class="button button--ghost" href="/publications/future-weather-epw/sources.html">Sources &amp; BibTeX</a>
-          <a class="button button--ghost" href="/publications/">All Publications</a>
-        </div>
+    <PageHero
+      eyebrowEn="Peer-Reviewed Paper Ingest · Academia Green Energy (2026)"
+      titleEn="Future Weather EPW Morphing for Building Energy Simulation"
+      dekEn="A transparent, location-agnostic workflow to generate future EnergyPlus Weather files by morphing baseline TMY datasets with Global Climate Model anomalies."
+    >
+      <p class="note">
+        Authors: Mattia Reolon, Marco Marengo, Marco Picco · DOI: 10.20935/AcadEnergy8325 · Archived by Salvador Sena
+      </p>
+      <div class="button-row">
+        <a class="button button--primary" href="/publications/future-weather-epw/future_weather_epw_brief.pdf" target="_blank" rel="noopener">Download LaTeX PDF</a>
+        <a class="button" href="/publications/future-weather-epw/sources.html">Sources &amp; BibTeX</a>
+        <a class="button" href="/publications/">All Publications</a>
       </div>
-    </section>
+    </PageHero>
 
     <section class="section">
       <div class="wrap">
-        <div class="eyebrow">6-Part Publication Package</div>
+        <p class="eyebrow">6-Part Publication Package</p>
         <h2>Why static weather files compromise building design</h2>
-        <div class="grid grid--spaced">
+        <div class="grid grid--2 grid--spaced">
           {editions.map((ed) => (
-            <a class="card" href={ed.href}>
-              <div class="kicker">{ed.kicker}</div>
-              <h3>{ed.title}</h3>
-              <p>{ed.desc}</p>
-            </a>
+            <Card href={ed.href} kickerEn={ed.kicker} titleEn={ed.title} descEn={ed.desc} />
           ))}
         </div>
       </div>
