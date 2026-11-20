@@ -1,4 +1,6 @@
 ---
+import '../styles/global.css';
+
 interface Props {
   title?: string;
   description?: string;
@@ -7,7 +9,7 @@ interface Props {
 
 const {
   title = "Sena's AI Collective | AI Systems, Civic Tech, and Bilingual Publication Infrastructure",
-  description = "Sena's AI Collective, also known as Sena Colectivo, builds AI systems, bilingual publication infrastructure, civic technology, local marketplaces, research workflows, and Cloudflare-ready web platforms from New Mexico.",
+  description = "Sena's AI Collective (Sena Colectivo) builds AI systems, bilingual publication infrastructure, civic technology, local marketplaces, and Cloudflare-ready platforms from New Mexico.",
   canonical = 'https://senacolectivo.com/',
 } = Astro.props;
 
@@ -19,19 +21,8 @@ const jsonLd = {
   url: 'https://senacolectivo.com/',
   email: 'salvadorsena@senacolectivo.com',
   telephone: '+1-505-451-9341',
-  description:
-    'AI systems architecture, bilingual publication infrastructure, civic technology, local marketplaces, custom AI workflows, and Cloudflare-ready web platforms from New Mexico.',
   areaServed: 'New Mexico',
   founder: { '@type': 'Person', name: 'Salvador Sena' },
-  knowsAbout: [
-    'AI systems architecture',
-    'civic technology',
-    'bilingual publications',
-    'Cloudflare deployment',
-    'local marketplaces',
-    'research workflows',
-    'custom AI tools',
-  ],
 };
 ---
 
@@ -44,16 +35,7 @@ const jsonLd = {
   <meta name="description" content={description} />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href={canonical} />
-  <meta property="og:title" content="Sena's AI Collective | Sena Colectivo" />
-  <meta
-    property="og:description"
-    content="AI systems, civic technology, bilingual publication infrastructure, local marketplaces, and research workflows rooted in New Mexico."
-  />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content={canonical} />
-  <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/assets/css/site.css" />
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </head>
 <body class="lang-en">

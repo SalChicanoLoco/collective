@@ -1,5 +1,6 @@
 ---
 const isMaintenance = import.meta.env.PUBLIC_MAINTENANCE === 'true';
+const currentPath = Astro.url.pathname;
 
 const navItems = isMaintenance
   ? [
@@ -8,21 +9,19 @@ const navItems = isMaintenance
       { href: 'https://merc.senacolectivo.com', en: 'Merc Mercado', es: 'Merc Mercado' },
     ]
   : [
-      { href: '/#services', en: 'Services', es: 'Servicios' },
-      { href: '/#playground', en: 'Playground', es: 'Proyectos' },
-      { href: '/#proof', en: 'Proof', es: 'Prueba' },
+      { href: '/', en: 'Home', es: 'Inicio' },
       { href: '/publications/', en: 'Publications', es: 'Publicaciones' },
-      { href: '/projects/', en: 'Projects', es: 'Portafolio' },
+      { href: '/projects/', en: 'Projects', es: 'Proyectos' },
       { href: '/tools/', en: 'Tools', es: 'Herramientas' },
-      { href: '/biblioteca/', en: 'La Biblioteca', es: 'La Biblioteca' },
+      { href: '/biblioteca/', en: 'Biblioteca', es: 'Biblioteca' },
       { href: '/site-audit/', en: 'Site Audit', es: 'Auditoría' },
-      { href: '/#contact', en: 'Contact', es: 'Contacto' },
+      { href: '/commons-greenhouse-calculator-secure/', en: 'Greenhouse CAD', es: 'CAD Invernadero' },
     ];
 ---
 
 <header class="site-masthead">
   <div class="site-masthead__inner">
-    <div>
+    <div class="brand-group">
       <a class="brand" href="/">Sena's AI Collective</a>
       <p class="brand-sub">Sena Colectivo · New Mexico</p>
     </div>
@@ -30,7 +29,11 @@ const navItems = isMaintenance
       <ul class="nav-list">
         {navItems.map((item) => (
           <li>
-            <a href={item.href}>
+            <a
+              href={item.href}
+              aria-current={currentPath === item.href ? 'page' : undefined}
+              rel={item.href.startsWith('http') ? 'noopener' : undefined}
+            >
               {item.en === item.es ? (
                 item.en
               ) : (

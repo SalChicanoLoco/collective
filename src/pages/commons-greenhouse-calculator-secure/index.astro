@@ -13,27 +13,27 @@ import Footer from '../../components/Footer.astro';
   <main id="main">
     <section class="hero">
       <div class="wrap">
-        <p class="eyebrow en">CAD · 3D Printable .STL · 2D .DXF · Thermal Mass</p>
-        <p class="eyebrow es">CAD · .STL Imprimible 3D · .DXF 2D · Masa Térmica</p>
-        <h1 class="en">Commons Greenhouse CAD Studio.</h1>
-        <h1 class="es">Estudio CAD de Invernadero Commons.</h1>
+        <p class="eyebrow en">CAD Workstation · 3D Printable .STL · 2D .DXF</p>
+        <p class="eyebrow es">Estación CAD · .STL Imprimible 3D · .DXF 2D</p>
+        <h1 class="en">Commons Greenhouse CAD Studio</h1>
+        <h1 class="es">Estudio CAD de Invernadero Commons</h1>
         <p class="dek en">
-          Configure length, width, berm, trench, and thermal mass. Orbit the 3D model, inspect 2D plan and section blueprints, or export a 1:50 3D-printable .STL and 2D .DXF.
+          Configure dimensions, earth berm, trench depth, and thermal mass. Orbit the 3D model, inspect 2D blueprints, or export a 1:50 3D-printable .STL and 2D .DXF.
         </p>
         <p class="dek es">
-          Configura largo, ancho, berma, trinchera y masa térmica. Orbita el modelo 3D, inspecciona planos 2D o exporta un .STL imprimible en 3D (1:50) y un .DXF 2D.
+          Configura dimensiones, berma de tierra, trinchera y masa térmica. Orbita el modelo 3D, inspecciona planos 2D o exporta .STL (1:50) y .DXF 2D.
         </p>
         <div class="button-row">
           <button type="button" id="exportStlBtn" class="button button--primary">Export 3D Printable .STL (1:50)</button>
-          <button type="button" id="exportDxfBtn" class="button button--ghost">Export 2D CAD .DXF</button>
-          <button type="button" id="resetOrbitBtn" class="button button--ghost">Reset 3D View</button>
+          <button type="button" id="exportDxfBtn" class="button">Export 2D CAD .DXF</button>
+          <button type="button" id="resetOrbitBtn" class="button">Reset 3D View</button>
         </div>
       </div>
     </section>
 
     <section class="section">
-      <div class="wrap">
-        <div id="cadControls" class="grid grid--spaced">
+      <div class="wrap cad-studio">
+        <aside id="cadControls" class="cad-sidebar">
           <div class="card">
             <div class="kicker">Dimensions (ft)</div>
             <label for="lengthFt" class="field-label">Length X (12–96 ft)</label>
@@ -72,31 +72,27 @@ import Footer from '../../components/Footer.astro';
               <input id="wireframeMode" type="checkbox" /> Wireframe CAD Mode
             </label>
           </div>
-        </div>
+        </aside>
 
-        <div class="grid grid--spaced">
-          <div class="card"><div class="kicker">Footprint</div><div id="footprintValue" class="stat">—</div></div>
-          <div class="card"><div class="kicker">Structure</div><div id="hoopsValue" class="stat">—</div></div>
-          <div class="card"><div class="kicker">Thermal Mass</div><div id="thermalValue" class="stat">—</div></div>
-          <div class="card"><div class="kicker">Estimated Cost</div><div id="costValue" class="stat">—</div></div>
-        </div>
-      </div>
-    </section>
+        <div class="cad-main">
+          <div class="cad-frame">
+            <canvas id="cadCanvas" class="cad-canvas"></canvas>
+          </div>
 
-    <section class="section">
-      <div class="wrap">
-        <div class="eyebrow">Interactive 3D CAD Viewport</div>
-        <h2>3D Structural Model (Drag to Orbit · Scroll to Zoom)</h2>
-        <div class="card cad-frame">
-          <canvas id="cadCanvas" class="cad-canvas"></canvas>
+          <div class="grid grid--4">
+            <div class="card"><div class="kicker">Footprint</div><span id="footprintValue" class="stat">—</span></div>
+            <div class="card"><div class="kicker">Structure</div><span id="hoopsValue" class="stat">—</span></div>
+            <div class="card"><div class="kicker">Thermal Mass</div><span id="thermalValue" class="stat">—</span></div>
+            <div class="card"><div class="kicker">Estimated Cost</div><span id="costValue" class="stat">—</span></div>
+          </div>
         </div>
       </div>
     </section>
 
     <section class="section">
       <div class="wrap">
-        <div class="eyebrow">2D CAD Blueprints</div>
-        <h2>Plan &amp; Cross-Section</h2>
+        <div class="eyebrow">2D CAD Blueprints &amp; Specifications</div>
+        <h2>Plan, Cross-Section &amp; Bill of Materials</h2>
         <div class="grid grid--2 grid--spaced">
           <div class="card">
             <div class="kicker">Plan View (Length = X, Width = Y)</div>
@@ -107,14 +103,8 @@ import Footer from '../../components/Footer.astro';
             <svg id="sectionSvg" class="cad-svg"></svg>
           </div>
         </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="wrap">
-        <div class="eyebrow">Bill of Materials</div>
-        <h2>Derived Specifications</h2>
-        <div class="card">
+        <div class="card grid--spaced">
+          <div class="kicker">Derived Bill of Materials</div>
           <ul id="bomList"></ul>
         </div>
       </div>
