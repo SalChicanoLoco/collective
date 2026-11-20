@@ -1,3 +1,39 @@
+---
+const isHome = Astro.url.pathname === '/';
+const isMaintenance = import.meta.env.PUBLIC_MAINTENANCE === 'true';
+---
+
+{!isHome && !isMaintenance && (
+  <section class="edge-mini" aria-label="Edge AI Quick Ask">
+    <div class="wrap">
+      <div class="kicker">
+        <span class="en">Edge AI · Ask anywhere (Workers AI)</span>
+        <span class="es">IA en el borde · Pregunta desde cualquier página</span>
+      </div>
+      <form id="edgeMiniForm" class="edge-mini__bar" style="margin-top:8px;">
+        <input
+          id="edgeMiniInput"
+          class="field-input field-input--inline"
+          type="text"
+          maxlength="300"
+          placeholder="Ask about CAD, SI units, consulting, or Merc Mercado..."
+          required
+        />
+        <button type="submit" class="button button--primary">
+          <span class="en">Ask Edge AI</span>
+          <span class="es">Preguntar</span>
+        </button>
+      </form>
+      <div class="edge-mini__chips">
+        <button type="button" class="edge-mini__chip" data-q="What consulting services and pricing do you offer?">Services &amp; pricing</button>
+        <button type="button" class="edge-mini__chip" data-q="Tell me about Merc Mercado.">Merc Mercado</button>
+        <button type="button" class="edge-mini__chip" data-q="What tools and publications are live on this site?">Tools &amp; publications</button>
+      </div>
+      <p id="edgeMiniOut" class="note" role="status" aria-live="polite" hidden></p>
+    </div>
+  </section>
+)}
+
 <footer class="site-footer">
   <div class="wrap site-footer__inner">
     <p class="en">Sena's AI Collective / Sena Colectivo · Northern New Mexico</p>
@@ -7,14 +43,14 @@
       {' · '}
       <a href="tel:+15054519341">(505) 451-9341</a>
     </p>
-    <p class="en site-footer__links">
+    <p class="site-footer__links en">
       <a href="/colophon/#privacy">Privacy</a>
       {' · '}
       <a href="/colophon/#accessibility">Accessibility</a>
       {' · '}
       <a href="/colophon/#colophon">Colophon</a>
     </p>
-    <p class="es site-footer__links">
+    <p class="site-footer__links es">
       <a href="/colophon/#privacy">Privacidad</a>
       {' · '}
       <a href="/colophon/#accessibility">Accesibilidad</a>
@@ -23,3 +59,4 @@
     </p>
   </div>
 </footer>
+{!isHome && !isMaintenance && <script src="/assets/js/edge-ask-mini.js" defer></script>}
