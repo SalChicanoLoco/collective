@@ -1,0 +1,85 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import PageHero from '../../../components/PageHero.astro';
+---
+
+<BaseLayout
+  title="RAIS Flow Field Visualizer | Sena's AI Collective"
+  description="Real-time 2D dynamic vortex street, wing wake, and internal gravity wave visualizer with differential lift and drag oscilloscopes."
+  canonical="https://senacolectivo.com/tools/flow-visualizer/"
+>
+  <Header />
+  <main id="main">
+    <PageHero
+      eyebrowEn="Physics Tool · 2D Vector Quiver & Oscilloscope"
+      eyebrowEs="Herramienta Física · Campo Vectorial 2D y Osciloscopio"
+      titleEn="RAIS Flow Field Visualizer"
+      titleEs="Visualizador de Flujo RAIS"
+      dekEn="Interactive Von Kármán vortex street, wing wake, and atmospheric internal gravity wave (cₚ ⊥ c_g) simulator with dual-channel EM pickup telemetry."
+      dekEs="Simulador interactivo de calles de vórtices de Von Kármán, estelas alares y ondas gravitacionales internas (cₚ ⊥ c_g) con telemetría de doble canal."
+    />
+
+    <section class="section">
+      <div class="wrap cad-studio">
+        <aside class="cad-sidebar">
+          <div class="card">
+            <div class="kicker">Flow Parameters</div>
+            <label for="slider-u" class="field-label">
+              Flow Speed (U∞): <span id="val-u">25.0 m/s</span>
+            </label>
+            <input id="slider-u" class="field-input" type="range" min="2" max="50" step="0.5" value="25" />
+
+            <label for="slider-gamma" class="field-label">
+              Vortex Strength (Γ): <span id="val-gamma">1.8 m²/s</span>
+            </label>
+            <input id="slider-gamma" class="field-input" type="range" min="0.2" max="4.0" step="0.1" value="1.8" />
+
+            <label for="slider-grid" class="field-label">
+              Grid Resolution: <span id="val-grid">24 × 14</span>
+            </label>
+            <input id="slider-grid" class="field-input" type="range" min="12" max="36" step="2" value="24" />
+          </div>
+
+          <div class="card">
+            <div class="kicker">Flow Regime Presets</div>
+            <div class="button-row" style="flex-direction:column;align-items:stretch;">
+              <button type="button" id="btn-vk" class="button button--primary">1. Von Kármán Street (Wire)</button>
+              <button type="button" id="btn-wake" class="button">2. Wing Wake &amp; Tip Vortices</button>
+              <button type="button" id="btn-igw" class="button">3. Internal Gravity Wave (cₚ ⊥ c_g)</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="kicker">Live Telemetry · <span id="mode-badge">Von Kármán Street</span></div>
+            <ul style="list-style:none;padding:0;margin:8px 0 0;font-family:var(--mono);font-size:12.5px;">
+              <li>Shedding Freq (fₛ): <strong id="telemetry-fs">3750 Hz</strong></li>
+              <li>Peak Vorticity (ω_z): <strong id="telemetry-vort">68.4 rad/s</strong></li>
+              <li>Dyn. Lift (V_diff): <strong id="telemetry-vdiff">23.2 µV</strong></li>
+              <li>Steady Drag (V_sum): <strong id="telemetry-vsum">6.1 µV</strong></li>
+            </ul>
+          </div>
+        </aside>
+
+        <div class="cad-main">
+          <div class="cad-frame">
+            <canvas id="flow-canvas" width="800" height="420" style="width:100%;height:auto;display:block;"></canvas>
+          </div>
+          <div class="grid grid--2">
+            <div class="card">
+              <div class="kicker">180° Differential Channel (V_diff · Lift Vortex)</div>
+              <canvas id="osc-diff" width="380" height="60" style="width:100%;height:56px;display:block;"></canvas>
+            </div>
+            <div class="card">
+              <div class="kicker">Common-Mode Sum Channel (V_sum · Bulk Drag)</div>
+              <canvas id="osc-sum" width="380" height="60" style="width:100%;height:56px;display:block;"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <script src="/assets/js/flow-visualizer.js" defer></script>
+</BaseLayout>

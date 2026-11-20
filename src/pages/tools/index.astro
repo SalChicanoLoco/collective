@@ -24,6 +24,15 @@ const tools = [
     descEs: 'Archivo de investigación cívica de seis volúmenes indexado junto con publicaciones activas.',
     href: '/biblioteca/',
   },
+  {
+    kickerEn: 'Physics · 2D Vector Field',
+    kickerEs: 'Física · Campo Vectorial 2D',
+    titleEn: 'RAIS Flow Field Visualizer',
+    titleEs: 'Visualizador de Flujo RAIS',
+    descEn: 'Interactive Von Kármán vortex street, wing wake, and internal gravity wave simulator with dual-channel EM pickup oscilloscopes.',
+    descEs: 'Simulador interactivo de vórtices de Von Kármán, estela alar y ondas gravitacionales internas con osciloscopio de doble canal.',
+    href: '/tools/flow-visualizer/',
+  },
 ];
 ---
 
@@ -49,7 +58,7 @@ const tools = [
         <p class="eyebrow es">Índice</p>
         <h2 class="en">Operational Tools</h2>
         <h2 class="es">Herramientas Operativas</h2>
-        <div class="grid grid--2 grid--spaced">
+        <div class="grid grid--3 grid--spaced">
           {tools.map((t) => (
             <Card
               href={t.href}
