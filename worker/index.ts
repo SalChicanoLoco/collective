@@ -1,12 +1,18 @@
 import { auditSite } from './audit';
 import {
+  type AuthEnv,
+  getSessionUser,
+  handleAuthRequest,
+  handleProfileRequest,
+} from './auth';
+import {
   computeGreenhouseSubstrate,
   handleSubstrateInfer,
   hasInjectionSignal,
   substrateStatus,
 } from './substrate';
 
-export interface Env {
+export interface Env extends AuthEnv {
   ASSETS: Fetcher;
   AI?: Ai;
   CUSTOM_LM_URL?: string;
@@ -44,18 +50,26 @@ function checkAskRateLimit(ip: string): { allowed: boolean; remaining: number; r
   return { allowed: true, remaining: ASK_RATE_LIMIT - existing.count, retryAfterSec: 0 };
 }
 
-function requireAdminAuth(request: Request, env: Env): Response | null {
-  if (!env.SUBSTRATE_TOKEN) {
+async function requireAdminAuth(request: Request, env: Env): Promise<Response | null> {
+  const bearer = request.headers.get('Authorization');
+  if (env.SUBSTRATE_TOKEN && bearer === `Bearer ${env.SUBSTRATE_TOKEN}`) {
+    return null;
+  }
+  const sessionUser = await getSessionUser(request, env);
+  if (sessionUser && sessionUser.role === 'admin') {
+    return null;
+  }
+  if (!env.SUBSTRATE_TOKEN && !env.AUTH_SESSION_SECRET) {
     return withSecurityHeaders(
-      Response.json({ ok: false, error: 'Fail-closed: SUBSTRATE_TOKEN not configured.' }, { status: 503 }),
+      Response.json(
+        { ok: false, error: 'Fail-closed: SUBSTRATE_TOKEN or AUTH_SESSION_SECRET not configured.' },
+        { status: 503 },
+      ),
     );
   }
-  if (request.headers.get('Authorization') !== `Bearer ${env.SUBSTRATE_TOKEN}`) {
-    return withSecurityHeaders(
-      Response.json({ ok: false, error: 'Unauthorized: Bearer token required.' }, { status: 401 }),
-    );
-  }
-  return null;
+  return withSecurityHeaders(
+    Response.json({ ok: false, error: 'Unauthorized: Admin session or Bearer token required.' }, { status: 401 }),
+  );
 }
 
 const COLLECTIVE_SYSTEM_PROMPT = [
@@ -128,8 +142,17 @@ export default {
       );
     }
 
+    if (url.pathname.startsWith('/api/auth/')) {
+      const authRes = await handleAuthRequest(request, url, env);
+      if (authRes) return withSecurityHeaders(authRes);
+    }
+
+    if (url.pathname === '/api/profile') {
+      return withSecurityHeaders(await handleProfileRequest(request, env));
+    }
+
     if (url.pathname === '/api/admin/overview') {
-      const authErr = requireAdminAuth(request, env);
+      const authErr = await requireAdminAuth(request, env);
       if (authErr) return authErr;
       return withSecurityHeaders(
         Response.json({
@@ -147,7 +170,7 @@ export default {
     }
 
     if (url.pathname === '/api/audit') {
-      const authErr = requireAdminAuth(request, env);
+      const authErr = await requireAdminAuth(request, env);
       if (authErr) return authErr;
       const target = url.searchParams.get('url') ?? '';
       const result = await auditSite(target);

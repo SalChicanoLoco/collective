@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import PageHero from '../../components/PageHero.astro';
+---
+
+<BaseLayout
+  title="Member Profile & Sign In | Sena Colectivo"
+  description="Lightweight OAuth 2.0 + PKCE sign-in (Google, Microsoft, Meta) and edge profile preferences."
+  canonical="https://senacolectivo.com/profile/"
+>
+  <Header />
+  <main id="main">
+    <PageHero
+      eyebrowEn="OAuth 2.0 + PKCE · Zero SDK Bloat · Edge Signed"
+      eyebrowEs="OAuth 2.0 + PKCE · Sin SDKs Pesados · Firmado en el Borde"
+      titleEn="Member Profile"
+      titleEs="Perfil de Miembro"
+      dekEn="Sign in with Google, Microsoft, or Meta using pure Web Crypto PKCE & HMAC sessions — zero third-party auth SDKs."
+      dekEs="Inicia sesión con Google, Microsoft o Meta usando Web Crypto PKCE y sesiones HMAC puras — sin SDKs externos."
+    />
+
+    <section class="section">
+      <div class="wrap">
+        <div id="signInPanel" class="card">
+          <div class="kicker">Modern Auth · Google · Microsoft · Meta</div>
+          <p class="note en">Select a provider to sign in and sync your lightweight profile across sessions.</p>
+          <p class="note es">Elige un proveedor para iniciar sesión y sincronizar tu perfil ligero.</p>
+          <div class="button-row" style="margin-top:1rem;">
+            <a id="loginGoogleBtn" class="button button--primary" href="/api/auth/login/google">Continue with Google</a>
+            <a id="loginMicrosoftBtn" class="button" href="/api/auth/login/microsoft">Continue with Microsoft</a>
+            <a id="loginMetaBtn" class="button" href="/api/auth/login/meta">Continue with Meta</a>
+          </div>
+          <p id="providerStatus" class="note" style="margin-top:0.75rem;"></p>
+        </div>
+
+        <div id="profilePanel" class="card grid--spaced" hidden>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+            <div>
+              <div id="profileIdentityKicker" class="kicker">Signed In</div>
+              <h2 id="profileHeading" style="margin:0.25rem 0 0;">Member Profile</h2>
+            </div>
+            <div class="button-row" style="margin:0;">
+              <a id="adminLinkBtn" class="button button--primary" href="/admin/" hidden>Open Ops Hub (/admin/)</a>
+              <button type="button" id="logoutBtn" class="button">Sign Out</button>
+            </div>
+          </div>
+
+          <form id="profileForm" style="margin-top:1.25rem;">
+            <div class="grid grid--2">
+              <div>
+                <label for="profDisplayName" class="field-label">Display Name</label>
+                <input id="profDisplayName" class="field-input" type="text" maxlength="60" required />
+              </div>
+              <div>
+                <label for="profHandle" class="field-label">Handle (a-z, 0-9, -, _)</label>
+                <input id="profHandle" class="field-input" type="text" maxlength="24" />
+              </div>
+              <div>
+                <label for="profRegion" class="field-label">Region / Watershed</label>
+                <input id="profRegion" class="field-input" type="text" maxlength="60" />
+              </div>
+              <div>
+                <label for="profTheme" class="field-label">Default Theme</label>
+                <select id="profTheme" class="field-select">
+                  <option value="hud">HUD</option>
+                  <option value="earth">Earth</option>
+                  <option value="cad">CAD</option>
+                </select>
+              </div>
+              <div>
+                <label for="profLang" class="field-label">Default Language</label>
+                <select id="profLang" class="field-select">
+                  <option value="en">English (EN)</option>
+                  <option value="es">Español (ES)</option>
+                </select>
+              </div>
+              <div>
+                <label for="profUnits" class="field-label">CAD Default Units</label>
+                <select id="profUnits" class="field-select">
+                  <option value="imperial">Imperial (ft · gal)</option>
+                  <option value="si">SI / Metric (m · L)</option>
+                </select>
+              </div>
+            </div>
+            <label for="profBio" class="field-label" style="margin-top:0.75rem;">Short Bio / Notes (max 240 chars)</label>
+            <input id="profBio" class="field-input" type="text" maxlength="240" />
+            <div class="button-row" style="margin-top:1rem;">
+              <button type="submit" class="button button--primary">Save Profile</button>
+            </div>
+            <p id="profileSaveStatus" class="note" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <script src="/assets/js/profile.js" defer></script>
+</BaseLayout>
