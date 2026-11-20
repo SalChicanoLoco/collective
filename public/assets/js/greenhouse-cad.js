@@ -498,6 +498,36 @@
     downloadFile('greenhouse-' + L + 'x' + W + '-plan.dxf', dxf, 'application/dxf');
   }
 
+  // --- Real Plotter .PLT (HPGL, 1016 units/inch, 1:48 scale: 1/4" = 1'-0") ---
+  function hpglRect(x0, y0, x1, y1) {
+    var u = function (ft) { return Math.round(ft * 0.25 * 1016); };
+    return [
+      'PU' + u(x0) + ',' + u(y0) + ';',
+      'PD' + u(x1) + ',' + u(y0) + ',' + u(x1) + ',' + u(y1) + ',' + u(x0) + ',' + u(y1) + ',' + u(x0) + ',' + u(y0) + ';',
+      'PU;',
+    ].join('');
+  }
+
+  function exportPlt() {
+    var L = state.lengthFt;
+    var W = state.widthFt;
+    var mid = W / 2;
+    var halfA = state.aisleFt / 2;
+    var cmds = [
+      'IN;SP1;',
+      hpglRect(0, 0, L, W),
+      hpglRect(0.5, mid - halfA, L - 0.5, mid + halfA),
+      'SP2;',
+      hpglRect(1, 0.8, L - 1, mid - halfA - 0.3),
+      hpglRect(1, mid + halfA + 0.3, L - 1, W - 2.2),
+    ];
+    if (state.showBarrels) {
+      cmds.push('SP3;', hpglRect(1, W - 1.8, L - 1, W - 0.2));
+    }
+    cmds.push('PU0,0;SP0;');
+    downloadFile('greenhouse-' + L + 'x' + W + '-1to48.plt', cmds.join('\n'), 'application/vnd.hp-hpgl');
+  }
+
   function downloadFile(name, content, mime) {
     var blob = new Blob([content], { type: mime });
     var url = URL.createObjectURL(blob);
@@ -590,6 +620,8 @@
   el('exportStlBtn')?.addEventListener('click', exportStl);
   el('validateStlBtn')?.addEventListener('click', runStlValidation);
   el('exportDxfBtn')?.addEventListener('click', exportDxf);
+  el('exportPltBtn')?.addEventListener('click', exportPlt);
+  el('printPlotBtn')?.addEventListener('click', function () { window.print(); });
   window.addEventListener('resize', render3D);
 
   updateAll();
