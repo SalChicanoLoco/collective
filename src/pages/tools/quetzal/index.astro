@@ -1,0 +1,88 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import PageHero from '../../../components/PageHero.astro';
+---
+
+<BaseLayout
+  title="Quetzal Planetary Geophysics (Experimental) | Sena's AI Collective"
+  description="Experimental planetary geophysics showcase: live USGS seismic radiance in Joules, NOAA WMM2025 geodynamo reference, and strict edge rate/budget caps."
+  canonical="https://senacolectivo.com/tools/quetzal/"
+>
+  <Header />
+  <main id="main">
+    <PageHero
+      eyebrowEn="Experimental · Rate-Capped · Zero Paid AI Calls"
+      eyebrowEs="Experimental · Con Límite de Tasa · Cero Costo de IA"
+      titleEn="Quetzal Planetary Geophysics"
+      titleEs="Geofísica Planetaria Quetzal"
+      dekEn="Live USGS M2.5+ seismic radiance in Joules (Gutenberg-Choy), NOAA WMM2025 geodynamo baselines, and 4D resistivity provenance — cached at the edge for 5 minutes and capped at 15 req/min/IP."
+      dekEs="Radiancia sísmica USGS M2.5+ en Joules (Gutenberg-Choy), referencia geodinámica WMM2025 y proveniencia estricta — con caché de 5 minutos y límite de 15 sol/min/IP."
+    />
+
+    <section class="section">
+      <div class="wrap">
+        <div class="card">
+          <div class="kicker">Experimental Notice &amp; Budget Guardrails</div>
+          <p class="note">
+            <strong>Status: Experimental.</strong> Live telemetry pulls directly from the public USGS NEIC GeoJSON feed, cached in Cloudflare <code>OPS_KV</code> for 5 minutes and rate-limited to <code>15 requests/min/IP</code>. All energy math runs deterministically in TypeScript/browser — <strong>zero paid LLM or Google AI API calls</strong> are triggered by this page.
+          </p>
+        </div>
+
+        <div class="grid grid--2 grid--spaced">
+          <div class="card">
+            <div class="kicker">Gutenberg-Choy Seismic Radiance Calculator</div>
+            <math display="block" aria-label="log10 E_s equals 4.8 plus 1.5 M">
+              <mrow>
+                <msub><mi>log</mi><mn>10</mn></msub><mo>(</mo><msub><mi>E</mi><mi>s</mi></msub><mo>)</mo>
+                <mo>=</mo><mn>4.8</mn><mo>+</mo><mn>1.5</mn><mi>M</mi>
+              </mrow>
+            </math>
+            <label for="qzMagInput" class="field-label">Magnitude (M): <strong id="qzMagVal">3.5</strong></label>
+            <input id="qzMagInput" class="field-input" type="range" min="1.0" max="9.0" step="0.1" value="3.5" />
+            <div class="grid grid--2" style="margin-top:0.75rem;">
+              <div><div class="kicker">Radiated Energy</div><span id="qzEnergyOut" class="stat">—</span></div>
+              <div><div class="kicker">TNT Equivalent</div><span id="qzTntOut" class="stat">—</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="kicker">NOAA WMM2025 / Swarm Geodynamo Reference</div>
+            <ul>
+              <li><strong>North Dip-Pole Drift (2025/2026):</strong> ~36.0 km/yr (decelerating from ~45.0 km/yr peak)</li>
+              <li><strong>South Dip-Pole Drift:</strong> ~9.0 km/yr</li>
+              <li><strong>Dipole Moment:</strong> 7.78 × 10²² A·m² · <strong>Tilt:</strong> 9.3°</li>
+              <li><strong>Outer Core Radius (PREM):</strong> 3,480 km · <strong>Re_m:</strong> 350</li>
+              <li><strong>Decoupling Invariant:</strong> Core MHD operates on multi-decadal timescales; temporal overlap does not imply crustal earthquake causation.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card grid--spaced">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;">
+            <div class="kicker">Live USGS M2.5+ Feed (5-Min Edge KV Cache · Capped 15/min)</div>
+            <button type="button" id="qzFetchBtn" class="button button--primary">Load Live USGS Telemetry</button>
+          </div>
+          <p id="qzStatus" class="note" role="status" aria-live="polite">Click to fetch cached USGS M2.5+ telemetry.</p>
+          <div style="overflow-x:auto;margin-top:0.5rem;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Mag</th>
+                  <th>Location</th>
+                  <th>Depth</th>
+                  <th>Radiated Energy (GJ)</th>
+                  <th>UTC Time</th>
+                </tr>
+              </thead>
+              <tbody id="qzEventsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <script src="/assets/js/quetzal.js" defer></script>
+</BaseLayout>

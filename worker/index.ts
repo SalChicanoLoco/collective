@@ -358,6 +358,84 @@ export default {
       );
     }
 
+    if (url.pathname === '/api/quetzal/seismic') {
+      const ip = getClientIp(request);
+      const rl = checkAskRateLimit(`qz:${ip}`, 15);
+      if (!rl.allowed) {
+        return withSecurityHeaders(
+          Response.json(
+            { ok: false, error: `Experimental Quetzal cap reached. Retry in ${rl.retryAfterSec}s.` },
+            { status: 429, headers: { 'Retry-After': String(rl.retryAfterSec) } },
+          ),
+        );
+      }
+
+      const CACHE_KEY = 'quetzal:usgs:m25_day';
+      const TTL_MS = 5 * 60_000;
+      if (env.OPS_KV) {
+        try {
+          const cachedRaw = await env.OPS_KV.get(CACHE_KEY);
+          if (cachedRaw) {
+            const cached = JSON.parse(cachedRaw) as { fetchedAtMs: number; payload: unknown };
+            if (Date.now() - cached.fetchedAtMs < TTL_MS) {
+              return withSecurityHeaders(Response.json({ ok: true, cached: true, ...(cached.payload as object) }));
+            }
+          }
+        } catch {}
+      }
+
+      try {
+        const usgsRes = await fetch('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_day.geojson', {
+          headers: { 'User-Agent': 'SenaColectivo-Quetzal/1.0' },
+        });
+        if (!usgsRes.ok) throw new Error(`USGS HTTP ${usgsRes.status}`);
+        const geo = (await usgsRes.json()) as {
+          metadata?: { generated?: number; count?: number };
+          features?: Array<{
+            id?: string;
+            properties?: { mag?: number; place?: string; time?: number; url?: string };
+            geometry?: { coordinates?: number[] };
+          }>;
+        };
+        const events = (geo.features ?? []).slice(0, 8).map((f) => {
+          const mag = Number(f.properties?.mag ?? 0);
+          const energyJ = Math.pow(10, 4.8 + 1.5 * mag);
+          return {
+            id: f.id ?? '',
+            mag,
+            place: f.properties?.place ?? 'Unknown',
+            timeUtc: f.properties?.time ? new Date(f.properties.time).toISOString() : '',
+            depthKm: Number((f.geometry?.coordinates?.[2] ?? 0).toFixed(2)),
+            energyJoules: energyJ,
+            energyGj: Number((energyJ / 1e9).toFixed(3)),
+            url: f.properties?.url ?? '',
+          };
+        });
+        const payload = {
+          datasource: 'USGS NEIC M2.5+ Day Feed',
+          classification: 'OBSERVED + DERIVED (Gutenberg-Choy)',
+          retrievedAt: new Date().toISOString(),
+          totalInFeed: geo.metadata?.count ?? events.length,
+          events,
+        };
+        if (env.OPS_KV) {
+          ctx.waitUntil(
+            env.OPS_KV.put(CACHE_KEY, JSON.stringify({ fetchedAtMs: Date.now(), payload }), {
+              expirationTtl: 600,
+            }),
+          );
+        }
+        return withSecurityHeaders(Response.json({ ok: true, cached: false, ...payload }));
+      } catch (err) {
+        return withSecurityHeaders(
+          Response.json(
+            { ok: false, error: err instanceof Error ? err.message : 'USGS feed unavailable.' },
+            { status: 502 },
+          ),
+        );
+      }
+    }
+
     if (url.pathname.startsWith('/api/auth/')) {
       const authRes = await handleAuthRequest(request, url, env);
       if (authRes) return noStore(authRes);
