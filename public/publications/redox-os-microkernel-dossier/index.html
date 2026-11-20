@@ -4,6 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Redox OS: Microkernel Gazette &amp; Bare-Metal Hardware Dossier | Sena Colectivo</title>
+<style>
+:root{--earth:#070a0f;--warm:#0d131c;--panel:#141d2b;--sand:#e8eef5;--muted:#9eb0c4;--faint:#6c8096;--terr:#4cc9f0;--gold:#4cc9f0;--sage:#f4a261;--border:rgba(76,201,240,.2);--serif:Fraunces,Georgia,'Times New Roman',serif;--sans:system-ui,-apple-system,sans-serif;--mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--earth);color:var(--sand);font-family:var(--sans);line-height:1.72}
+a{color:var(--gold)}.mast{border-bottom:2px solid var(--terr);padding:16px 24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--warm)}
+.brand{font-family:var(--serif);font-weight:900;color:var(--gold);font-size:20px;text-decoration:none}
+.wrap{max-width:980px;margin:auto;padding:34px 22px}
+.kicker,.meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.hero{background:var(--warm);border-bottom:1px solid var(--border)}
+h1{font-family:var(--serif);font-size:clamp(28px,4.5vw,44px);line-height:1.12;margin:10px 0 12px}
+h2{font-family:var(--serif);color:var(--gold);font-size:24px;margin-top:32px;border-bottom:1px solid var(--border);padding-bottom:6px}
+h3{font-family:var(--serif);font-size:19px;margin-top:22px}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{border:1px solid var(--border);background:var(--panel);color:var(--sand);padding:7px 12px;text-decoration:none;font-family:var(--mono);font-size:11px;text-transform:uppercase;cursor:pointer;border-radius:4px}
+.btn.sage{background:var(--gold);color:#06090e;border-color:var(--gold);font-weight:700}
+.callout,.eq-box{background:var(--warm);border:1px solid var(--border);border-left:4px solid var(--gold);padding:16px 20px;margin:20px 0;border-radius:6px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin:18px 0;background:var(--warm);font-size:14px}
+th,td{padding:10px 12px;border:1px solid var(--border);text-align:left;vertical-align:top}
+th{color:var(--gold);font-family:var(--mono);font-size:11px;text-transform:uppercase}
+pre{background:var(--panel);border:1px solid var(--border);padding:14px;border-radius:6px;overflow-x:auto;font-family:var(--mono);font-size:12.5px}
+code{font-family:var(--mono);font-size:0.9em}
+footer{border-top:1px solid var(--border);padding:24px;color:var(--faint);font-family:var(--mono);font-size:11px}
+</style>
 <link rel="stylesheet" href="/assets/css/subpage-theme.css">
 <script src="/assets/js/site.js" defer></script>
 <script src="/assets/js/work-tabs.js" defer></script>
@@ -19,246 +41,63 @@
     <h1>Redox OS: Microkernel Gazette &amp; Bare-Metal Hardware Dossier</h1>
     <div class="meta">Salvador Sena · Sena Colectivo</div>
     <nav class="nav">
+      <a class="btn" href="/publications/staging/">Staging Hub</a>
       <a class="btn" href="/publications/">All Publications</a>
-      <a class="btn" href="/">Home</a>
+      <a class="btn sage" href="/publications/redox-os-microkernel-dossier/redox_os_gazette.pdf" target="_blank" rel="noopener">Compiled PDF</a>
+      <a class="btn" href="/publications/redox-os-microkernel-dossier/redox_os_hardware_report.pdf" target="_blank" rel="noopener">Hardware PDF</a>
     </nav>
   </div>
 </section>
 <main class="section">
   <div class="wrap">
-    <div class="button-row" role="tablist" style="margin-bottom:1.25rem;"><button type="button" class="button button--primary" role="tab" data-tab-target="tab-brief" aria-selected="true">Brief &amp; Narrative</button><button type="button" class="button" role="tab" data-tab-target="tab-source" aria-selected="false">Metadata &amp; Manifest</button></div>
-    <div id="tab-brief" data-tab-panel><p>\documentclass[11pt,a4paper]{article}</p>
-<p>\usepackage[utf8]{inputenc}</p>
-<p>\usepackage[T1]{fontenc}</p>
-<p>\usepackage{mathpazo}            % Elegant, readable Palatino serif for older eyes</p>
-<p>\usepackage[scaled=0.95]{helvet}  % Clean bold sans for newspaper headlines</p>
-<p>\usepackage[scaled=0.92]{inconsolata} % High-legibility monospaced font</p>
-<p>\usepackage[margin=0.55in,top=0.48in,bottom=0.48in]{geometry}</p>
-<p>\usepackage{amsmath,amssymb}</p>
-<p>\usepackage{graphicx}</p>
-<p>\usepackage{booktabs}</p>
-<p>\usepackage{tabularx}</p>
-<p>\usepackage{xcolor}</p>
-<p>\usepackage{hyperref}</p>
-<p>\usepackage{fancyhdr}</p>
-<p>\usepackage{enumitem}</p>
-<p>\usepackage{microtype}</p>
-<p>\usepackage{listings}</p>
-<p>\usepackage{tikz}</p>
-<p>\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc}</p>
-<p>\usepackage[most]{tcolorbox}</p>
-<p>\tcbuselibrary{listings}</p>
-<p>\usepackage{multicol}</p>
-<p>\usepackage{lettrine}</p>
-<p>\usepackage{fontawesome5}</p>
-<p>% Generous line height for older eyes</p>
-<p>\linespread{1.14}</p>
-<p>% High-Contrast Newspaper Palette</p>
-<p>\definecolor{inkblack}{HTML}{111827}    % Deep rich printing ink</p>
-<p>\definecolor{paperwhite}{HTML}{FFFFFF}  % Clean white paper</p>
-<p>\definecolor{newsrust}{HTML}{B43403}    % High-contrast Rust Orange</p>
-<p>\definecolor{newsblue}{HTML}{0369A1}    % Deep High-Contrast Blue</p>
-<p>\definecolor{newsgreen}{HTML}{047857}   % High-Contrast Emerald</p>
-<p>\definecolor{newsred}{HTML}{B91C1C}     % High-Contrast Crimson Panic</p>
-<p>\definecolor{cardbg}{HTML}{F9FAFB}      % Very light subtle card bg</p>
-<p>\definecolor{codebg}{HTML}{1E293B}      % High contrast dark code terminal</p>
-<p>% Column rule separation for classic broadsheet feel</p>
-<p>\setlength{\columnsep}{16pt}</p>
-<p>\setlength{\columnseprule}{0.5pt}</p>
-<p>% Hyperref setup</p>
-<p>\hypersetup{</p>
-<p>colorlinks=true,</p>
-<p>linkcolor=newsrust,</p>
-<p>citecolor=newsblue,</p>
-<p>urlcolor=newsblue,</p>
-<p>pdfauthor={The Daily Microkernel Editorial Board},</p>
-<p>pdftitle={The Daily Microkernel: Redox OS Special Edition}</p>
-<p>}</p>
-<p>% Classic Newspaper Header / Footer</p>
-<p>\pagestyle{fancy}</p>
-<p>\fancyhf{}</p>
-<p>\fancyhead[L]{\small \textsf{<strong>THE DAILY MICROKERNEL</strong>} $\;\vert\;$ \textit{Special Morning Edition}}</p>
-<p>\fancyhead[C]{}</p>
-<p>\fancyhead[R]{\small \textsf{<strong>Page \thepage</strong>}}</p>
-<p>\fancyfoot[L]{\footnotesize <strong>ESTABLISHED 2015</strong> $\;\vert\;$ \faRust~REDOX OS DISPATCH}</p>
-<p>\fancyfoot[C]{}</p>
-<p>\fancyfoot[R]{\footnotesize <strong>CIRCULATION: UNRESTRICTED RING 3</strong>}</p>
-<p>\renewcommand{\headrulewidth}{0.8pt}</p>
-<p>\renewcommand{\footrulewidth}{0.8pt}</p>
-<p>% Code Listing Style (High Legibility for Older Eyes)</p>
-<p>\lstset{</p>
-<p>basicstyle=\ttfamily\small\color{white},</p>
-<p>backgroundcolor=\color{codebg},</p>
-<p>keywordstyle=\color{orange}\bfseries,</p>
-<p>commentstyle=\color{gray!80}\itshape,</p>
-<p>stringstyle=\color{green!80},</p>
-<p>showspaces=false,</p>
-<p>showstringspaces=false,</p>
-<p>showtabs=false,</p>
-<p>frame=single,</p>
-<p>rulecolor=\color{black},</p>
-<p>tabsize=2,</p>
-<p>breaklines=true,</p>
-<p>escapeinside={\%<em>}{</em>)}</p>
-<p>}</p>
-<p>% High-Contrast Styled Boxes</p>
-<p>\newtcolorbox{newsbox}[2][]{</p>
-<p>colback=cardbg,</p>
-<p>colframe=inkblack,</p>
-<p>coltitle=white,</p>
-<p>colbacktitle=inkblack,</p>
-<p>fonttitle=\sffamily\bfseries\normalsize,</p>
-<p>title={#2},</p>
-<p>arc=1.5mm,</p>
-<p>boxrule=1.2pt,</p>
-<p>left=8pt, right=8pt, top=5pt, bottom=5pt,</p>
-<p>#1</p>
-<p>}</p>
-<p>\newtcblisting{newsterminal}[2][]{</p>
-<p>colback=codebg,</p>
-<p>colframe=inkblack,</p>
-<p>coltitle=white,</p>
-<p>colbacktitle=inkblack,</p>
-<p>fonttitle=\ttfamily\small\bfseries,</p>
-<p>title={\faTerminal~#2},</p>
-<p>arc=1.5mm,</p>
-<p>boxrule=1.2pt,</p>
-<p>left=8pt, right=8pt, top=5pt, bottom=5pt,</p>
-<p>listing only,</p>
-<p>listing options={basicstyle=\ttfamily\small\color{white},keywordstyle=\color{orange}\bfseries,commentstyle=\color{gray!70}\itshape,stringstyle=\color{green!80},breaklines=true},</p>
-<p>#1</p>
-<p>}</p>
-<p>\begin{document}</p>
-<p>% =========================================================================</p>
-<p>% PAGE 1: FRONT PAGE BROADSHEET</p>
-<p>% =========================================================================</p>
-<p>\begin{center}</p>
-<p>% Ear tags &amp; dateline</p>
-<p>\begin{tabularx}{\textwidth}{@{} X c X @{}}</p>
-<p>\small <strong>WEATHER:</strong> Heavy context-switching; isolated TLB flushes; calm over safe memory. &amp;</p>
-<p>\tcbox[colback=inkblack,colframe=inkblack,arc=1mm,top=2pt,bottom=2pt,left=6pt,right=6pt]{%</p>
-<p>\textcolor{white}{\footnotesize <strong>\faStar~\faStar~\faStar~SPECIAL MORNING DISPATCH~\faStar~\faStar~\faStar</strong>}%</p>
-<p>} &amp;</p>
-<p>\raggedleft \small <strong>STOP THE PRESSES:</strong> Driver panic fails to crash system! Init respawns PID.</p>
-<p>\end{tabularx}</p>
-<p>\vspace{3pt}</p>
+    <div class="button-row" role="tablist" style="margin-bottom:1.25rem;display:flex;gap:8px;flex-wrap:wrap;"><button type="button" class="btn sage" role="tab" data-tab-target="tab-brief" aria-selected="true">Brief &amp; Narrative</button><button type="button" class="btn" role="tab" data-tab-target="tab-source" aria-selected="false">Metadata &amp; Manifest</button></div>
+    <div id="tab-brief" data-tab-panel><table><tr><th>X c X @{}}
+     WEATHER: Heavy context-switching; isolated TLB flushes; calm over safe memory.</th><th>\tcbox[colback=inkblack,colframe=inkblack,arc=1mm,top=2pt,bottom=2pt,left=6pt,right=6pt]{
+      white{ \faStar~\faStar~\faStar~SPECIAL MORNING DISPATCH~\faStar~\faStar~\faStar}
+    }</th><th>\raggedleft  STOP THE PRESSES: Driver panic fails to crash system! Init respawns PID.</th></tr></table>
 <p>{\color{inkblack}\hrule height 2pt}</p>
-<p>\vspace{2pt}</p>
 <p>{\color{inkblack}\hrule height 0.6pt}</p>
-<p>\vspace{4pt}</p>
 <p>{\fontsize{32}{36}\selectfont <strong>\textsf{THE DAILY MICROKERNEL</strong>}} \\[3pt]</p>
-<p>{\normalsize <strong>\textit{The Authoritative Journal of Low-Level Systems, Microkernels, \&amp; Compile-Time Memory Safety</strong>}} \\[4pt]</p>
+<p>{ <em><strong>The Authoritative Journal of Low-Level Systems, Microkernels, &amp; Compile-Time Memory Safety</strong></em>} \\[4pt]</p>
 <p>{\color{inkblack}\hrule height 0.6pt}</p>
-<p>\vspace{2pt}</p>
-<p>\begin{tabularx}{\textwidth}{@{} l c c r @{}}</p>
-<p><strong>VOL. VII $\cdot$ NO. 3</strong> &amp;</p>
-<p><strong>WEDNESDAY, SEPTEMBER 9, 2026</strong> &amp;</p>
-<p><strong>PRICE: ZERO CVEs</strong> &amp;</p>
-<p><strong>CIRCULATION: RING 3 ONLY</strong></p>
-<p>\end{tabularx}</p>
-<p>\vspace{1pt}</p>
+<table><tr><th>l c c r @{}}
+    VOL. VII $\cdot$ NO. 3</th><th>WEDNESDAY, SEPTEMBER 9, 2026</th><th>PRICE: ZERO CVEs</th><th>CIRCULATION: RING 3 ONLY</th></tr></table>
 <p>{\color{inkblack}\hrule height 2pt}</p>
-<p>\end{center}</p>
-<p>\vspace{2pt}</p>
-<p>% Editorial Disambiguation Desk</p>
-<p>\begin{tcolorbox}[colback=cardbg,colframe=newsrust,boxrule=1.5pt,arc=1.5mm,left=8pt,right=8pt,top=4pt,bottom=4pt]</p>
-<p>\normalsize</p>
-<p>\noindent</p>
-<p><strong>\textcolor{newsrust</strong>{\faExclamationCircle~EDITORIAL DESK: ON `<code>REDOX'' VS. </code>`REDUX''}} \\</p>
-<p>\textit{A public clarification: If you requested <strong>Redux OS</strong>, you may have envisioned a surreal dystopia where CPU interrupts dispatch Redux actions, paging allocates immutable state objects, and memory GC triggers a thermonuclear meltdown. The real engineering marvel is <strong>Redox OS</strong>: the Unix-like, Rust-native microkernel re-architecting systems safety.}</p>
-<p>\end{tcolorbox}</p>
-<p>\vspace{2pt}</p>
-<p>\begin{center}</p>
-<p>{\large <strong>\textsf{\textcolor{newsrust</strong>{SPECIAL INVESTIGATION INTO RING 0 PRIVILEGE}}}} \\[2pt]</p>
+<div class="callout">\textcolor{newsrust{\faExclamationCircle~EDITORIAL DESK: ON ``REDOX'' VS. ``REDUX''}} \\
+A public clarification: If you requested **Redux OS, you may have envisioned a surreal dystopia where CPU interrupts dispatch Redux actions, paging allocates immutable state objects, and memory GC triggers a thermonuclear meltdown. The real engineering marvel is Redox OS: the Unix-like, Rust-native microkernel re-architecting systems safety.**</div>
+<p>{ <strong>\textsf{\textcolor{newsrust</strong>{SPECIAL INVESTIGATION INTO RING 0 PRIVILEGE}}}} \\[2pt]</p>
 <p>{\fontsize{20}{24}\selectfont <strong>\textsf{RUST IN THE LOWLANDS: HOW REDOX DISMANTLES THE MONOLITH</strong>}} \\[3pt]</p>
-<p>{\normalsize <strong>\textit{Plan 9 Scheme Architecture Meets Rust Borrow Checker — Kernel Stripped to 20,000 Lines</strong>}}</p>
-<p>\end{center}</p>
-<p>\vspace{1pt}</p>
+<p>{ <em><strong>Plan 9 Scheme Architecture Meets Rust Borrow Checker — Kernel Stripped to 20,000 Lines</strong></em>}</p>
 <p>{\color{inkblack}\hrule height 0.5pt}</p>
-<p>\vspace{4pt}</p>
-<p>\begin{multicols}{2}</p>
 <p>\lettrine[lines=3,loversize=0.2]{<strong>\textcolor{newsrust</strong>{F}}}{ounded in 2015} by Jeremy Soller (Principal Engineer at System76) and systems hackers worldwide, <strong>Redox OS</strong> tackles the cardinal vulnerability of modern computing: the monolithic kernel.</p>
 <p>For 35 years, monolithic operating systems like Linux and Windows have executed tens of millions of lines of C code inside <strong>Ring 0</strong>. When a driver has an out-of-bounds pointer write, it corrupts page tables and causes a catastrophic <strong>Kernel Panic</strong>.</p>
-<p>Redox strips Ring 0 down to $\sim$20,000 lines of safe Rust. All file systems, networking stacks, and device drivers are quarantined in unprivileged <strong>Ring 3</strong> userspace.</p>
+<p>Redox strips Ring 0 down to <math aria-label="\sim"><mrow>\sim</mrow></math>20,000 lines of safe Rust. All file systems, networking stacks, and device drivers are quarantined in unprivileged <strong>Ring 3</strong> userspace.</p>
 <p>\columnbreak</p>
 <p>\begin{newsbox}{\faLock~FOUR TENETS OF THE REDOX REVOLUTION}</p>
-<p>[leftmargin=12pt,itemsep=2pt]</p>
 <ul>
-<li><strong>100\% Safe Rust Core:</strong> Eliminates buffer overflows and data races at compile time.</li>
+<li><strong>100% Safe Rust Core:</strong> Eliminates buffer overflows and data races at compile time.</li>
 <li><strong>Minimalist Microkernel:</strong> Only scheduling, paging, IPC, and IRQ routing in Ring 0.</li>
-<li><strong>Plan 9 URL Schemes:</strong> Unified namespaces (\texttt{file:}, \texttt{tcp:}, \texttt{disk:}, \texttt{event:}).</li>
-<li><strong>Autonomous Fault Recovery:</strong> Driver crashes exit status \texttt{101}; init simply respawns the driver.</li>
+<li><strong>Plan 9 URL Schemes:</strong> Unified namespaces (<code>file:</code>, <code>tcp:</code>, <code>disk:</code>, <code>event:</code>).</li>
+<li><strong>Autonomous Fault Recovery:</strong> Driver crashes exit status <code>101</code>; init simply respawns the driver.</li>
 </ul>
 <p>\end{newsbox}</p>
-<p>\end{multicols}</p>
-<p>\vspace{-6pt}</p>
-<p>% Figure 1: Monolithic vs Redox (Calibrated High Contrast)</p>
-<p>\begin{center}</p>
-<p>\begin{tikzpicture}[x=1cm, y=1cm, every node/.style={font=\sffamily}]</p>
-<p>% Left: Linux</p>
-<p>\begin{scope}[shift={(-4.4,0)}]</p>
-<p>\draw[rounded corners=2mm, fill=red!6, draw=newsred, line width=1.4pt] (-4.1,-3.2) rectangle (4.1,1.4);</p>
-<p>\node[font=\bfseries\normalsize\color{newsred}] at (0, 1.05) {\faLinux~MONOLITHIC KERNEL (Linux)};</p>
-<p>\draw[rounded corners=1mm, fill=white, draw=black, line width=0.8pt] (-3.8,0.2) rectangle (3.8,0.7);</p>
-<p>\node[font=\scriptsize\bfseries] at (0,0.45) {Ring 3 Userspace (Apps, Shell, GUI)};</p>
-<p>\draw[dashed, line width=1pt, color=newsred] (-3.9,-0.05) -- (3.9,-0.05);</p>
-<p>\node[font=\tiny\bfseries\color{newsred}, fill=red!6] at (0,-0.05) {RING 0 PRIVILEGE BOUNDARY};</p>
-<p>\draw[rounded corners=1mm, fill=red!15, draw=newsred, line width=1pt] (-3.8,-0.3) rectangle (3.8,-2.9);</p>
-<p>\node[font=\scriptsize\bfseries\color{newsred!90!black}] at (0,-0.55) {30,000,000+ Lines of Unsafe C};</p>
-<p>\node[draw=black, fill=white, rounded corners=1mm, font=\tiny\bfseries, minimum width=3.4cm, minimum height=0.48cm] at (-1.8,-1.05) {VFS \&amp; Filesystems};</p>
-<p>\node[draw=black, fill=white, rounded corners=1mm, font=\tiny\bfseries, minimum width=3.4cm, minimum height=0.48cm] at (1.8,-1.05) {TCP/IP Network Stack};</p>
-<p>\node[draw=black, fill=white, rounded corners=1mm, font=\tiny\bfseries, minimum width=3.4cm, minimum height=0.48cm] at (-1.8,-1.65) {DRM / GPU Drivers};</p>
-<p>\node[draw=newsred, fill=red!35, rounded corners=1mm, font=\tiny\bfseries\color{newsred}, minimum width=3.4cm, minimum height=0.48cm] at (1.8,-1.65) {\faExclamationTriangle~NVMe Driver (Bug!)};</p>
-<p>\node[draw=black, fill=white, rounded corners=1mm, font=\tiny\bfseries, minimum width=7.0cm, minimum height=0.48cm] at (0,-2.25) {Scheduler $\bullet$ Paging $\bullet$ IRQ Router $\bullet$ ACPI};</p>
-<p>\node[draw=newsred, fill=white, rounded corners=1mm, line width=1pt, font=\scriptsize\bfseries\color{newsred}] at (0,-2.68) {\faBomb~Null Pointer $\rightarrow$ <strong>KERNEL PANIC</strong>};</p>
-<p>\end{scope}</p>
-<p>% Right: Redox</p>
-<p>\begin{scope}[shift={(4.4,0)}]</p>
-<p>\draw[rounded corners=2mm, fill=newsgreen!6, draw=newsgreen, line width=1.4pt] (-4.1,-3.2) rectangle (4.1,1.4);</p>
-<p>\node[font=\bfseries\normalsize\color{newsgreen}] at (0, 1.05) {\faRust~REDOX MICROKERNEL};</p>
-<p>\draw[rounded corners=1mm, fill=white, draw=black, line width=0.8pt] (-3.8,0.2) rectangle (3.8,0.7);</p>
-<p>\node[font=\scriptsize\bfseries] at (0,0.45) {Ring 3 Userspace (Apps, Ion, Orbital GUI)};</p>
-<p>\draw[rounded corners=1mm, fill=newsgreen!12, draw=newsgreen, line width=1pt] (-3.8,-0.3) rectangle (3.8,-1.8);</p>
-<p>\node[font=\tiny\bfseries\color{newsgreen!90!black}] at (0,-0.55) {RING 3 USERSPACE SERVERS \&amp; DRIVERS};</p>
-<p>\node[draw=black, fill=white, rounded corners=1mm, font=\tiny\bfseries, minimum width=3.4cm, minimum height=0.48cm] at (-1.8,-1.05) {\texttt{file:} (RedoxFS)};</p>
-<p>\node[draw=black, fill=white, rounded corners=1mm, font=\tiny\bfseries, minimum width=3.4cm, minimum height=0.48cm] at (1.8,-1.05) {\texttt{tcp:} (smoltcp)};</p>
-<p>\node[draw=black, fill=white, rounded corners=1mm, font=\tiny\bfseries, minimum width=3.4cm, minimum height=0.48cm] at (-1.8,-1.55) {\texttt{orbital:} Display};</p>
-<p>\node[draw=newsrust, fill=orange!25, rounded corners=1mm, font=\tiny\bfseries\color{newsrust}, minimum width=3.4cm, minimum height=0.48cm] at (1.8,-1.55) {\faSync~NVMe Driver (Panic!)};</p>
-<p>\draw[dashed, line width=1pt, color=newsgreen] (-3.9,-2.0) -- (3.9,-2.0);</p>
-<p>\node[font=\tiny\bfseries\color{newsgreen}, fill=newsgreen!6] at (0,-2.0) {HARDWARE RING 0 BOUNDARY (SCHEME IPC)};</p>
-<p>\draw[rounded corners=1mm, fill=newsgreen!25, draw=newsgreen, line width=1.2pt] (-3.8,-2.2) rectangle (3.8,-3.0);</p>
-<p>\node[font=\scriptsize\bfseries\color{newsgreen!90!black}] at (0,-2.45) {\faRust~REDOX CORE ($\sim$20k LOC Safe Rust)};</p>
-<p>\node[font=\tiny\bfseries\color{inkblack}] at (0,-2.78) {Scheduler $\bullet$ Paging $\bullet$ Scheme IPC $\bullet$ IRQ Router};</p>
-<p>\end{scope}</p>
-<p>\end{tikzpicture}</p>
-<p>\end{center}</p>
-<p>\vspace{-6pt}</p>
-<p>\centerline{\normalsize <strong>Figure 1:</strong> Comparative Architectural Topology: Monolithic Blast Radius vs. Redox Userspace Fault Isolation.}</p>
-<p>\newpage</p>
-<p>% =========================================================================</p>
-<p>% PAGE 2: SCHEMES &amp; USERSPACE STACK</p>
-<p>% =========================================================================</p>
-<p>\begin{center}</p>
-<p>{\fontsize{20}{24}\selectfont <strong>\textsf{THE ARCHITECTURAL BLUEPRINT: PLAN 9 SCHEMES \&amp; RELIBC</strong>}} \\[2pt]</p>
-<p>{\normalsize <strong>\textit{Uniform URL Namespaces and 40-Byte Packet Dispatches Deliver Complete Process Sandboxing</strong>}}</p>
-<p>\end{center}</p>
-<p>\vspace{2pt}</p>
+<p><em>\[Vector Diagram — see compiled PDF\]</em></p>
+<p>\centerline{ <strong>Figure 1:</strong> Comparative Architectural Topology: Monolithic Blast Radius vs. Redox Userspace Fault Isolation.}</p>
+<p>{\fontsize{20}{24}\selectfont <strong>\textsf{THE ARCHITECTURAL BLUEPRINT: PLAN 9 SCHEMES &amp; RELIBC</strong>}} \\[2pt]</p>
+<p>{ <em><strong>Uniform URL Namespaces and 40-Byte Packet Dispatches Deliver Complete Process Sandboxing</strong></em>}</p>
 <p>{\color{inkblack}\hrule height 1pt}</p>
 <p>\begin{minipage}[t]{0.51\textwidth}</p>
-<h2>\large 1. Plan 9: ``Everything is a URL''</h2>
-<p>\small</p>
-<p>The classic Unix doctrine asserted that \textit{``everything is a file.''} Over time, this broke down into specialized syscalls, \texttt{ioctl} hacks, and proprietary netlink channels.</p>
+<h2> 1. Plan 9: ``Everything is a URL''</h2>
+<p>The classic Unix doctrine asserted that <em>`<code>everything is a file.''</em> Over time, this broke down into specialized syscalls, </code>ioctl` hacks, and proprietary netlink channels.</p>
 <p>Redox realizes the pure vision of Bell Labs' <strong>Plan 9</strong>: <strong>Everything is a URL scheme.</strong></p>
-<p>[leftmargin=12pt,itemsep=1pt]</p>
 <ul>
-<li>\texttt{file:/etc/passwd} $\rightarrow$ Handled by <strong>RedoxFS</strong>.</li>
-<li>\texttt{tcp:127.0.0.1:8080} $\rightarrow$ Intercepted by <strong>smoltcp</strong> daemon.</li>
-<li>\texttt{orbital:window/1} $\rightarrow$ Managed by <strong>Orbital</strong> window server.</li>
-<li>\texttt{event:} $\rightarrow$ Kernel multiplexed event scheme (epoll).</li>
-<li>\texttt{irq:34} $\rightarrow$ Hardware interrupt notification channel.</li>
+<li><code>file:/etc/passwd</code> <math aria-label="\rightarrow"><mrow><mo>&#x2192;</mo></mrow></math> Handled by <strong>RedoxFS</strong>.</li>
+<li><code>tcp:127.0.0.1:8080</code> <math aria-label="\rightarrow"><mrow><mo>&#x2192;</mo></mrow></math> Intercepted by <strong>smoltcp</strong> daemon.</li>
+<li><code>orbital:window/1</code> <math aria-label="\rightarrow"><mrow><mo>&#x2192;</mo></mrow></math> Managed by <strong>Orbital</strong> window server.</li>
+<li><code>event:</code> <math aria-label="\rightarrow"><mrow><mo>&#x2192;</mo></mrow></math> Kernel multiplexed event scheme (epoll).</li>
+<li><code>irq:34</code> <math aria-label="\rightarrow"><mrow><mo>&#x2192;</mo></mrow></math> Hardware interrupt notification channel.</li>
 </ul>
 <p>The kernel contains no driver logic; it checks capability handles and dispatches standardized 40-byte request packets.</p>
-<p>\vspace{3pt}</p>
 <p>\begin{newsterminal}{Scheme Packet C-ABI Layout}</p>
 <p>#[repr(C)]</p>
 <p>pub struct Packet {</p>
@@ -272,77 +111,30 @@
 <p>\end{minipage}</p>
 <p>\hfill</p>
 <p>\begin{minipage}[t]{0.46\textwidth}</p>
-<p>\vspace{8pt}</p>
-<p>\begin{center}</p>
-<p>\begin{tikzpicture}[scale=0.82, every node/.style={transform shape}]</p>
-<p>\node[draw=inkblack, fill=white, rounded corners=1.5mm, line width=1.2pt, font=\small\bfseries, minimum width=5.6cm, align=center] (app) at (0, 3.2) {</p>
-<p>\faTerminal~User Application (Ring 3) \\</p>
-<p>\texttt{\footnotesize open("tcp:1.1.1.1:80", O\_RDWR)}</p>
-<p>};</p>
-<p>\node[draw=newsrust, fill=orange!15, rounded corners=1.5mm, line width=1.3pt, font=\small\bfseries, minimum width=5.6cm, align=center] (kernel) at (0, 1.6) {</p>
-<p>\faCogs~Kernel Scheme Router (Ring 0) \\</p>
-<p>\footnotesize Check Capability $\rightarrow$ Enqueue Packet</p>
-<p>};</p>
-<p>\node[draw=newsblue, fill=blue!10, rounded corners=1.5mm, line width=1.3pt, font=\small\bfseries, minimum width=5.6cm, align=center] (daemon) at (0, 0.0) {</p>
-<p>\faNetworkWired~smoltcp Daemon (Ring 3) \\</p>
-<p>\footnotesize Dequeue $\rightarrow$ Allocate TCP Socket</p>
-<p>};</p>
-<p>\node[draw=inkblack, fill=gray!20, rounded corners=1.5mm, line width=1.2pt, font=\small\bfseries, minimum width=5.6cm, align=center] (hw) at (0, -1.3) {</p>
-<p>\faMicrochip~PCIe Ethernet NIC (Userspace MMIO)</p>
-<p>};</p>
-<p>\draw[-{Latex[length=2.5mm]}, line width=1.2pt, color=inkblack] (app) -- node[right, font=\tiny\bfseries\color{inkblack}] {Syscall Trap} (kernel);</p>
-<p>\draw[-{Latex[length=2.5mm]}, line width=1.2pt, color=newsrust] (kernel) -- node[right, font=\tiny\bfseries\color{newsrust}] {40-byte Packet} (daemon);</p>
-<p>\draw[-{Latex[length=2.5mm]}, line width=1.2pt, color=newsblue] (daemon) -- node[right, font=\tiny\bfseries\color{newsblue}] {MMIO Grant} (hw);</p>
-<p>\end{tikzpicture}</p>
-<p>\end{center}</p>
-<p>\vspace{-6pt}</p>
-<p>\centerline{\footnotesize <strong>Figure 2:</strong> Scheme Syscall Routing Pipeline.}</p>
+<p><em>\[Vector Diagram — see compiled PDF\]</em></p>
+<p>\centerline{ <strong>Figure 2:</strong> Scheme Syscall Routing Pipeline.}</p>
 <p>\end{minipage}</p>
-<p>\vspace{6pt}</p>
-<p>% The Userspace Stack Table (Fixed Column Spacing)</p>
 <p>\begin{newsbox}{\faLayerGroup~THE REDOX NATIVE USERSPACE ECOSYSTEM}</p>
-<p>\small</p>
-<p>\begin{tabularx}{\textwidth}{l l X}</p>
-<p>\toprule</p>
-<p><strong>Subsystem</strong> &amp; <strong>Implementation</strong> &amp; <strong>Technical Significance \&amp; Architecture</strong> \\</p>
-<p>\midrule</p>
-<p><strong>C Standard Lib</strong> &amp; \texttt{relibc} &amp; Pure safe Rust POSIX C library. Allows compiling legacy tools (\texttt{bash}, \texttt{curl}, \texttt{git}, \texttt{python}) without modifications. \\</p>
-<p>\addlinespace[3pt]</p>
-<p><strong>Filesystem</strong> &amp; \texttt{RedoxFS} &amp; Copy-on-Write (CoW) filesystem inspired by ZFS. Features cryptographic block checksums, atomic transactions, and instant snapshots. \\</p>
-<p>\addlinespace[3pt]</p>
-<p><strong>Command Shell</strong> &amp; \texttt{Ion Shell} &amp; Modern systems shell engineered for scripting clarity. Avoids POSIX shell gotchas and treats URL schemes as first-class paths. \\</p>
-<p>\addlinespace[3pt]</p>
-<p><strong>GUI Server</strong> &amp; \texttt{Orbital} &amp; Fast, lightweight compositor. Renders client sockets directly with zero screen tearing and minimal memory overhead. \\</p>
-<p>\addlinespace[3pt]</p>
-<p><strong>Desktop Toolkit</strong> &amp; \texttt{COSMIC} &amp; Co-developed with System76. Modern desktop built on \texttt{Iced} and \texttt{winit}, running identically on Linux and Redox. \\</p>
-<p>\bottomrule</p>
-<p>\end{tabularx}</p>
+<table><tr><th>Subsystem</th><th>Implementation</th><th>**Technical Significance \</th><th>Architecture**</th></tr><tr><td>C Standard Lib</td><td>relibc</td><td>Pure safe Rust POSIX C library. Allows compiling legacy tools (bash, curl, git, python) without modifications.</td></tr><tr><td>\addlinespace[3pt]
+Filesystem</td><td>RedoxFS</td><td>Copy-on-Write (CoW) filesystem inspired by ZFS. Features cryptographic block checksums, atomic transactions, and instant snapshots.</td></tr><tr><td>\addlinespace[3pt]
+Command Shell</td><td>Ion Shell</td><td>Modern systems shell engineered for scripting clarity. Avoids POSIX shell gotchas and treats URL schemes as first-class paths.</td></tr><tr><td>\addlinespace[3pt]
+GUI Server</td><td>Orbital</td><td>Fast, lightweight compositor. Renders client sockets directly with zero screen tearing and minimal memory overhead.</td></tr><tr><td>\addlinespace[3pt]
+Desktop Toolkit</td><td>COSMIC</td><td>Co-developed with System76. Modern desktop built on Iced and winit, running identically on Linux and Redox.</td></tr></table>
 <p>\end{newsbox}</p>
-<p>\newpage</p>
-<p>% =========================================================================</p>
-<p>% PAGE 3: REALITY CHECK &amp; READINESS INDEX</p>
-<p>% =========================================================================</p>
-<p>\begin{center}</p>
-<p>{\fontsize{20}{24}\selectfont <strong>\textsf{THE REALITY CHECK: THE MICROKERNEL TAX \&amp; BENCHMARKS</strong>}} \\[2pt]</p>
-<p>{\normalsize <strong>\textit{Context-Switch Latencies, Driver Gaps, and How to Boot Redox Under QEMU in 120 Seconds</strong>}}</p>
-<p>\end{center}</p>
-<p>\vspace{2pt}</p>
+<p>{\fontsize{20}{24}\selectfont <strong>\textsf{THE REALITY CHECK: THE MICROKERNEL TAX &amp; BENCHMARKS</strong>}} \\[2pt]</p>
+<p>{ <em><strong>Context-Switch Latencies, Driver Gaps, and How to Boot Redox Under QEMU in 120 Seconds</strong></em>}</p>
 <p>{\color{inkblack}\hrule height 1pt}</p>
-<p>\vspace{6pt}</p>
-<p>\begin{multicols}{2}</p>
-<h2>\large 3. The Dreaded Microkernel Tax</h2>
+<h2> 3. The Dreaded Microkernel Tax</h2>
 <p>Operating systems offer no free lunch. If microkernels are so resilient, why isn't every cloud server running Redox? The challenge is the <strong>Microkernel Tax</strong>:</p>
 <p>\begin{newsbox}{\faExclamationTriangle~THE IPC CONTEXT-SWITCH JOURNEY}</p>
-<p>In a monolithic kernel, \texttt{read()} traps into Ring 0 and directly queries the kernel page cache.</p>
+<p>In a monolithic kernel, <code>read()</code> traps into Ring 0 and directly queries the kernel page cache.</p>
 <p>In Redox, a non-cached disk read cascades across multiple user and kernel protection domains:</p>
-<p>\begin{center}</p>
-<p>\small <strong>App</strong> $\xrightarrow{\text{sys}}$ <strong>Kernel</strong> $\xrightarrow{\text{pkt}}$ <strong>RedoxFS</strong> $\xrightarrow{\text{pkt}}$ <strong>Kernel</strong> $\xrightarrow{\text{dma}}$ <strong>NVMe</strong></p>
-<p>\end{center}</p>
+<p><strong>App</strong> <math aria-label="\xrightarrow{\text{sys}}"><mrow>\xrightarrow{<mtext>sys</mtext>}</mrow></math> <strong>Kernel</strong> <math aria-label="\xrightarrow{\text{pkt}}"><mrow>\xrightarrow{<mtext>pkt</mtext>}</mrow></math> <strong>RedoxFS</strong> <math aria-label="\xrightarrow{\text{pkt}}"><mrow>\xrightarrow{<mtext>pkt</mtext>}</mrow></math> <strong>Kernel</strong> <math aria-label="\xrightarrow{\text{dma}}"><mrow>\xrightarrow{<mtext>dma</mtext>}</mrow></math> <strong>NVMe</strong></p>
 <p>Each hop requires switching page tables, invalidating TLBs, and thrashing CPU L1/L2 caches.</p>
 <p>\end{newsbox}</p>
 <p>Redox solves this with <strong>shared-memory circular ring buffers</strong>, allowing bulk streaming between daemons with zero syscall overhead once established.</p>
 <p>\columnbreak</p>
-<h2>\large 4. Hands-On: Booting in 120 Seconds</h2>
+<h2> 4. Hands-On: Booting in 120 Seconds</h2>
 <p>Redox has a streamlined build system powered by containerized toolchains and Cargo:</p>
 <p>\begin{newsterminal}{Booting Redox in QEMU}</p>
 <h1>Clone recursive source repository</h1>
@@ -353,127 +145,67 @@
 <h1>Compile &amp; launch inside QEMU</h1>
 <p>make qemu</p>
 <p>\end{newsterminal}</p>
-<p>\vspace{4pt}</p>
-<p>\begin{center}</p>
-<p>\begin{tikzpicture}[xscale=0.96, yscale=0.74]</p>
-<p>% Item 1</p>
-<p>\node[font=\small\bfseries\color{inkblack}, anchor=west] at (0, 3.4) {POSIX Compatibility (\texttt{relibc})};</p>
-<p>\draw[fill=gray!20, draw=inkblack, line width=0.8pt, rounded corners=1mm] (0, 2.6) rectangle (6.2, 3.1);</p>
-<p>\draw[fill=newsblue, draw=inkblack, line width=0.8pt, rounded corners=1mm] (0, 2.6) rectangle (5.08, 3.1);</p>
-<p>\node[font=\small\bfseries\color{white}, anchor=east] at (4.98, 2.85) {82\%};</p>
-<p>% Item 2</p>
-<p>\node[font=\small\bfseries\color{inkblack}, anchor=west] at (0, 2.1) {Kernel Stability \&amp; Memory Safety};</p>
-<p>\draw[fill=gray!20, draw=inkblack, line width=0.8pt, rounded corners=1mm] (0, 1.3) rectangle (6.2, 1.8);</p>
-<p>\draw[fill=newsgreen, draw=inkblack, line width=0.8pt, rounded corners=1mm] (0, 1.3) rectangle (5.89, 1.8);</p>
-<p>\node[font=\small\bfseries\color{white}, anchor=east] at (5.79, 1.55) {95\%};</p>
-<p>% Item 3</p>
-<p>\node[font=\small\bfseries\color{inkblack}, anchor=west] at (0, 0.8) {Bare-Metal Hardware Driver Coverage};</p>
-<p>\draw[fill=gray!20, draw=inkblack, line width=0.8pt, rounded corners=1mm] (0, 0.0) rectangle (6.2, 0.5);</p>
-<p>\draw[fill=newsrust, draw=inkblack, line width=0.8pt, rounded corners=1mm] (0, 0.0) rectangle (2.48, 0.5);</p>
-<p>\node[font=\small\bfseries\color{white}, anchor=east] at (2.38, 0.25) {40\%};</p>
-<p>\end{tikzpicture}</p>
-<p>\end{center}</p>
-<p>\vspace{-4pt}</p>
-<p>\centerline{\normalsize <strong>Figure 3:</strong> Redox Subsystem Readiness Index (2026).}</p>
-<p>\end{multicols}</p>
-<p>\vspace{6pt}</p>
+<p><em>\[Vector Diagram — see compiled PDF\]</em></p>
+<p>\centerline{ <strong>Figure 3:</strong> Redox Subsystem Readiness Index (2026).}</p>
 <p>\begin{newsbox}{\faMicrochip~HARDWARE SUPPORT REALITY CHECK}</p>
 <p>While Redox boots seamlessly under virtualized targets (QEMU, VirtualBox) and select hardware (Intel Gigabit Ethernet, NVMe SSDs, VESA/GOP displays), universal bare-metal laptop support (Wi-Fi 7, Bluetooth, sleep/wake power management) remains under heavy active development.</p>
 <p>\end{newsbox}</p>
-<p>\newpage</p>
-<p>% =========================================================================</p>
-<p>% PAGE 4: SATIRICAL BACKPAGE &amp; CLASSIFIEDS</p>
-<p>% =========================================================================</p>
-<p>\begin{center}</p>
-<p>{\fontsize{20}{24}\selectfont <strong>\textsf{SATIRE, THE VERDICT \&amp; BROADSHEET CLASSIFIEDS</strong>}} \\[2pt]</p>
-<p>{\normalsize <strong>\textit{Speculative Computing Fiction, the Systems Engineer's Verdict, and Market Want Ads</strong>}}</p>
-<p>\end{center}</p>
-<p>\vspace{2pt}</p>
+<p>{\fontsize{20}{24}\selectfont <strong>\textsf{SATIRE, THE VERDICT &amp; BROADSHEET CLASSIFIEDS</strong>}} \\[2pt]</p>
+<p>{ <em><strong>Speculative Computing Fiction, the Systems Engineer's Verdict, and Market Want Ads</strong></em>}</p>
 <p>{\color{inkblack}\hrule height 1pt}</p>
-<p>\vspace{6pt}</p>
-<p>% Satirical Feature: Redux OS</p>
-<p>\begin{tcolorbox}[</p>
-<p>colback=inkblack,</p>
-<p>colframe=newsrust,</p>
-<p>coltitle=white,</p>
-<p>colbacktitle=newsrust,</p>
-<p>fonttitle=\sffamily\bfseries\large,</p>
-<p>title={\faHistory~SATIRICAL BACKPAGE: WHAT IF ``REDUX OS'' ACTUALLY EXISTED?},</p>
-<p>arc=2mm,</p>
-<p>boxrule=1.8pt,</p>
-<p>left=10pt, right=10pt, top=6pt, bottom=6pt</p>
-<p>]</p>
-<p>\normalsize</p>
-<p>\begin{minipage}{0.56\textwidth}</p>
-<p>\textcolor{white}{<strong>SCANDAL IN THE SERVER ROOM:</strong>} \textcolor{gray!30}{Web developers have hijacked Ring 0 microcode. There are no registers. Page tables are banned. Physical motherboard state is updated through an immutable global store.}</p>
-<p>\vspace{3pt}</p>
-<p>\begin{lstlisting}[language=Java]</p>
-<p>// /kernel/root_reducer.js</p>
-<p>const kernelReducer = (state = initialOSState, action) =&gt; {</p>
-<p>switch (action.type) {</p>
-<p>case 'HARDWARE_IRQ_KEYPRESS':</p>
-<p>return {</p>
-<p>...state,</p>
-<p>stdinBuffer: [...state.stdinBuffer, action.payload.key],</p>
-<p>totalCycles: state.totalCycles + 1n</p>
-<p>};</p>
-<p>case 'PAGE_FAULT_TRAP':</p>
-<p>return allocateImmutablePage(state, action.payload.addr);</p>
-<p>default:</p>
-<p>return state;</p>
-<p>}</p>
-<p>};</p>
-<p>\end{lstlisting}</p>
-<p>\end{minipage}</p>
-<p>\hfill</p>
-<p>\begin{minipage}{0.40\textwidth}</p>
-<p>\begin{tcolorbox}[colback=white,colframe=newsrust,arc=1.5mm,boxrule=1.2pt,top=4pt,bottom=4pt,left=6pt,right=6pt]</p>
-<p>{\normalsize <strong>\textcolor{newsgreen</strong>{\faCheckCircle~PROMISED FEATURES}}}</p>
-<p>[leftmargin=12pt,itemsep=1pt]</p>
-<ul>
-<li>\small <strong>Time-Travel Syscalls:</strong> Call \texttt{os.undo()} to roll back your kernel before a segfault!</li>
-<li>\small <strong>Redux DevTools for CPU:</strong> Replay hardware interrupts frame-by-frame.</li>
-</ul>
-<p>\vspace{2pt}</p>
-<p>{\normalsize <strong>\textcolor{newsred</strong>{\faTimesCircle~CATASTROPHIC FLAWS}}}</p>
-<p>[leftmargin=12pt,itemsep=1pt]</p>
-<ul>
-<li>\small <strong>Memory O($\infty$):</strong> Deep-cloning system state 4 billion times a second vaporizes RAM.</li>
-<li>\small <strong>14-Minute Boot Time:</strong> While \texttt{npm install} downloads 48,000 kernel modules.</li>
-</ul>
-<p>\end{tcolorbox}</p>
+<div class="callout">minipage{0.56\textwidth}
+  white{SCANDAL IN THE SERVER ROOM:} gray!30{Web developers have hijacked Ring 0 microcode. There are no registers. Page tables are banned. Physical motherboard state is updated through an immutable global store.}
+  
+lstlisting[language=Java]
+// /kernel/root_reducer.js
+const kernelReducer = (state = initialOSState, action) =&gt; {
+  switch (action.type) {
+    case 'HARDWARE_IRQ_KEYPRESS':
+      return {
+        ...state,
+        stdinBuffer: [...state.stdinBuffer, action.payload.key],
+        totalCycles: state.totalCycles + 1n
+      };
+    case 'PAGE_FAULT_TRAP':
+      return allocateImmutablePage(state, action.payload.addr);
+    default:
+      return state;
+  }
+};
+lstlisting
+minipage
+\hfill
+minipage{0.40\textwidth}
+  tcolorbox[colback=white,colframe=newsrust,arc=1.5mm,boxrule=1.2pt,top=4pt,bottom=4pt,left=6pt,right=6pt]
+    { \textcolor{newsgreen{\faCheckCircle~PROMISED FEATURES}}}
+    itemize[leftmargin=12pt,itemsep=1pt]
+      - Time-Travel Syscalls: Call os.undo() to roll back your kernel before a segfault!
+      - Redux DevTools for CPU: Replay hardware interrupts frame-by-frame.
+    itemize
+    
+    { \textcolor{newsred{\faTimesCircle~CATASTROPHIC FLAWS}}}
+    itemize[leftmargin=12pt,itemsep=1pt]
+      - Memory O($\infty$): Deep-cloning system state 4 billion times a second vaporizes RAM.
+      - 14-Minute Boot Time: While npm install downloads 48,000 kernel modules.
+    itemize</div>
 <p>\end{minipage}</p>
 <p>\end{tcolorbox}</p>
-<p>\vspace{6pt}</p>
-<p>\begin{multicols}{2}</p>
-<h2>\large The Verdict for the Systems Engineer</h2>
+<h2> The Verdict for the Systems Engineer</h2>
 <p>Redox OS is not an academic curiosity or an abandoned toy kernel. It is a rigorous demonstration that modern language semantics (Rust's ownership and borrow checker) paired with hardware isolation primitives (microkernels) can construct a viable general-purpose Unix operating system.</p>
 <p>As hardware vulnerability surfaces (Rowhammer, Spectre, microarchitectural data sampling) continue to widen, isolating untrusted device drivers behind unprivileged Scheme boundaries may soon transition from an architectural luxury into an imperative necessity.</p>
 <p>\columnbreak</p>
-<p>\begin{newsbox}{\faLightbulb~RESOURCES \&amp; SOURCE REPOSITORY}</p>
-<p>[leftmargin=12pt,itemsep=2pt]</p>
+<p>\begin{newsbox}{\faLightbulb~RESOURCES &amp; SOURCE REPOSITORY}</p>
 <ul>
-<li><strong>GitLab Core:</strong> \url{https://gitlab.redox-os.org/redox-os/redox}</li>
-<li><strong>Redox Book:</strong> \url{https://doc.redox-os.org/book/}</li>
-<li><strong>C Library:</strong> \url{https://gitlab.redox-os.org/redox-os/relibc}</li>
-<li><strong>Window Server:</strong> \url{https://gitlab.redox-os.org/redox-os/orbital}</li>
+<li><strong>GitLab Core:</strong> <a href="https://gitlab.redox-os.org/redox-os/redox">https://gitlab.redox-os.org/redox-os/redox</a></li>
+<li><strong>Redox Book:</strong> <a href="https://doc.redox-os.org/book/">https://doc.redox-os.org/book/</a></li>
+<li><strong>C Library:</strong> <a href="https://gitlab.redox-os.org/redox-os/relibc">https://gitlab.redox-os.org/redox-os/relibc</a></li>
+<li><strong>Window Server:</strong> <a href="https://gitlab.redox-os.org/redox-os/orbital">https://gitlab.redox-os.org/redox-os/orbital</a></li>
 </ul>
 <p>\end{newsbox}</p>
-<p>\end{multicols}</p>
-<p>\vspace{4pt}</p>
-<p>% Broadsheet Classifieds</p>
-<p>\begin{center}</p>
-<p>{\small <strong>\textsf{THE BROADSHEET CLASSIFIEDS \&amp; WANT ADS</strong>}}</p>
-<p>\vspace{2pt}</p>
+<p>{ <strong>\textsf{THE BROADSHEET CLASSIFIEDS &amp; WANT ADS</strong>}}</p>
 <p>{\color{inkblack}\hrule height 0.5pt}</p>
-<p>\vspace{2pt}</p>
-<p>\begin{tabularx}{\textwidth}{@{} X | X | X @{}}</p>
-<p><strong>OBITUARY:</strong> Monolithic Kernel Crash Blast Radius (1991--2026). Passed away peacefully after being isolated into a Ring 3 userspace daemon. No flowers. &amp;</p>
-<p><strong>HELP WANTED:</strong> Talented Rust hackers with bare-metal PCI-Express experience to write Wi-Fi drivers. Payment in pure compile-time joy. &amp;</p>
-<p><strong>FOR SALE:</strong> 40-byte Scheme Packets. Unopened, zero memory allocations, C-ABI compliant. Inquire at \texttt{file:/dev/null}.</p>
-<p>\end{tabularx}</p>
-<p>\end{center}</p>
-<p>\end{document}</p></div><div id="tab-source" data-tab-panel hidden><pre><code>{
+<table><tr><th>X | X | X @{}}
+  OBITUARY: Monolithic Kernel Crash Blast Radius (1991--2026). Passed away peacefully after being isolated into a Ring 3 userspace daemon. No flowers.</th><th>HELP WANTED: Talented Rust hackers with bare-metal PCI-Express experience to write Wi-Fi drivers. Payment in pure compile-time joy.</th><th>FOR SALE: 40-byte Scheme Packets. Unopened, zero memory allocations, C-ABI compliant. Inquire at file:/dev/null.</th></tr></table></div><div id="tab-source" data-tab-panel hidden><pre><code>{
   "slug": "redox-os-microkernel-dossier",
   "title": "Redox OS: Microkernel Gazette &amp; Bare-Metal Hardware Dossier",
   "author": "Salvador Sena",

@@ -4,6 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>RAIS: Distributed Aperture Array for Atmospheric Gravity Waves | Sena Colectivo</title>
+<style>
+:root{--earth:#070a0f;--warm:#0d131c;--panel:#141d2b;--sand:#e8eef5;--muted:#9eb0c4;--faint:#6c8096;--terr:#4cc9f0;--gold:#4cc9f0;--sage:#f4a261;--border:rgba(76,201,240,.2);--serif:Fraunces,Georgia,'Times New Roman',serif;--sans:system-ui,-apple-system,sans-serif;--mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--earth);color:var(--sand);font-family:var(--sans);line-height:1.72}
+a{color:var(--gold)}.mast{border-bottom:2px solid var(--terr);padding:16px 24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--warm)}
+.brand{font-family:var(--serif);font-weight:900;color:var(--gold);font-size:20px;text-decoration:none}
+.wrap{max-width:980px;margin:auto;padding:34px 22px}
+.kicker,.meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.hero{background:var(--warm);border-bottom:1px solid var(--border)}
+h1{font-family:var(--serif);font-size:clamp(28px,4.5vw,44px);line-height:1.12;margin:10px 0 12px}
+h2{font-family:var(--serif);color:var(--gold);font-size:24px;margin-top:32px;border-bottom:1px solid var(--border);padding-bottom:6px}
+h3{font-family:var(--serif);font-size:19px;margin-top:22px}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{border:1px solid var(--border);background:var(--panel);color:var(--sand);padding:7px 12px;text-decoration:none;font-family:var(--mono);font-size:11px;text-transform:uppercase;cursor:pointer;border-radius:4px}
+.btn.sage{background:var(--gold);color:#06090e;border-color:var(--gold);font-weight:700}
+.callout,.eq-box{background:var(--warm);border:1px solid var(--border);border-left:4px solid var(--gold);padding:16px 20px;margin:20px 0;border-radius:6px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin:18px 0;background:var(--warm);font-size:14px}
+th,td{padding:10px 12px;border:1px solid var(--border);text-align:left;vertical-align:top}
+th{color:var(--gold);font-family:var(--mono);font-size:11px;text-transform:uppercase}
+pre{background:var(--panel);border:1px solid var(--border);padding:14px;border-radius:6px;overflow-x:auto;font-family:var(--mono);font-size:12.5px}
+code{font-family:var(--mono);font-size:0.9em}
+footer{border-top:1px solid var(--border);padding:24px;color:var(--faint);font-family:var(--mono);font-size:11px}
+</style>
 <link rel="stylesheet" href="/assets/css/subpage-theme.css">
 <script src="/assets/js/site.js" defer></script>
 
@@ -19,165 +41,52 @@
     <h1>RAIS: Distributed Aperture Array for Atmospheric Gravity Waves</h1>
     <div class="meta">Salvador Sena · Sena Colectivo</div>
     <nav class="nav">
+      <a class="btn" href="/publications/staging/">Staging Hub</a>
       <a class="btn" href="/publications/">All Publications</a>
-      <a class="btn" href="/">Home</a>
+      <a class="btn sage" href="/publications/rais-igw-aperture-array/rais_and_gravity_waves_paper.pdf" target="_blank" rel="noopener">Compiled PDF</a>
+      
     </nav>
   </div>
 </section>
 <main class="section">
   <div class="wrap">
     
-    <p>\documentclass[10pt,a4paper]{article}</p>
-<p>\usepackage[utf8]{inputenc}</p>
-<p>\usepackage[T1]{fontenc}</p>
-<p>\usepackage{lmodern}</p>
-<p>\usepackage[margin=0.8in]{geometry}</p>
-<p>\usepackage{amsmath,amssymb,amsfonts,mathtools}</p>
-<p>\usepackage{graphicx}</p>
-<p>\usepackage{booktabs}</p>
-<p>\usepackage{tabularx}</p>
-<p>\usepackage{xcolor}</p>
-<p>\usepackage{hyperref}</p>
-<p>\usepackage{fancyhdr}</p>
-<p>\usepackage{enumitem}</p>
-<p>\usepackage{microtype}</p>
-<p>\usepackage{listings}</p>
-<p>\usepackage{tikz}</p>
-<p>\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc}</p>
-<p>\usepackage[most]{tcolorbox}</p>
-<p>% Palette</p>
-<p>\definecolor{primary}{HTML}{0D47A1}      % Deep Blue</p>
-<p>\definecolor{secondary}{HTML}{1565C0}    % Mid Blue</p>
-<p>\definecolor{accent}{HTML}{D84315}       % Deep Orange</p>
-<p>\definecolor{darkslate}{HTML}{263238}    % Charcoal</p>
-<p>\definecolor{codebg}{HTML}{F5F7FA}       % Light Grey</p>
-<p>\definecolor{boxbg}{HTML}{F0F4F8}        % Very soft blue</p>
-<p>\definecolor{warmbg}{HTML}{FFF8E1}       % Soft Amber</p>
-<p>% Hyperref setup</p>
-<p>\hypersetup{</p>
-<p>colorlinks=true,</p>
-<p>linkcolor=primary,</p>
-<p>citecolor=primary,</p>
-<p>urlcolor=secondary,</p>
-<p>pdfauthor={Antigravity Science Lab},</p>
-<p>pdftitle={RAIS: Redundant Array of Inexpensive Sensors}</p>
-<p>}</p>
-<p>% Header / Footer</p>
-<p>\pagestyle{fancy}</p>
-<p>\fancyhf{}</p>
-<p>\fancyhead[L]{\small \textcolor{darkslate}{\textsf{RAIS: Redundant Array of Inexpensive Sensors}}}</p>
-<p>\fancyhead[R]{\small \textcolor{darkslate}{\textsf{\thepage}}}</p>
-<p>\fancyfoot[C]{\footnotesize \textcolor{gray}{Fluid Gravity Waves, EM Comparison \&amp; RAIS Architecture}}</p>
-<p>\renewcommand{\headrulewidth}{0.4pt}</p>
-<p>\renewcommand{\footrulewidth}{0.2pt}</p>
-<p>% Section styling</p>
-<p>\usepackage{titlesec}</p>
-<p>\titleformat{\section}</p>
-<p>{\color{primary}\normalfont\Large\bfseries}{\thesection}{1em}{}[\titlerule]</p>
-<p>\titleformat{\subsection}</p>
-<p>{\color{secondary}\normalfont\large\bfseries}{\thesubsection}{1em}{}</p>
-<p>% Custom Callout Boxes</p>
-<p>\newtcolorbox{conceptbox}[1][The RAIS Paradigm (Inspired by RAID)]{</p>
-<p>colback=boxbg,</p>
-<p>colframe=primary,</p>
-<p>fonttitle=\bfseries\color{white},</p>
-<p>colbacktitle=primary,</p>
-<p>title=#1,</p>
-<p>arc=2mm,</p>
-<p>boxrule=1pt,</p>
-<p>left=3mm,</p>
-<p>right=3mm,</p>
-<p>top=3mm,</p>
-<p>bottom=3mm</p>
-<p>}</p>
-<p>\newtcolorbox{physbox}[1][The Fundamental Physics Distinction]{</p>
-<p>colback=warmbg,</p>
-<p>colframe=accent,</p>
-<p>fonttitle=\bfseries\color{white},</p>
-<p>colbacktitle=accent,</p>
-<p>title=#1,</p>
-<p>arc=2mm,</p>
-<p>boxrule=1pt,</p>
-<p>left=3mm,</p>
-<p>right=3mm,</p>
-<p>top=3mm,</p>
-<p>bottom=3mm</p>
-<p>}</p>
-<p>\begin{document}</p>
-<p>% Title Block</p>
-<p>\begin{center}</p>
-<p>{\huge \bfseries \color{primary} RAIS: Redundant Array of Inexpensive Sensors}\\[1.5ex]</p>
-<p>{\Large \bfseries \color{secondary} Hardcore Physics of Atmospheric Gravity Waves, EM Analogs, and Spine Graph Parity}\\[2ex]</p>
-<p>{\normalsize <strong>Antigravity Autonomous Research Lab</strong> \quad $\cdot$ \quad \texttt{collectivo/science}}\\[1ex]</p>
-<p>{\small \today}</p>
-<p>\end{center}</p>
-<p>\vspace{1em}</p>
+    <p>{\huge \bfseries \color{primary} RAIS: Redundant Array of Inexpensive Sensors}\\[1.5ex]</p>
+<p>{ \bfseries \color{secondary} Hardcore Physics of Atmospheric Gravity Waves, EM Analogs, and Spine Graph Parity}\\[2ex]</p>
+<p>{ <strong>Antigravity Autonomous Research Lab</strong> \quad <math aria-label="\cdot"><mrow><mo>&#x22C5;</mo></mrow></math> \quad <code>collectivo/science</code>}\\[1ex]</p>
+<p>{ \today}</p>
 <p>\hrule height 1pt</p>
-<p>\vspace{1.5em}</p>
-<p>\begin{abstract}</p>
-<p>We introduce <strong>RAIS</strong> (\textit{Redundant Array of Inexpensive Sensors}), a fault-tolerant distributed sensor architecture inspired by computer storage RAID. RAIS deploys networks of low-cost magneto-acoustic tensioned string nodes (electric guitar pickups) to observe atmospheric fluid dynamics. We rigorously disentangle the physics of <strong>Atmospheric Gravity Waves</strong> (buoyancy oscillations where gravity acts as the restoring gradient on stratified fluid density), <strong>Electromagnetic Waves</strong> ($\mathrm{U}(1)$ gauge vectors), and <strong>General Relativistic Gravitational Waves</strong> (spacetime metric perturbations). We highlight the unique directional property of geophysical gravity waves—where phase velocity is strictly orthogonal to energy group velocity ($\vec{c}_p \cdot \vec{c}_g = 0$)—and formulate how RAIS-0 (spectral striping), RAIS-1 (geometric mirroring), and RAIS-5 (loop holonomy parity) achieve autonomous self-calibration and fault isolation.</p>
-<p>\end{abstract}</p>
-<p>\vspace{1em}</p>
-<h2>Disentangling Gravity Waves, EM Waves \&amp; Spacetime Waves</h2>
+<h2>Abstract</h2>
+<p>We introduce <strong>RAIS</strong> (<em>Redundant Array of Inexpensive Sensors</em>), a fault-tolerant distributed sensor architecture inspired by computer storage RAID. RAIS deploys networks of low-cost magneto-acoustic tensioned string nodes (electric guitar pickups) to observe atmospheric fluid dynamics. We rigorously disentangle the physics of <strong>Atmospheric Gravity Waves</strong> (buoyancy oscillations where gravity acts as the restoring gradient on stratified fluid density), <strong>Electromagnetic Waves</strong> (<math aria-label="\mathrm{U}(1)"><mrow><mtext>U</mtext>(1)</mrow></math> gauge vectors), and <strong>General Relativistic Gravitational Waves</strong> (spacetime metric perturbations). We highlight the unique directional property of geophysical gravity waves—where phase velocity is strictly orthogonal to energy group velocity (<math aria-label="\vec{c}_p \cdot \vec{c}_g = 0"><mrow><msub><mi>c&#x20D7;</mi><mi>p</mi></msub> <mo>&#x22C5;</mo><msub><mi>c&#x20D7;</mi><mi>g</mi></msub> = 0</mrow></math>)—and formulate how RAIS-0 (spectral striping), RAIS-1 (geometric mirroring), and RAIS-5 (loop holonomy parity) achieve autonomous self-calibration and fault isolation.</p>
+<h2>Disentangling Gravity Waves, EM Waves &amp; Spacetime Waves</h2>
 <p>\begin{physbox}[Comparison of Three Wave Mechanics]</p>
-<p>[leftmargin=*]</p>
 <ul>
-<li><strong>Electromagnetic Waves</strong> ($\mathrm{U}(1)$ Gauge Boson, Spin-1): Restoring mechanism is mutual induction between electric and magnetic fields ($\nabla \times \mathbf{E} = -\partial_t \mathbf{B}$). $\omega = c k$. Phase and group velocities are parallel ($\vec{c}_p \parallel \vec{c}_g$).</li>
-<li><strong>Fluid Gravity (Buoyancy) Waves</strong> (Geophysical Fluid Mechanics): Restoring force is <strong>gravity acting on stratified density gradients</strong> ($\mathbf{g} = -\nabla \Phi$). $\omega = N \cos\theta$. Phase velocity is perpendicular to energy group velocity ($\vec{c}_p \perp \vec{c}_g$).</li>
-<li><strong>Spacetime Gravitational Waves</strong> (General Relativity, Spin-2): Restoring mechanism is spacetime metric elasticity ($G_{\mu\nu} = 8\pi G T_{\mu\nu}$). $\omega = c k$, transverse-traceless quadrupolar.</li>
+<li><strong>Electromagnetic Waves</strong> (<math aria-label="\mathrm{U}(1)"><mrow><mtext>U</mtext>(1)</mrow></math> Gauge Boson, Spin-1): Restoring mechanism is mutual induction between electric and magnetic fields (<math aria-label="\nabla \times \mathbf{E} = -\partial_t \mathbf{B}"><mrow>\nabla <mo>&#x00D7;</mo>\mathbf{E} = -\<msub><mi>partial</mi><mi>t</mi></msub> \mathbf{B}</mrow></math>). <math aria-label="\omega = c k"><mrow>&#x03C9;= c k</mrow></math>. Phase and group velocities are parallel (<math aria-label="\vec{c}_p \parallel \vec{c}_g"><mrow><msub><mi>c&#x20D7;</mi><mi>p</mi></msub> \parallel <msub><mi>c&#x20D7;</mi><mi>g</mi></msub></mrow></math>).</li>
+<li><strong>Fluid Gravity (Buoyancy) Waves</strong> (Geophysical Fluid Mechanics): Restoring force is <strong>gravity acting on stratified density gradients</strong> (<math aria-label="\mathbf{g} = -\nabla \Phi"><mrow>\mathbf{g} = -\nabla \Phi</mrow></math>). <math aria-label="\omega = N \cos\theta"><mrow>&#x03C9;= N \cos\theta</mrow></math>. Phase velocity is perpendicular to energy group velocity (<math aria-label="\vec{c}_p \perp \vec{c}_g"><mrow><msub><mi>c&#x20D7;</mi><mi>p</mi></msub> \perp <msub><mi>c&#x20D7;</mi><mi>g</mi></msub></mrow></math>).</li>
+<li><strong>Spacetime Gravitational Waves</strong> (General Relativity, Spin-2): Restoring mechanism is spacetime metric elasticity (<math aria-label="G_{\mu\nu} = 8\pi G T_{\mu\nu}"><mrow><msub><mi>G</mi><mi>\mu\nu</mi></msub> = 8&#x03C0;G <msub><mi>T</mi><mi>\mu\nu</mi></msub></mrow></math>). <math aria-label="\omega = c k"><mrow>&#x03C9;= c k</mrow></math>, transverse-traceless quadrupolar.</li>
 </ul>
 <p>\end{physbox}</p>
 <h3>Mathematical Formulation of Atmospheric Gravity Waves</h3>
-<p>In an atmosphere with background potential temperature $\theta_0(z)$, hydrostatic equilibrium balances pressure against gravitational potential:</p>
-<p>$</p>
-<p>\nabla p_0 = -\rho_0 \nabla \Phi_{\text{grav}} = \rho_0 \mathbf{g}</p>
-<p>$</p>
-<p>When a parcel of air is displaced vertically by $\delta z$, the buoyancy restoring force per unit mass is:</p>
-<p>$</p>
-<p>F_{\text{buoyant}} = -g \frac{\rho'}{\rho_0} = g \frac{\theta'}{\theta_0} = -N^2 \delta z</p>
-<p>$</p>
-<p>where $N$ is the <strong>Brunt-V\"ais\"al\"a buoyancy frequency</strong>:</p>
-<p>$</p>
-<p>N = \sqrt{\frac{g}{\theta_0} \frac{\partial \theta_0}{\partial z}} \approx 0.01\text{--}0.02\text{ rad/s} \quad (\tau \sim 5\text{--}10\text{ min})</p>
-<p>$</p>
+<p>In an atmosphere with background potential temperature <math aria-label="\theta_0(z)"><mrow>\<msub><mi>theta</mi><mi>0</mi></msub>(z)</mrow></math>, hydrostatic equilibrium balances pressure against gravitational potential:</p>
+<div class="eq-box"><math display="block" aria-label="\nabla p_0 = -\rho_0 \nabla \Phi_{\text{grav}} = \rho_0 \mathbf{g}"><mrow>\nabla <msub><mi>p</mi><mi>0</mi></msub> = -<msub><mi>&#x03C1;</mi><mi>0</mi></msub> \nabla \<msub><mi>Phi</mi><mi><mtext>grav</mtext></mi></msub> = <msub><mi>&#x03C1;</mi><mi>0</mi></msub> \mathbf{g}</mrow></math><details style="margin-top:0.75rem"><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary><pre style="margin:0.5rem 0 0;overflow-x:auto"><code>\nabla p_0 = -\rho_0 \nabla \Phi_{\text{grav}} = \rho_0 \mathbf{g}</code></pre></details></div>
+<p>When a parcel of air is displaced vertically by <math aria-label="\delta z"><mrow>\delta z</mrow></math>, the buoyancy restoring force per unit mass is:</p>
+<div class="eq-box"><math display="block" aria-label="F_{\text{buoyant}} = -g \frac{\rho'}{\rho_0} = g \frac{\theta'}{\theta_0} = -N^2 \delta z"><mrow><msub><mi>F</mi><mi><mtext>buoyant</mtext></mi></msub> = -g <mfrac><mrow>&#x03C1;'</mrow><mrow><msub><mi>&#x03C1;</mi><mi>0</mi></msub></mrow></mfrac> = g <mfrac><mrow>\theta'</mrow><mrow>\<msub><mi>theta</mi><mi>0</mi></msub></mrow></mfrac> = -<msup><mi>N</mi><mn>2</mn></msup> \delta z</mrow></math><details style="margin-top:0.75rem"><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary><pre style="margin:0.5rem 0 0;overflow-x:auto"><code>F_{\text{buoyant}} = -g \frac{\rho'}{\rho_0} = g \frac{\theta'}{\theta_0} = -N^2 \delta z</code></pre></details></div>
+<p>where <math aria-label="N"><mrow>N</mrow></math> is the <strong>Brunt-V\"ais\"al\"a buoyancy frequency</strong>:</p>
+<div class="eq-box"><math display="block" aria-label="N = \sqrt{\frac{g}{\theta_0} \frac{\partial \theta_0}{\partial z}} \approx 0.01\text{--}0.02\text{ rad/s} \quad (\tau \sim 5\text{--}10\text{ min})"><mrow>N = \sqrt{<mfrac><mrow>g</mrow><mrow>\<msub><mi>theta</mi><mi>0</mi></msub></mrow></mfrac> <mfrac><mrow>\partial \<msub><mi>theta</mi><mi>0</mi></msub></mrow><mrow>\partial z</mrow></mfrac>} <mo>&#x2248;</mo>0.01<mtext>--</mtext>0.02<mtext> rad/s</mtext> \quad (\tau \sim 5<mtext>--</mtext>10<mtext> min</mtext>)</mrow></math><details style="margin-top:0.75rem"><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary><pre style="margin:0.5rem 0 0;overflow-x:auto"><code>N = \sqrt{\frac{g}{\theta_0} \frac{\partial \theta_0}{\partial z}} \approx 0.01\text{--}0.02\text{ rad/s} \quad (\tau \sim 5\text{--}10\text{ min})</code></pre></details></div>
 <h3>The Bizarre Directionality: $\vec{c</h3>
 <p>_p \cdot \vec{c}_g = 0$}</p>
 <p>Linearizing the Boussinesq Navier-Stokes equations yields the internal wave dispersion relation:</p>
-<p>$</p>
-<p>\omega^2 = \frac{N^2 (k_x^2 + k_y^2)}{k_x^2 + k_y^2 + k_z^2} = N^2 \frac{k_h^2}{k^2} = N^2 \cos^2(\theta)</p>
-<p>$</p>
-<p>The group velocity $\vec{c}_g = \nabla_{\mathbf{k}} \omega$ and phase velocity $\vec{c}_p = \frac{\omega}{k}\hat{k}$ satisfy:</p>
-<p>$</p>
-<p>\vec{c}_p \cdot \vec{c}_g = 0</p>
-<p>$</p>
+<div class="eq-box"><math display="block" aria-label="\omega^2 = \frac{N^2 (k_x^2 + k_y^2)}{k_x^2 + k_y^2 + k_z^2} = N^2 \frac{k_h^2}{k^2} = N^2 \cos^2(\theta)"><mrow><msup><mi>&#x03C9;</mi><mn>2</mn></msup> = <mfrac><mrow><msup><mi>N</mi><mn>2</mn></msup> (<msub><mi>k</mi><mi>x</mi></msub>^2 + <msub><mi>k</mi><mi>y</mi></msub>^2)</mrow><mrow><msub><mi>k</mi><mi>x</mi></msub>^2 + <msub><mi>k</mi><mi>y</mi></msub>^2 + <msub><mi>k</mi><mi>z</mi></msub>^2</mrow></mfrac> = <msup><mi>N</mi><mn>2</mn></msup> <mfrac><mrow><msub><mi>k</mi><mi>h</mi></msub>^2</mrow><mrow><msup><mi>k</mi><mn>2</mn></msup></mrow></mfrac> = <msup><mi>N</mi><mn>2</mn></msup> \<msup><mi>cos</mi><mn>2</mn></msup>(\theta)</mrow></math><details style="margin-top:0.75rem"><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary><pre style="margin:0.5rem 0 0;overflow-x:auto"><code>\omega^2 = \frac{N^2 (k_x^2 + k_y^2)}{k_x^2 + k_y^2 + k_z^2} = N^2 \frac{k_h^2}{k^2} = N^2 \cos^2(\theta)</code></pre></details></div>
+<p>The group velocity <math aria-label="\vec{c}_g = \nabla_{\mathbf{k}} \omega"><mrow><msub><mi>c&#x20D7;</mi><mi>g</mi></msub> = \nabla_{\mathbf{k}} &#x03C9;</mrow></math> and phase velocity <math aria-label="\vec{c}_p = \frac{\omega}{k}\hat{k}"><mrow><msub><mi>c&#x20D7;</mi><mi>p</mi></msub> = <mfrac><mrow>&#x03C9;</mrow><mrow>k</mrow></mfrac>\hat{k}</mrow></math> satisfy:</p>
+<div class="eq-box"><math display="block" aria-label="\vec{c}_p \cdot \vec{c}_g = 0"><mrow><msub><mi>c&#x20D7;</mi><mi>p</mi></msub> <mo>&#x22C5;</mo><msub><mi>c&#x20D7;</mi><mi>g</mi></msub> = 0</mrow></math><details style="margin-top:0.75rem"><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary><pre style="margin:0.5rem 0 0;overflow-x:auto"><code>\vec{c}_p \cdot \vec{c}_g = 0</code></pre></details></div>
 <p><strong>Physical Meaning</strong>: Phase wavefronts propagate diagonally downward, while the actual kinetic energy and momentum flux propagate diagonally upward into the stratosphere!</p>
 <h2>The RAIS Architecture (Redundant Array of Inexpensive Sensors)</h2>
-<p>\begin{conceptbox}[RAID Storage $\Longleftrightarrow$ RAIS Sensor Network]</p>
-<p>\begin{tabularx}{\textwidth}{lX}</p>
-<p>\toprule</p>
-<p><strong>RAID Storage Concept</strong> &amp; <strong>RAIS Physical Sensor Implementation</strong> \\</p>
-<p>\midrule</p>
-<p><strong>RAIS-0 (Striping)</strong> &amp; Deploying heterogeneous string gauges ($0.25\text{ mm}$ High-E, $0.45\text{ mm}$ D, $0.80\text{ mm}$ Low-E) at each node to seamlessly stripe dynamic range from $0.2\text{ m/s}$ to $50\text{ m/s}$. \\</p>
-<p><strong>RAIS-1 (Mirroring)</strong> &amp; Dual orthogonal string pairs at each node for instant cross-verification and continuous sensor health checks. \\</p>
-<p><strong>RAIS-5/6 (Parity Check)</strong> &amp; Closed-loop Spine Graph Holonomy $H = \prod_{\text{loop}} P_e \equiv I$. Parity defect $\|H - I\| &gt; 0$ flags and hot-isolates drifting or damaged nodes without network shutdown. \\</p>
-<p>\bottomrule</p>
-<p>\end{tabularx}</p>
+<p>\begin{conceptbox}[RAID Storage <math aria-label="\Longleftrightarrow"><mrow>\Longleftrightarrow</mrow></math> RAIS Sensor Network]</p>
+<table><tr><th>RAID Storage Concept</th><th>RAIS Physical Sensor Implementation</th></tr><tr><td>RAIS-0 (Striping)</td><td>Deploying heterogeneous string gauges ($0.25 mm$ High-E, $0.45 mm$ D, $0.80 mm$ Low-E) at each node to seamlessly stripe dynamic range from $0.2 m/s$ to $50 m/s$.</td></tr><tr><td>RAIS-1 (Mirroring)</td><td>Dual orthogonal string pairs at each node for instant cross-verification and continuous sensor health checks.</td></tr><tr><td>RAIS-5/6 (Parity Check)</td><td>Closed-loop Spine Graph Holonomy $H = \prod_{loop} P_e \equiv I$. Parity defect $\|H - I\| &gt; 0$ flags and hot-isolates drifting or damaged nodes without network shutdown.</td></tr></table>
 <p>\end{conceptbox}</p>
-<p>\begin{center}</p>
-<p>\begin{tikzpicture}[&gt;=Latex, font=\small]</p>
-<p>\node[draw, rectangle, fill=boxbg, thick, minimum width=2.5cm, minimum height=1.2cm] (N0) {RAIS Node 0};</p>
-<p>\node[draw, rectangle, fill=boxbg, thick, minimum width=2.5cm, minimum height=1.2cm, right=2.5cm of N0] (N1) {RAIS Node 1};</p>
-<p>\node[draw, rectangle, fill=warmbg, thick, minimum width=2.5cm, minimum height=1.2cm, below=1.8cm of N1] (N2) {RAIS Node 2 (Faulty)};</p>
-<p>\node[draw, rectangle, fill=boxbg, thick, minimum width=2.5cm, minimum height=1.2cm, below=1.8cm of N0] (N3) {RAIS Node 3};</p>
-<p>\draw[-&gt;, thick, primary] (N0) -- node[above] {$P_{10}$} (N1);</p>
-<p>\draw[-&gt;, thick, accent] (N1) -- node[right] {Parity Link $P_{21}$} (N2);</p>
-<p>\draw[-&gt;, thick, accent] (N2) -- node[below] {Defect $\|H-I\| &gt; 0$} (N3);</p>
-<p>\draw[-&gt;, thick, primary] (N3) -- node[left] {$P_{03}$} (N0);</p>
-<p>\end{tikzpicture}</p>
-<p>\end{center}</p>
-<h2>Summary \&amp; Impact for Distributed Research</h2>
+<p><em>\[Vector Diagram — see compiled PDF\]</em></p>
+<h2>Summary &amp; Impact for Distributed Research</h2>
 <p>By combining low-cost guitar strings, electromagnetic pickups, and active EBow self-calibration with the mathematical rigor of Spine Graph holonomy parity checks, RAIS demonstrates that a single researcher can design a continental-scale, fault-tolerant atmospheric sensing array at a tiny fraction of the cost of legacy meteorological stations.</p>
-<p>\end{document}</p>
   </div>
 </main>
 <footer><div class="wrap">Sena Colectivo · Pre-processed static artifact</div></footer>

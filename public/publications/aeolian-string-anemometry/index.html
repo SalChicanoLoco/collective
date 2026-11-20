@@ -4,6 +4,28 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Magneto-Acoustic Aeolian String Anemometry | Sena Colectivo</title>
+<style>
+:root{--earth:#070a0f;--warm:#0d131c;--panel:#141d2b;--sand:#e8eef5;--muted:#9eb0c4;--faint:#6c8096;--terr:#4cc9f0;--gold:#4cc9f0;--sage:#f4a261;--border:rgba(76,201,240,.2);--serif:Fraunces,Georgia,'Times New Roman',serif;--sans:system-ui,-apple-system,sans-serif;--mono:'IBM Plex Mono',ui-monospace,SFMono-Regular,Menlo,monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--earth);color:var(--sand);font-family:var(--sans);line-height:1.72}
+a{color:var(--gold)}.mast{border-bottom:2px solid var(--terr);padding:16px 24px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;background:var(--warm)}
+.brand{font-family:var(--serif);font-weight:900;color:var(--gold);font-size:20px;text-decoration:none}
+.wrap{max-width:980px;margin:auto;padding:34px 22px}
+.kicker,.meta{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.hero{background:var(--warm);border-bottom:1px solid var(--border)}
+h1{font-family:var(--serif);font-size:clamp(28px,4.5vw,44px);line-height:1.12;margin:10px 0 12px}
+h2{font-family:var(--serif);color:var(--gold);font-size:24px;margin-top:32px;border-bottom:1px solid var(--border);padding-bottom:6px}
+h3{font-family:var(--serif);font-size:19px;margin-top:22px}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{border:1px solid var(--border);background:var(--panel);color:var(--sand);padding:7px 12px;text-decoration:none;font-family:var(--mono);font-size:11px;text-transform:uppercase;cursor:pointer;border-radius:4px}
+.btn.sage{background:var(--gold);color:#06090e;border-color:var(--gold);font-weight:700}
+.callout,.eq-box{background:var(--warm);border:1px solid var(--border);border-left:4px solid var(--gold);padding:16px 20px;margin:20px 0;border-radius:6px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;margin:18px 0;background:var(--warm);font-size:14px}
+th,td{padding:10px 12px;border:1px solid var(--border);text-align:left;vertical-align:top}
+th{color:var(--gold);font-family:var(--mono);font-size:11px;text-transform:uppercase}
+pre{background:var(--panel);border:1px solid var(--border);padding:14px;border-radius:6px;overflow-x:auto;font-family:var(--mono);font-size:12.5px}
+code{font-family:var(--mono);font-size:0.9em}
+footer{border-top:1px solid var(--border);padding:24px;color:var(--faint);font-family:var(--mono);font-size:11px}
+</style>
 <link rel="stylesheet" href="/assets/css/subpage-theme.css">
 <script src="/assets/js/site.js" defer></script>
 
@@ -19,223 +41,85 @@
     <h1>Magneto-Acoustic Aeolian String Anemometry</h1>
     <div class="meta">Salvador Sena · Sena Colectivo</div>
     <nav class="nav">
+      <a class="btn" href="/publications/staging/">Staging Hub</a>
       <a class="btn" href="/publications/">All Publications</a>
-      <a class="btn" href="/">Home</a>
+      <a class="btn sage" href="/publications/aeolian-string-anemometry/aeolian_wind_harp_paper.pdf" target="_blank" rel="noopener">Compiled PDF</a>
+      
     </nav>
   </div>
 </section>
 <main class="section">
   <div class="wrap">
     
-    <p>\documentclass[10pt,a4paper]{article}</p>
-<p>\usepackage[utf8]{inputenc}</p>
-<p>\usepackage[T1]{fontenc}</p>
-<p>\usepackage{lmodern}</p>
-<p>\usepackage[margin=0.8in]{geometry}</p>
-<p>\usepackage{amsmath,amssymb,amsfonts,mathtools}</p>
-<p>\usepackage{graphicx}</p>
-<p>\usepackage{booktabs}</p>
-<p>\usepackage{tabularx}</p>
-<p>\usepackage{xcolor}</p>
-<p>\usepackage{hyperref}</p>
-<p>\usepackage{fancyhdr}</p>
-<p>\usepackage{enumitem}</p>
-<p>\usepackage{microtype}</p>
-<p>\usepackage{listings}</p>
-<p>\usepackage{tikz}</p>
-<p>\usetikzlibrary{arrows.meta,positioning,shapes.geometric,calc}</p>
-<p>\usepackage[most]{tcolorbox}</p>
-<p>% Palette</p>
-<p>\definecolor{primary}{HTML}{0D47A1}      % Deep Blue</p>
-<p>\definecolor{secondary}{HTML}{1565C0}    % Mid Blue</p>
-<p>\definecolor{accent}{HTML}{D84315}       % Deep Orange</p>
-<p>\definecolor{darkslate}{HTML}{263238}    % Charcoal</p>
-<p>\definecolor{codebg}{HTML}{F5F7FA}       % Light Grey</p>
-<p>\definecolor{boxbg}{HTML}{F0F4F8}        % Very soft blue</p>
-<p>\definecolor{warmbg}{HTML}{FFF8E1}       % Soft Amber</p>
-<p>% Hyperref setup</p>
-<p>\hypersetup{</p>
-<p>colorlinks=true,</p>
-<p>linkcolor=primary,</p>
-<p>citecolor=primary,</p>
-<p>urlcolor=secondary,</p>
-<p>pdfauthor={Antigravity Science Lab},</p>
-<p>pdftitle={Magneto-Acoustic Aeolian String Anemometry}</p>
-<p>}</p>
-<p>% Header / Footer</p>
-<p>\pagestyle{fancy}</p>
-<p>\fancyhf{}</p>
-<p>\fancyhead[L]{\small \textcolor{darkslate}{\textsf{Magneto-Acoustic Aeolian String Anemometry}}}</p>
-<p>\fancyhead[R]{\small \textcolor{darkslate}{\textsf{\thepage}}}</p>
-<p>\fancyfoot[C]{\footnotesize \textcolor{gray}{Solid-State 3D Wind \&amp; Turbulence Field Sensing}}</p>
-<p>\renewcommand{\headrulewidth}{0.4pt}</p>
-<p>\renewcommand{\footrulewidth}{0.2pt}</p>
-<p>% Section styling</p>
-<p>\usepackage{titlesec}</p>
-<p>\titleformat{\section}</p>
-<p>{\color{primary}\normalfont\Large\bfseries}{\thesection}{1em}{}[\titlerule]</p>
-<p>\titleformat{\subsection}</p>
-<p>{\color{secondary}\normalfont\large\bfseries}{\thesubsection}{1em}{}</p>
-<p>% Custom Callout Boxes</p>
-<p>\newtcolorbox{conceptbox}[1][The Core Innovation]{</p>
-<p>colback=boxbg,</p>
-<p>colframe=primary,</p>
-<p>fonttitle=\bfseries\color{white},</p>
-<p>colbacktitle=primary,</p>
-<p>title=#1,</p>
-<p>arc=2mm,</p>
-<p>boxrule=1pt,</p>
-<p>left=3mm,</p>
-<p>right=3mm,</p>
-<p>top=3mm,</p>
-<p>bottom=3mm</p>
-<p>}</p>
-<p>\newtcolorbox{physbox}[1][Physical Advantage over Propellers]{</p>
-<p>colback=warmbg,</p>
-<p>colframe=accent,</p>
-<p>fonttitle=\bfseries\color{white},</p>
-<p>colbacktitle=accent,</p>
-<p>title=#1,</p>
-<p>arc=2mm,</p>
-<p>boxrule=1pt,</p>
-<p>left=3mm,</p>
-<p>right=3mm,</p>
-<p>top=3mm,</p>
-<p>bottom=3mm</p>
-<p>}</p>
-<p>\begin{document}</p>
-<p>% Title Block</p>
-<p>\begin{center}</p>
-<p>{\huge \bfseries \color{primary} Magneto-Acoustic Aeolian String Anemometry}\\[1.5ex]</p>
-<p>{\Large \bfseries \color{secondary} Solid-State 3D Wind Vector \&amp; High-Frequency Turbulence Sensing via Electromagnetic Pickups}\\[2ex]</p>
-<p>{\normalsize <strong>Antigravity Autonomous Research Lab</strong> \quad $\cdot$ \quad \texttt{collectivo/science}}\\[1ex]</p>
-<p>{\small \today}</p>
-<p>\end{center}</p>
-<p>\vspace{1em}</p>
+    <p>{\huge \bfseries \color{primary} Magneto-Acoustic Aeolian String Anemometry}\\[1.5ex]</p>
+<p>{ \bfseries \color{secondary} Solid-State 3D Wind Vector &amp; High-Frequency Turbulence Sensing via Electromagnetic Pickups}\\[2ex]</p>
+<p>{ <strong>Antigravity Autonomous Research Lab</strong> \quad <math aria-label="\cdot"><mrow><mo>&#x22C5;</mo></mrow></math> \quad <code>collectivo/science</code>}\\[1ex]</p>
+<p>{ \today}</p>
 <p>\hrule height 1pt</p>
-<p>\vspace{1.5em}</p>
-<p>\begin{abstract}</p>
-<p>Traditional cup and propeller anemometers rely on mechanical rotation, suffering from severe rotational inertia ($\tau \sim 1\text{--}3\text{ s}$), bearing wear, freeze susceptibility, and an inability to resolve 3D updrafts or high-frequency micro-turbulence. We introduce <strong>Magneto-Acoustic Aeolian Anemometry</strong>: an array of tensioned ferromagnetic strings vibrating over electromagnetic coil pickups (analogous to electric guitar pickups). Fluid flow triggers Von K\'arm\'an vortex shedding at the Strouhal frequency $f_s = \mathrm{St} \frac{v_\perp}{d}$, exciting aeroelastic string harmonics and inducing an alternating electromotive force (EMF) via Faraday's Law $\mathcal{E}(t) = -\frac{d\Phi_B}{dt}$ at kilohertz bandwidth ($&gt; 10\text{ kHz}$). By arranging strings in a tri-axial tripod or tetrahedral configuration, we reconstruct the full 3D wind velocity vector $\vec{v}(t)$ and extract atmospheric turbulence spectra in real time without moving bearings.</p>
-<p>\end{abstract}</p>
-<p>\vspace{1em}</p>
+<h2>Abstract</h2>
+<p>Traditional cup and propeller anemometers rely on mechanical rotation, suffering from severe rotational inertia (<math aria-label="\tau \sim 1\text{--}3\text{ s}"><mrow>\tau \sim 1<mtext>--</mtext>3<mtext> s</mtext></mrow></math>), bearing wear, freeze susceptibility, and an inability to resolve 3D updrafts or high-frequency micro-turbulence. We introduce <strong>Magneto-Acoustic Aeolian Anemometry</strong>: an array of tensioned ferromagnetic strings vibrating over electromagnetic coil pickups (analogous to electric guitar pickups). Fluid flow triggers Von K\'arm\'an vortex shedding at the Strouhal frequency <math aria-label="f_s = \mathrm{St} \frac{v_\perp}{d}"><mrow><msub><mi>f</mi><mi>s</mi></msub> = <mtext>St</mtext> <mfrac><mrow>v_\perp</mrow><mrow>d</mrow></mfrac></mrow></math>, exciting aeroelastic string harmonics and inducing an alternating electromotive force (EMF) via Faraday's Law <math aria-label="\mathcal{E}(t) = -\frac{d\Phi_B}{dt}"><mrow>\mathcal{E}(t) = -<mfrac><mrow>d\<msub><mi>Phi</mi><mi>B</mi></msub></mrow><mrow>dt</mrow></mfrac></mrow></math> at kilohertz bandwidth (<math aria-label="&gt; 10\text{ kHz}"><mrow>> 10<mtext> kHz</mtext></mrow></math>). By arranging strings in a tri-axial tripod or tetrahedral configuration, we reconstruct the full 3D wind velocity vector <math aria-label="\vec{v}(t)"><mrow>v&#x20D7;(t)</mrow></math> and extract atmospheric turbulence spectra in real time without moving bearings.</p>
 <h2>Introduction: Beyond Mechanical Propellers</h2>
 <p>\begin{physbox}[Why Mechanical Spinning Propellers are Obsolete]</p>
-<p>[leftmargin=*]</p>
 <ul>
-<li><strong>Inertial Lag</strong>: Propeller mass acts as a low-pass filter, blinding the sensor to micro-gusts and acoustic vortex shedding ($&gt; 10\text{ Hz}$).</li>
+<li><strong>Inertial Lag</strong>: Propeller mass acts as a low-pass filter, blinding the sensor to micro-gusts and acoustic vortex shedding (<math aria-label="&gt; 10\text{ Hz}"><mrow>> 10<mtext> Hz</mtext></mrow></math>).</li>
 <li><strong>Bearing Degradation</strong>: Mechanical bearings freeze in winter, collect dust, and suffer frictional calibration drift.</li>
 <li><strong>1D/2D Projection</strong>: Vane propellers only align with horizontal flow, missing vertical updrafts, downdrafts, and 3D vortex tilt.</li>
 </ul>
 <p>\end{physbox}</p>
 <p>\begin{conceptbox}[The Electric Guitar Principle for Wind Sensing]</p>
 <p>Tensioned steel/nickel strings mounted over permanent magnets wrapped in fine copper coils generate millivolt signals directly proportional to string velocity:</p>
-<p>$</p>
-<p>\mathcal{E}(t) = -\frac{d\Phi_B}{dt} = -N \frac{d}{dt} \int \mathbf{B} \cdot d\mathbf{A}</p>
-<p>$</p>
+<div class="eq-box"><math display="block" aria-label="\mathcal{E}(t) = -\frac{d\Phi_B}{dt} = -N \frac{d}{dt} \int \mathbf{B} \cdot d\mathbf{A}"><mrow>\mathcal{E}(t) = -<mfrac><mrow>d\<msub><mi>Phi</mi><mi>B</mi></msub></mrow><mrow>dt</mrow></mfrac> = -N <mfrac><mrow>d</mrow><mrow>dt</mrow></mfrac> \int \mathbf{B} <mo>&#x22C5;</mo>d\mathbf{A}</mrow></math><details style="margin-top:0.75rem"><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary><pre style="margin:0.5rem 0 0;overflow-x:auto"><code>\mathcal{E}(t) = -\frac{d\Phi_B}{dt} = -N \frac{d}{dt} \int \mathbf{B} \cdot d\mathbf{A}</code></pre></details></div>
 <p>When air flows past the string, shedding vortices excite the string modes, converting fluid energy directly into electromagnetic signals at acoustic frequencies with <strong>zero moving bearings</strong>.</p>
 <p>\end{conceptbox}</p>
-<h2>Aeroacoustic \&amp; Electromagnetic Physics</h2>
-<p>\begin{center}</p>
-<p>\begin{tikzpicture}[&gt;=Latex, font=\small]</p>
-<p>% Airflow lines</p>
-<p>\draw[-&gt;, thick, secondary] (-3, 0.8) -- node[above] {Wind $\vec{v}$} (-1, 0.8);</p>
-<p>\draw[-&gt;, thick, secondary] (-3, 0) -- (-1, 0);</p>
-<p>\draw[-&gt;, thick, secondary] (-3, -0.8) -- (-1, -0.8);</p>
-<p>% String cylinder</p>
-<p>\draw[fill=darkslate, draw=black, thick] (0,0) circle (0.35cm);</p>
-<p>\node[above] at (0, 0.4) {String (Dia $d$)};</p>
-<p>% Von Karman Vortices</p>
-<p>\draw[-&gt;, thick, accent] (1.2, 0.5) arc (0:270:0.3);</p>
-<p>\draw[-&gt;, thick, accent] (2.2, -0.5) arc (180:450:0.3);</p>
-<p>\draw[-&gt;, thick, accent] (3.2, 0.5) arc (0:270:0.3);</p>
-<p>\node at (2.2, 1.0) {\textcolor{accent}{Von K\'arm\'an Vortex Street ($f_s$)}};</p>
-<p>% Magnetic Pickup</p>
-<p>\draw[fill=boxbg, draw=primary, thick] (0, -1.8) rectangle (0.8, -1.0);</p>
-<p>\node at (0.4, -1.4) {<strong>Pickup</strong>};</p>
-<p>\draw[-&gt;, primary, dashed] (0.4, -1.0) -- (0.2, -0.4);</p>
-<p>\node[right] at (0.8, -1.4) {$\mathcal{E}(t) \propto \dot{y}_{\text{string}}$};</p>
-<p>\end{tikzpicture}</p>
-<p>\end{center}</p>
-<h3>Vortex Shedding \&amp; Strouhal Law</h3>
-<p>For cross-flow over a cylindrical string of diameter $d$, vortices shed alternately at frequency:</p>
-<p>$</p>
-<p>f_s = \mathrm{St} \cdot \frac{v_\perp}{d}, \qquad \mathrm{St} \approx 0.20 \quad (\text{for } \mathrm{Re} \in [300, 10^5])</p>
-<p>$</p>
-<p>where $v_\perp = \|\vec{v} - (\vec{v} \cdot \hat{s})\hat{s}\|$ is the wind velocity component perpendicular to string unit axis $\hat{s}$.</p>
-<h3>String Harmonics \&amp; Aeroelastic Lock-In</h3>
-<p>A string of vibrating length $L$, tension $T$, and linear mass density $\mu$ possesses mechanical natural frequencies:</p>
-<p>$</p>
-<p>f_n = \frac{n}{2L} \sqrt{\frac{T}{\mu}}</p>
-<p>$</p>
-<p>When the vortex shedding frequency $f_s$ approaches an eigenmode $f_n$, <strong>lock-in resonance</strong> occurs, amplifying string displacement $y(t)$ and output voltage $\mathcal{E}(t)$ by the mechanical quality factor $Q \sim 30\text{--}100$.</p>
+<h2>Aeroacoustic &amp; Electromagnetic Physics</h2>
+<p><em>\[Vector Diagram — see compiled PDF\]</em></p>
+<h3>Vortex Shedding &amp; Strouhal Law</h3>
+<p>For cross-flow over a cylindrical string of diameter <math aria-label="d"><mrow>d</mrow></math>, vortices shed alternately at frequency:</p>
+<div class="eq-box"><math display="block" aria-label="f_s = \mathrm{St} \cdot \frac{v_\perp}{d}, \qquad \mathrm{St} \approx 0.20 \quad (\text{for } \mathrm{Re} \in [300, 10^5])"><mrow><msub><mi>f</mi><mi>s</mi></msub> = <mtext>St</mtext> <mo>&#x22C5;</mo><mfrac><mrow>v_\perp</mrow><mrow>d</mrow></mfrac>, \qquad <mtext>St</mtext> <mo>&#x2248;</mo>0.20 \quad (<mtext>for </mtext> <mtext>Re</mtext> \in [300, <msup><mi>10</mi><mn>5</mn></msup>])</mrow></math><details style="margin-top:0.75rem"><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary><pre style="margin:0.5rem 0 0;overflow-x:auto"><code>f_s = \mathrm{St} \cdot \frac{v_\perp}{d}, \qquad \mathrm{St} \approx 0.20 \quad (\text{for } \mathrm{Re} \in [300, 10^5])</code></pre></details></div>
+<p>where <math aria-label="v_\perp = \|\vec{v} - (\vec{v} \cdot \hat{s})\hat{s}\|"><mrow>v_\perp = \|v&#x20D7; - (v&#x20D7; <mo>&#x22C5;</mo>\hat{s})\hat{s}\|</mrow></math> is the wind velocity component perpendicular to string unit axis <math aria-label="\hat{s}"><mrow>\hat{s}</mrow></math>.</p>
+<h3>String Harmonics &amp; Aeroelastic Lock-In</h3>
+<p>A string of vibrating length <math aria-label="L"><mrow>L</mrow></math>, tension <math aria-label="T"><mrow>T</mrow></math>, and linear mass density <math aria-label="\mu"><mrow>\mu</mrow></math> possesses mechanical natural frequencies:</p>
+<div class="eq-box"><math display="block" aria-label="f_n = \frac{n}{2L} \sqrt{\frac{T}{\mu}}"><mrow><msub><mi>f</mi><mi>n</mi></msub> = <mfrac><mrow>n</mrow><mrow>2L</mrow></mfrac> \sqrt{<mfrac><mrow>T</mrow><mrow>\mu</mrow></mfrac>}</mrow></math><details style="margin-top:0.75rem"><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary><pre style="margin:0.5rem 0 0;overflow-x:auto"><code>f_n = \frac{n}{2L} \sqrt{\frac{T}{\mu}}</code></pre></details></div>
+<p>When the vortex shedding frequency <math aria-label="f_s"><mrow><msub><mi>f</mi><mi>s</mi></msub></mrow></math> approaches an eigenmode <math aria-label="f_n"><mrow><msub><mi>f</mi><mi>n</mi></msub></mrow></math>, <strong>lock-in resonance</strong> occurs, amplifying string displacement <math aria-label="y(t)"><mrow>y(t)</mrow></math> and output voltage <math aria-label="\mathcal{E}(t)"><mrow>\mathcal{E}(t)</mrow></math> by the mechanical quality factor <math aria-label="Q \sim 30\text{--}100"><mrow>Q \sim 30<mtext>--</mtext>100</mrow></math>.</p>
 <h2>3D Tri-Axial Tripod Reconstruction</h2>
-<p>To resolve the complete 3D velocity vector $\vec{v} = [v_x, v_y, v_z]^T$, we configure three non-coplanar strings $\hat{s}_1, \hat{s}_2, \hat{s}_3$ in a symmetric tripod ($120^\circ$ azimuth, $35.26^\circ$ elevation).</p>
-<p>\begin{table}[h!]</p>
-<p>\centering</p>
-<p>\small</p>
-<p>\begin{tabularx}{\textwidth}{lccccr}</p>
-<p>\toprule</p>
-<p><strong>Test Wind Condition</strong> &amp; <strong>True $\vec{v</strong>$ (m/s)} &amp; <strong>True Speed</strong> &amp; <strong>Reconstructed $\vec{v</strong>$} &amp; <strong>Error</strong> &amp; <strong>Peak Harmonics</strong> \\</p>
-<p>\midrule</p>
-<p>Gentle Crosswind (X-axis) &amp; $[4.00, 0.00, 0.00]$ &amp; $4.00\text{ m/s}$ &amp; $[4.00, 0.00, 0.00]$ &amp; $0.000\text{ m/s}$ &amp; $1.15\text{ kHz}, 1.82\text{ kHz}$ \\</p>
-<p>3D Gust with Updraft &amp; $[8.50, 6.20, 3.10]$ &amp; $10.97\text{ m/s}$ &amp; $[8.50, 6.20, 3.10]$ &amp; $0.000\text{ m/s}$ &amp; $3.31\text{ kHz}, 5.32\text{ kHz}$ \\</p>
-<p>Storm Vortex Core &amp; $[18.00, -12.50, 4.50]$ &amp; $22.37\text{ m/s}$ &amp; $[18.00, -12.50, 4.50]$ &amp; $0.000\text{ m/s}$ &amp; $7.08\text{ kHz}, 11.00\text{ kHz}$ \\</p>
-<p>\bottomrule</p>
-<p>\end{tabularx}</p>
-<p>\caption{Reconstruction precision of 3D wind velocity vector from the 3-channel pickup array.}</p>
-<p>\label{tab:aeolian}</p>
-<p>\end{table}</p>
+<p>To resolve the complete 3D velocity vector <math aria-label="\vec{v} = [v_x, v_y, v_z]^T"><mrow>v&#x20D7; = [<msub><mi>v</mi><mi>x</mi></msub>, <msub><mi>v</mi><mi>y</mi></msub>, <msub><mi>v</mi><mi>z</mi></msub>]^T</mrow></math>, we configure three non-coplanar strings <math aria-label="\hat{s}_1, \hat{s}_2, \hat{s}_3"><mrow>\hat{s}_1, \hat{s}_2, \hat{s}_3</mrow></math> in a symmetric tripod (<math aria-label="120^\circ"><mrow>120^\circ</mrow></math> azimuth, <math aria-label="35.26^\circ"><mrow>35.26^\circ</mrow></math> elevation).</p>
+<table><tr><th>Test Wind Condition</th><th>True $\vec{v$ (m/s)}</th><th>True Speed</th><th>Reconstructed $\vec{v$}</th><th>Error</th><th>Peak Harmonics</th></tr><tr><td>Gentle Crosswind (X-axis)</td><td>$[4.00, 0.00, 0.00]$</td><td>$4.00 m/s$</td><td>$[4.00, 0.00, 0.00]$</td><td>$0.000 m/s$</td><td>$1.15 kHz, 1.82 kHz$</td></tr><tr><td>3D Gust with Updraft</td><td>$[8.50, 6.20, 3.10]$</td><td>$10.97 m/s$</td><td>$[8.50, 6.20, 3.10]$</td><td>$0.000 m/s$</td><td>$3.31 kHz, 5.32 kHz$</td></tr><tr><td>Storm Vortex Core</td><td>$[18.00, -12.50, 4.50]$</td><td>$22.37 m/s$</td><td>$[18.00, -12.50, 4.50]$</td><td>$0.000 m/s$</td><td>$7.08 kHz, 11.00 kHz$</td></tr></table>
 <h2>Active Self-Calibration: The Closed-Loop EBow Principle</h2>
-<p>A key challenge in string anemometry is thermal expansion: ambient temperature fluctuations shift string baseline tension $T$ and natural frequencies $f_n$.</p>
-<p>\begin{conceptbox}[Closed-Loop Electromagnetic Plink \&amp; Ring-Down Calibration]</p>
+<p>A key challenge in string anemometry is thermal expansion: ambient temperature fluctuations shift string baseline tension <math aria-label="T"><mrow>T</mrow></math> and natural frequencies <math aria-label="f_n"><mrow><msub><mi>f</mi><mi>n</mi></msub></mrow></math>.</p>
+<p>\begin{conceptbox}[Closed-Loop Electromagnetic Plink &amp; Ring-Down Calibration]</p>
 <p>Rather than adding external tension sensors, we exploit the pickup coils in dual send/receive mode (analogous to an <strong>EBow</strong> or <strong>Sustainiac driver</strong>):</p>
-<p>\begin{enumerate}</p>
 <ul>
-<li><strong>Active Drive Ping</strong>: The coil emits a $20\text{--}50\text{ ms}$ magnetic pulse, physically plucking the string.</li>
-<li><strong>Free Decay Listening</strong>: The pickup captures the mechanical ring-down pitch $f_1$.</li>
+<li><strong>Active Drive Ping</strong>: The coil emits a <math aria-label="20\text{--}50\text{ ms}"><mrow>20<mtext>--</mtext>50<mtext> ms</mtext></mrow></math> magnetic pulse, physically plucking the string.</li>
+<li><strong>Free Decay Listening</strong>: The pickup captures the mechanical ring-down pitch <math aria-label="f_1"><mrow><msub><mi>f</mi><mi>1</mi></msub></mrow></math>.</li>
 <li><strong>Exact Tension Inversion</strong>:</li>
 </ul>
-<p>$</p>
-<p>T = 4 L^2 \mu f_1^2</p>
-<p>$</p>
-<p>achieving real-time tension recalibration to $&lt; 0.15\text{ N}$ precision without external strain gauges.</p>
-<p>\end{enumerate}</p>
+<div class="eq-box"><math display="block" aria-label="T = 4 L^2 \mu f_1^2"><mrow>T = 4 <msup><mi>L</mi><mn>2</mn></msup> \mu <msub><mi>f</mi><mi>1</mi></msub>^2</mrow></math><details style="margin-top:0.75rem"><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary><pre style="margin:0.5rem 0 0;overflow-x:auto"><code>T = 4 L^2 \mu f_1^2</code></pre></details></div>
+<p>achieving real-time tension recalibration to <math aria-label="&lt; 0.15\text{ N}"><mrow>< 0.15<mtext> N</mtext></mrow></math> precision without external strain gauges.</p>
 <p>\end{conceptbox}</p>
 <h2>Multi-Pickup Spatial Harmonic Filtering</h2>
-<p>By placing three pickups along the string—<strong>Bridge</strong> ($x = 0.15 L$), <strong>Middle</strong> ($x = 0.50 L$), and <strong>Neck</strong> ($x = 0.85 L$)—we perform spatial harmonic comb filtering:</p>
-<p>$</p>
-<p>y(x_k, t) = \sum_{n=1}^{\infty} A_n \sin\left(\frac{n \pi x_k}{L}\right) \cos(\omega_n t + \phi_n)</p>
-<p>$</p>
+<p>By placing three pickups along the string—<strong>Bridge</strong> (<math aria-label="x = 0.15 L"><mrow>x = 0.15 L</mrow></math>), <strong>Middle</strong> (<math aria-label="x = 0.50 L"><mrow>x = 0.50 L</mrow></math>), and <strong>Neck</strong> (<math aria-label="x = 0.85 L"><mrow>x = 0.85 L</mrow></math>)—we perform spatial harmonic comb filtering:</p>
+<div class="eq-box"><math display="block" aria-label="y(x_k, t) = \sum_{n=1}^{\infty} A_n \sin\left(\frac{n \pi x_k}{L}\right) \cos(\omega_n t + \phi_n)"><mrow>y(<msub><mi>x</mi><mi>k</mi></msub>, t) = <msub><mi>&#x2211;</mi><mi>n=1</mi></msub>^{\infty} <msub><mi>A</mi><mi>n</mi></msub> \sin<mo>&#x2264;</mo>ft(<mfrac><mrow>n <msub><mi>&#x03C0;x</mi><mi>k</mi></msub></mrow><mrow>L</mrow></mfrac>\right) \cos(<msub><mi>&#x03C9;</mi><mi>n</mi></msub> t + \<msub><mi>phi</mi><mi>n</mi></msub>)</mrow></math><details style="margin-top:0.75rem"><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary><pre style="margin:0.5rem 0 0;overflow-x:auto"><code>y(x_k, t) = \sum_{n=1}^{\infty} A_n \sin\left(\frac{n \pi x_k}{L}\right) \cos(\omega_n t + \phi_n)</code></pre></details></div>
 <p>Furthermore, the phase lag between Bridge and Neck coils:</p>
-<p>$</p>
-<p>\Delta \phi = \omega \frac{\Delta x}{c_{\text{string}}}, \qquad c_{\text{string}} = \sqrt{\frac{T}{\mu}}</p>
-<p>$</p>
-<p>detects traveling wave energy, immediately breaking the $180^\circ$ upstream/downstream wind direction ambiguity.</p>
-<h2>Audio Sonification \&amp; Ultrasonic Heterodyne Downconversion</h2>
-<p>For high-speed storms ($v &gt; 25\text{ m/s}$) or ultra-fine wire gauges ($d &lt; 0.25\text{ mm}$), the vortex shedding frequency enters the ultrasonic domain ($f_s &gt; 20\text{ kHz}$):</p>
-<p>$</p>
-<p>f_s = \mathrm{St} \cdot \frac{v_\perp}{d} \approx 0.20 \cdot \frac{30\text{ m/s}}{0.00025\text{ m}} = 24,000\text{ Hz}</p>
-<p>$</p>
+<div class="eq-box"><math display="block" aria-label="\Delta \phi = \omega \frac{\Delta x}{c_{\text{string}}}, \qquad c_{\text{string}} = \sqrt{\frac{T}{\mu}}"><mrow>&#x0394;\phi = &#x03C9;\frac{&#x0394;x}{<msub><mi>c</mi><mi><mtext>string</mtext></mi></msub>}, \qquad <msub><mi>c</mi><mi><mtext>string</mtext></mi></msub> = \sqrt{<mfrac><mrow>T</mrow><mrow>\mu</mrow></mfrac>}</mrow></math><details style="margin-top:0.75rem"><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary><pre style="margin:0.5rem 0 0;overflow-x:auto"><code>\Delta \phi = \omega \frac{\Delta x}{c_{\text{string}}}, \qquad c_{\text{string}} = \sqrt{\frac{T}{\mu}}</code></pre></details></div>
+<p>detects traveling wave energy, immediately breaking the <math aria-label="180^\circ"><mrow>180^\circ</mrow></math> upstream/downstream wind direction ambiguity.</p>
+<h2>Audio Sonification &amp; Ultrasonic Heterodyne Downconversion</h2>
+<p>For high-speed storms (<math aria-label="v &gt; 25\text{ m/s}"><mrow>v > 25<mtext> m/s</mtext></mrow></math>) or ultra-fine wire gauges (<math aria-label="d &lt; 0.25\text{ mm}"><mrow>d < 0.25<mtext> mm</mtext></mrow></math>), the vortex shedding frequency enters the ultrasonic domain (<math aria-label="f_s &gt; 20\text{ kHz}"><mrow><msub><mi>f</mi><mi>s</mi></msub> > 20<mtext> kHz</mtext></mrow></math>):</p>
+<div class="eq-box"><math display="block" aria-label="f_s = \mathrm{St} \cdot \frac{v_\perp}{d} \approx 0.20 \cdot \frac{30\text{ m/s}}{0.00025\text{ m}} = 24,000\text{ Hz}"><mrow><msub><mi>f</mi><mi>s</mi></msub> = <mtext>St</mtext> <mo>&#x22C5;</mo><mfrac><mrow>v_\perp</mrow><mrow>d</mrow></mfrac> <mo>&#x2248;</mo>0.20 <mo>&#x22C5;</mo>\frac{30<mtext> m/s</mtext>}{0.00025<mtext> m</mtext>} = 24,000<mtext> Hz</mtext></mrow></math><details style="margin-top:0.75rem"><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary><pre style="margin:0.5rem 0 0;overflow-x:auto"><code>f_s = \mathrm{St} \cdot \frac{v_\perp}{d} \approx 0.20 \cdot \frac{30\text{ m/s}}{0.00025\text{ m}} = 24,000\text{ Hz}</code></pre></details></div>
 <p>To enable acoustic monitoring and human sonification, we apply <strong>heterodyne frequency mixing</strong>:</p>
-<p>$</p>
-<p>s_{\text{audio}}(t) = \left[ s_{\text{HF}}(t) \cdot \cos(2\pi f_{\text{LO}} t) \right] \ast h_{\text{LPF}}(t)</p>
-<p>$</p>
-<p>mixing the $24\text{ kHz}$ ultrasonic vortex scream down to an audible $2.5\text{ kHz}$ baseband.</p>
+<div class="eq-box"><math display="block" aria-label="s_{\text{audio}}(t) = \left[ s_{\text{HF}}(t) \cdot \cos(2\pi f_{\text{LO}} t) \right] \ast h_{\text{LPF}}(t)"><mrow><msub><mi>s</mi><mi><mtext>audio</mtext></mi></msub>(t) = <mo>&#x2264;</mo>ft[ <msub><mi>s</mi><mi><mtext>HF</mtext></mi></msub>(t) <mo>&#x22C5;</mo>\cos(<msub><mi>2&#x03C0;f</mi><mi><mtext>LO</mtext></mi></msub> t) \right] \ast <msub><mi>h</mi><mi><mtext>LPF</mtext></mi></msub>(t)</mrow></math><details style="margin-top:0.75rem"><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary><pre style="margin:0.5rem 0 0;overflow-x:auto"><code>s_{\text{audio}}(t) = \left[ s_{\text{HF}}(t) \cdot \cos(2\pi f_{\text{LO}} t) \right] \ast h_{\text{LPF}}(t)</code></pre></details></div>
+<p>mixing the <math aria-label="24\text{ kHz}"><mrow>24<mtext> kHz</mtext></mrow></math> ultrasonic vortex scream down to an audible <math aria-label="2.5\text{ kHz}"><mrow>2.5<mtext> kHz</mtext></mrow></math> baseband.</p>
 <h2>Dual-Modal Fusion: EM Pickups vs. Acoustic Microphones</h2>
 <p>Deploying an electromagnetic pickup alongside an external MEMS microphone provides powerful <strong>common-mode acoustic noise rejection</strong>:</p>
 <ul>
-<li><strong>Electromagnetic Pickup</strong>: Samples solely the string's mechanical velocity $\dot{y}(t)$. Completely immune to airborne acoustic noise (horns, sirens, traffic) because acoustic air pressure does not magnetize the coil.</li>
-<li><strong>Microphone</strong>: Captures ambient acoustic pressure $p_{\text{acoustic}}(t)$.</li>
-<li><strong>Coherence Fusion Filter</strong>: When cross-spectral coherence $\gamma^2(f) = \frac{|S_{EM, Mic}(f)|^2}{S_{EM}(f) S_{Mic}(f)} \approx 1.0$, the event is validated as a genuine fluid-dynamic vortex. External loud sirens ($\gamma^2 \to 0$ or low EM admittance) are filtered out immediately.</li>
+<li><strong>Electromagnetic Pickup</strong>: Samples solely the string's mechanical velocity <math aria-label="\dot{y}(t)"><mrow>\dot{y}(t)</mrow></math>. Completely immune to airborne acoustic noise (horns, sirens, traffic) because acoustic air pressure does not magnetize the coil.</li>
+<li><strong>Microphone</strong>: Captures ambient acoustic pressure <math aria-label="p_{\text{acoustic}}(t)"><mrow><msub><mi>p</mi><mi><mtext>acoustic</mtext></mi></msub>(t)</mrow></math>.</li>
+<li><strong>Coherence Fusion Filter</strong>: When cross-spectral coherence <math aria-label="\gamma^2(f) = \frac{|S_{EM, Mic}(f)|^2}{S_{EM}(f) S_{Mic}(f)} \approx 1.0"><mrow>\<msup><mi>gamma</mi><mn>2</mn></msup>(f) = \frac{|<msub><mi>S</mi><mi>EM, Mic</mi></msub>(f)|^2}{<msub><mi>S</mi><mi>EM</mi></msub>(f) <msub><mi>S</mi><mi>Mic</mi></msub>(f)} <mo>&#x2248;</mo>1.0</mrow></math>, the event is validated as a genuine fluid-dynamic vortex. External loud sirens (<math aria-label="\gamma^2 \to 0"><mrow>\<msup><mi>gamma</mi><mn>2</mn></msup> <mo>&#x2192;</mo>0</mrow></math> or low EM admittance) are filtered out immediately.</li>
 </ul>
-<h2>Psychrometric Humidity \&amp; Air Density ($\rho_{\text{moist</h2>
+<h2>Psychrometric Humidity &amp; Air Density ($\rho_{\text{moist</h2>
 <p>}$) Calibration}</p>
-<p>Humid air is <strong>less dense</strong> than dry air because water vapor ($M_{\mathrm{H}_2\mathrm{O}} \approx 18\text{ g/mol}$) is lighter than diatomic nitrogen and oxygen ($M_{\text{dry}} \approx 28.97\text{ g/mol}$). The exact moist air density is given by the psychrometric formula:</p>
-<p>$</p>
-<p>\rho(T, p, \mathrm{RH}) = \frac{p_d}{R_d T} + \frac{p_v}{R_v T} = \frac{p - \phi p_{\text{sat}}(T)}{R_d T} + \frac{\phi p_{\text{sat}}(T)}{R_v T}</p>
-<p>$</p>
-<p>At $35^\circ\text{C}$ and $95\%$ relative humidity, air density decreases by nearly $2.0\%$, shifting dynamic lift forces $F_L = \frac{1}{2}\rho v^2 C_L$. Furthermore, near $100\%$ RH dew point condensation, water micro-droplets add mass $\Delta \mu$ to the wire, which our active EBow plink detects and recalibrates in real time.</p>
-<p>\end{document}</p>
+<p>Humid air is <strong>less dense</strong> than dry air because water vapor (<math aria-label="M_{\mathrm{H}_2\mathrm{O}} \approx 18\text{ g/mol}"><mrow><msub><mi>M</mi><mi><mtext>H</mtext>_2<mtext>O</mtext></mi></msub> <mo>&#x2248;</mo>18<mtext> g/mol</mtext></mrow></math>) is lighter than diatomic nitrogen and oxygen (<math aria-label="M_{\text{dry}} \approx 28.97\text{ g/mol}"><mrow><msub><mi>M</mi><mi><mtext>dry</mtext></mi></msub> <mo>&#x2248;</mo>28.97<mtext> g/mol</mtext></mrow></math>). The exact moist air density is given by the psychrometric formula:</p>
+<div class="eq-box"><math display="block" aria-label="\rho(T, p, \mathrm{RH}) = \frac{p_d}{R_d T} + \frac{p_v}{R_v T} = \frac{p - \phi p_{\text{sat}}(T)}{R_d T} + \frac{\phi p_{\text{sat}}(T)}{R_v T}"><mrow>&#x03C1;(T, p, <mtext>RH</mtext>) = <mfrac><mrow><msub><mi>p</mi><mi>d</mi></msub></mrow><mrow><msub><mi>R</mi><mi>d</mi></msub> T</mrow></mfrac> + <mfrac><mrow><msub><mi>p</mi><mi>v</mi></msub></mrow><mrow><msub><mi>R</mi><mi>v</mi></msub> T</mrow></mfrac> = \frac{p - \phi <msub><mi>p</mi><mi><mtext>sat</mtext></mi></msub>(T)}{<msub><mi>R</mi><mi>d</mi></msub> T} + \frac{\phi <msub><mi>p</mi><mi><mtext>sat</mtext></mi></msub>(T)}{<msub><mi>R</mi><mi>v</mi></msub> T}</mrow></math><details style="margin-top:0.75rem"><summary style="cursor:pointer;font-size:0.85rem;opacity:0.85">LaTeX source</summary><pre style="margin:0.5rem 0 0;overflow-x:auto"><code>\rho(T, p, \mathrm{RH}) = \frac{p_d}{R_d T} + \frac{p_v}{R_v T} = \frac{p - \phi p_{\text{sat}}(T)}{R_d T} + \frac{\phi p_{\text{sat}}(T)}{R_v T}</code></pre></details></div>
+<p>At <math aria-label="35^\circ\text{C}"><mrow>35^\circ<mtext>C</mtext></mrow></math> and <math aria-label="95%"><mrow>95%</mrow></math> relative humidity, air density decreases by nearly <math aria-label="2.0%"><mrow>2.0%</mrow></math>, shifting dynamic lift forces <math aria-label="F_L = \frac{1}{2}\rho v^2 C_L"><mrow><msub><mi>F</mi><mi>L</mi></msub> = <mfrac><mrow>1</mrow><mrow>2</mrow></mfrac><msup><mi>&#x03C1;v</mi><mn>2</mn></msup> <msub><mi>C</mi><mi>L</mi></msub></mrow></math>. Furthermore, near <math aria-label="100%"><mrow>100%</mrow></math> RH dew point condensation, water micro-droplets add mass <math aria-label="\Delta \mu"><mrow>&#x0394;\mu</mrow></math> to the wire, which our active EBow plink detects and recalibrates in real time.</p>
   </div>
 </main>
 <footer><div class="wrap">Sena Colectivo · Pre-processed static artifact</div></footer>
