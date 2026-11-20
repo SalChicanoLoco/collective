@@ -34,9 +34,16 @@
       lastProviders = provRes;
       renderProviderStatus();
       var p = provRes.providers || {};
-      if (!p.google && el('loginGoogleBtn')) el('loginGoogleBtn').setAttribute('aria-disabled', 'true');
-      if (!p.microsoft && el('loginMicrosoftBtn')) el('loginMicrosoftBtn').setAttribute('aria-disabled', 'true');
-      if (!p.meta && el('loginMetaBtn')) el('loginMetaBtn').setAttribute('aria-disabled', 'true');
+      var bindBtn = function (id, enabled) {
+        var btn = el(id);
+        if (!btn) return;
+        if (!enabled) {
+          btn.hidden = true;
+        }
+      };
+      bindBtn('loginGoogleBtn', Boolean(p.google));
+      bindBtn('loginMicrosoftBtn', Boolean(p.microsoft));
+      bindBtn('loginMetaBtn', Boolean(p.meta));
     }
 
     var sess = await fetch('/api/auth/session').then(function (r) { return r.json(); }).catch(function () { return null; });
