@@ -56,6 +56,7 @@ html[data-theme="blueprint"] {
 }
 
 *, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { color-scheme: dark; scroll-behavior: smooth; }
 html[data-theme="blueprint"] { color-scheme: light; }
 
@@ -300,6 +301,7 @@ h3 {
 }
 .card__top { display: flex; flex-direction: column; gap: 5px; }
 .card__foot { margin-top: auto; padding-top: 8px; border-top: 1px solid var(--border); }
+form.card, #ask-answer { height: auto; }
 
 a.card:hover { border-color: var(--accent); border-left-color: var(--accent); }
 .card h2, .card h3 { color: var(--text); }
