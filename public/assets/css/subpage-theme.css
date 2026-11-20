@@ -1,0 +1,74 @@
+/* Shared theme bridge for legacy static HTML subpages (HUD / Earth / CAD) */
+:root,
+html[data-theme="lcars-hud"] {
+  --earth: #070a0f !important;
+  --warm: #0d131c !important;
+  --panel: #141d2b !important;
+  --sand: #e8eef5 !important;
+  --muted: #9eb0c4 !important;
+  --faint: #6c8096 !important;
+  --terr: #4cc9f0 !important;
+  --gold: #4cc9f0 !important;
+  --sage: #f4a261 !important;
+  --border: rgba(76, 201, 240, 0.20) !important;
+  --void: #070a0f !important;
+  --deep: #0d131c !important;
+  --paper: #e8eef5 !important;
+  --fog: #9eb0c4 !important;
+  --serif: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  --sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
+}
+
+html[data-theme="earth-gold"] {
+  --earth: #0f0c08 !important;
+  --warm: #17130d !important;
+  --panel: #201a12 !important;
+  --sand: #f5efe6 !important;
+  --muted: #b8ae9f !important;
+  --faint: #8c8274 !important;
+  --terr: #e8a825 !important;
+  --gold: #e8a825 !important;
+  --sage: #789b68 !important;
+  --border: rgba(245, 239, 230, 0.14) !important;
+  --void: #0f0c08 !important;
+  --deep: #17130d !important;
+  --paper: #f5efe6 !important;
+  --fog: #b8ae9f !important;
+}
+
+html[data-theme="blueprint"] {
+  --earth: #f4f7fb !important;
+  --warm: #ffffff !important;
+  --panel: #e9eff7 !important;
+  --sand: #0c1b2a !important;
+  --muted: #384e66 !important;
+  --faint: #5b718a !important;
+  --terr: #0055cc !important;
+  --gold: #0055cc !important;
+  --sage: #b45309 !important;
+  --border: rgba(12, 35, 64, 0.16) !important;
+  --void: #f4f7fb !important;
+  --deep: #ffffff !important;
+  --paper: #0c1b2a !important;
+  --fog: #384e66 !important;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+}
+.hero {
+  background: var(--warm) !important;
+}
+.card, .note, table {
+  border-radius: 6px !important;
+  border-color: var(--border) !important;
+}
+.btn.primary {
+  background: var(--gold) !important;
+  border-color: var(--gold) !important;
+  color: #070a0f !important;
+}
+html[data-theme="blueprint"] .btn.primary {
+  color: #ffffff !important;
+}

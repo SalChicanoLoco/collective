@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import PageHero from '../../../components/PageHero.astro';
+import Card from '../../../components/Card.astro';
+
+const editions = [
+  {
+    kicker: 'Public version',
+    title: 'Newspaper Edition',
+    desc: 'Short, readable, public-facing version: water, electricity, jobs, tax incentives, and why New Mexico communities should ask for disclosure before approving compute campuses.',
+    href: '/publications/ai-data-centers/newspaper.html',
+  },
+  {
+    kicker: 'Long version',
+    title: 'Periodical Edition',
+    desc: 'Longer magazine-style treatment with technical context, regional framing, cooling tradeoffs, utility impacts, and governance questions.',
+    href: '/publications/ai-data-centers/periodical.html',
+  },
+  {
+    kicker: 'Resource economics',
+    title: 'Natural Resource Economics Brief',
+    desc: 'Less technical political version focused on water rights, public utility risk, land, tax incentives, ratepayers, and who captures the value of compute.',
+    href: '/publications/ai-data-centers/political-economics.html',
+  },
+  {
+    kicker: 'Calculation spine',
+    title: 'Figures and Assumptions',
+    desc: 'Transparent calculations for electricity growth, water intensity, power draw, WUE/PUE interpretation, and community-scale comparisons.',
+    href: '/publications/ai-data-centers/calculations.html',
+  },
+];
+
+const metrics = [
+  {
+    kicker: 'DOE / LBNL · 2023',
+    title: 'U.S. Baseline',
+    desc: 'Estimated U.S. data-center electricity use in 2023, according to DOE/LBNL reporting.',
+    stat: '176 TWh',
+  },
+  {
+    kicker: 'DOE / LBNL · 2028',
+    title: 'U.S. Projected Range',
+    desc: 'DOE/LBNL estimate range for U.S. data-center electricity demand by 2028.',
+    stat: '325–580 TWh',
+  },
+  {
+    kicker: 'IEA · 2030',
+    title: 'Global Projection',
+    desc: 'IEA global data-center electricity demand projection around 2030.',
+    stat: '945 TWh',
+  },
+  {
+    kicker: 'Governance Floor',
+    title: 'Disclosure Pair',
+    desc: 'Water Usage Effectiveness and Power Usage Effectiveness are the minimum disclosure pair for serious governance.',
+    stat: 'WUE + PUE',
+  },
+];
+---
+
+<BaseLayout
+  title="AI Data Centers in Arid Regions | Sena Colectivo"
+  description="Water, power, compute, and the political economy of infrastructure in New Mexico and the Southwest."
+  canonical="https://senacolectivo.com/publications/ai-data-centers/"
+>
+  <Header />
+  <main id="main">
+    <PageHero
+      eyebrowEn="Publication Hub · La Biblioteca / Publications"
+      titleEn="AI Data Centers in Arid Regions"
+      dekEn="Water, power, compute, and the political economy of infrastructure in New Mexico and the Southwest."
+    >
+      <p class="note">Salvador Sena · Sena Colectivo · New Mexico · 2026 research draft</p>
+      <div class="button-row">
+        <a class="button button--primary" href="/publications/ai-data-centers/newspaper.html">Newspaper</a>
+        <a class="button" href="/publications/ai-data-centers/periodical.html">Periodical</a>
+        <a class="button" href="/publications/ai-data-centers/political-economics.html">Political brief</a>
+        <a class="button" href="/publications/ai-data-centers/calculations.html">Calculations</a>
+        <a class="button" href="/publications/ai-data-centers/sources.html">Sources</a>
+        <a class="button" href="/publications/">All Publications</a>
+      </div>
+    </PageHero>
+
+    <section class="section">
+      <div class="wrap">
+        <p class="eyebrow">4-Part Publication Package</p>
+        <h2>AI data centers are not weightless.</h2>
+        <div class="grid grid--4 grid--spaced">
+          {editions.map((ed) => (
+            <Card href={ed.href} kickerEn={ed.kicker} titleEn={ed.title} descEn={ed.desc} />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <p class="eyebrow">Quantitative Frame</p>
+        <h2>Core metrics &amp; disclosure pair</h2>
+        <div class="grid grid--4 grid--spaced">
+          {metrics.map((m) => (
+            <Card kickerEn={m.kicker} titleEn={m.title} descEn={m.desc} stat={m.stat} />
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="wrap">
+        <div class="card">
+          <div class="kicker">Primary Sources</div>
+          <h3>References used for this public draft</h3>
+          <ul>
+            <li>DOE/LBNL, 2024 United States Data Center Energy Usage Report.</li>
+            <li>International Energy Agency, Energy and AI analysis.</li>
+            <li>DOE FEMP, cooling water efficiency and PUE/WUE definitions.</li>
+            <li>NREL, high-performance computing data-center water efficiency materials.</li>
+            <li>New Mexico legislative and regional reporting on AI/data-center resource use.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
