@@ -358,6 +358,59 @@ export default {
       );
     }
 
+    if (url.pathname === '/api/quetzal/geodynamo' || url.pathname === '/api/quetzal/plates') {
+      const ip = getClientIp(request);
+      const rl = checkAskRateLimit(`qz:${ip}`, 15);
+      if (!rl.allowed) {
+        return withSecurityHeaders(
+          Response.json(
+            { ok: false, error: `Experimental Quetzal cap reached. Retry in ${rl.retryAfterSec}s.` },
+            { status: 429, headers: { 'Retry-After': String(rl.retryAfterSec) } },
+          ),
+        );
+      }
+
+      const isPlates = url.pathname === '/api/quetzal/plates';
+      const CACHE_KEY = isPlates ? 'quetzal:cloudrun:plates' : 'quetzal:cloudrun:geodynamo';
+      const TTL_MS = isPlates ? 60 * 60_000 : 10 * 60_000;
+      const upstream = isPlates
+        ? 'https://quetzal-geophysics-x7l7o3xjza-uc.a.run.app/api/seismic/plates'
+        : 'https://quetzal-geophysics-x7l7o3xjza-uc.a.run.app/api/geodynamo/telemetry';
+
+      if (env.OPS_KV) {
+        try {
+          const cachedRaw = await env.OPS_KV.get(CACHE_KEY);
+          if (cachedRaw) {
+            const cached = JSON.parse(cachedRaw) as { fetchedAtMs: number; payload: unknown };
+            if (Date.now() - cached.fetchedAtMs < TTL_MS) {
+              return withSecurityHeaders(Response.json({ ok: true, cached: true, data: cached.payload }));
+            }
+          }
+        } catch {}
+      }
+
+      try {
+        const upRes = await fetch(upstream, { headers: { 'User-Agent': 'SenaColectivo-Quetzal/1.0' } });
+        if (!upRes.ok) throw new Error(`Cloud Run HTTP ${upRes.status}`);
+        const payload = await upRes.json();
+        if (env.OPS_KV) {
+          ctx.waitUntil(
+            env.OPS_KV.put(CACHE_KEY, JSON.stringify({ fetchedAtMs: Date.now(), payload }), {
+              expirationTtl: isPlates ? 3600 : 600,
+            }),
+          );
+        }
+        return withSecurityHeaders(Response.json({ ok: true, cached: false, data: payload }));
+      } catch (err) {
+        return withSecurityHeaders(
+          Response.json(
+            { ok: false, error: err instanceof Error ? err.message : 'Quetzal Cloud Run unavailable.' },
+            { status: 502 },
+          ),
+        );
+      }
+    }
+
     if (url.pathname === '/api/quetzal/seismic') {
       const ip = getClientIp(request);
       const rl = checkAskRateLimit(`qz:${ip}`, 15);

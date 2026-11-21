@@ -23,6 +23,7 @@
 
   var state = {
     events: [],
+    plates: [],
     rotLon: -105.9,
     rotLat: 35.0,
     zoom: 1.0,
@@ -210,6 +211,26 @@
         ctx.stroke();
       }
     });
+
+    // Live Tectonic Plate Boundaries from Quetzal Cloud Run
+    if (state.plates.length) {
+      ctx.strokeStyle = accent2;
+      ctx.globalAlpha = 0.55;
+      ctx.lineWidth = 1.0;
+      state.plates.forEach(function (lineCoords) {
+        ctx.beginPath();
+        var startedP = false;
+        lineCoords.forEach(function (ptLL) {
+          var p = projectPoint(ptLL[1], ptLL[0], cx, cy, R);
+          if (p.visible) {
+            if (!startedP) { ctx.moveTo(p.x, p.y); startedP = true; }
+            else ctx.lineTo(p.x, p.y);
+          } else startedP = false;
+        });
+        ctx.stroke();
+      });
+      ctx.globalAlpha = 1;
+    }
     ctx.restore();
 
     // AOI ring + center target
@@ -432,15 +453,31 @@
 
   fetchBtn?.addEventListener('click', async function () {
     if (!statusEl) return;
-    statusEl.textContent = 'Querying /api/quetzal/seismic...';
+    statusEl.textContent = 'Querying /api/quetzal/seismic + Cloud Run plates...';
     try {
-      var res = await fetch('/api/quetzal/seismic');
+      var [res, platesRes] = await Promise.all([
+        fetch('/api/quetzal/seismic'),
+        fetch('/api/quetzal/plates').catch(function () { return null; }),
+      ]);
       var data = await res.json();
       if (!res.ok || !data.ok) {
         statusEl.textContent = data.error || 'Request failed (HTTP ' + res.status + ').';
         return;
       }
       state.events = data.events || [];
+      if (platesRes && platesRes.ok) {
+        var pData = await platesRes.json();
+        var features = pData && pData.data && (pData.data.features || (pData.data.plates && pData.data.plates.features));
+        if (Array.isArray(features)) {
+          state.plates = [];
+          features.forEach(function (f) {
+            var g = f && f.geometry;
+            if (!g || !g.coordinates) return;
+            if (g.type === 'LineString') state.plates.push(g.coordinates);
+            else if (g.type === 'MultiLineString') g.coordinates.forEach(function (c) { state.plates.push(c); });
+          });
+        }
+      }
       statusEl.textContent =
         data.datasource +
         ' · ' +
@@ -449,7 +486,9 @@
         (data.cached ? 'KV Cache Hit' : 'Fresh Fetch') +
         ' · ' +
         state.events.length +
-        ' events plotted · ' +
+        ' events' +
+        (state.plates.length ? ' + ' + state.plates.length + ' plate segments' : '') +
+        ' · ' +
         data.retrievedAt;
       updateAoiAndForecast();
     } catch (_e) {
